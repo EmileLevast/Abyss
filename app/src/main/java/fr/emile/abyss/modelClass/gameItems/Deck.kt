@@ -13,7 +13,7 @@ class Deck {
 
     init {
         //we get an instance of all the type of fish
-        val listFishType=fishType.values()
+        val listFishType=FishType.values()
         val numberAllieForType=
             partialSum(NUMBER_MAX_ALLIE)
         val numberTotalOfAllie= NUMBER_OF_ALLIE_TYPE * numberAllieForType
@@ -31,10 +31,10 @@ class Deck {
 
     companion object {
 
-        //1+2+3+4+5+6+...=
+        val listLord= mutableListOf(Lord(FishType.CRAB,"le geolier",0,12,3,FishType.CRAB),Lord(FishType.CRAB,"The highway man",0,12,3,FishType.CRAB),Lord(FishType.CRAB,"le chef des armées",0,12,3,FishType.CRAB))
+
         fun partialSum(n:Int)=n*(n+1)/2
 
-        //renvoi l'antécédent de la somme partielle
         fun invPartialSum(x:Int):Double
         {
             return(-1.0+ sqrt(1.0+8.0*(x.toFloat())))/2.0

@@ -1,6 +1,6 @@
 package fr.emile.abyss.modelClass.gameItems
 
-enum class fishType {
+enum class FishType {
     CRAB,
     JELLYFISH,
     OCTOPUS,

@@ -1,18 +1,15 @@
-package fr.emile.abyss
+package fr.emile.abyss.Affichage
 
 import android.util.Log
 import fr.emile.abyss.modelClass.Exploration
 import fr.emile.abyss.modelClass.Game
 
-class View {
-
-    fun showGame(game: Game)
-    {
+class ConsoleView : IView{
+    override fun showGame(game: Game) {
         Log.w("msg",game.toString())
     }
 
-    fun showExploration(exploration: Exploration)
-    {
+    override fun showExploration(exploration: Exploration) {
         Log.w("msg",exploration.toString())
     }
 }

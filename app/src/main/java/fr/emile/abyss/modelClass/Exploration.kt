@@ -2,14 +2,18 @@ package fr.emile.abyss.modelClass
 
 import fr.emile.abyss.Container
 import fr.emile.abyss.ContainerPlayerExplo
+import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.gameItems.Allie
+import fr.emile.abyss.modelClass.gameItems.Deck
 
 const val NUMBER_MAX_CARD_EXPLO_SHOW=8
 
-class Exploration (listPlayer:Container<Player>,deckAllie:MutableList<Allie>){
+class Exploration (listPlayer:Container<Player>){
 
     lateinit var listPlayer: ContainerPlayerExplo
-    lateinit var deckAllie:MutableList<Allie>
+
+    //created one time, same for all explorations because we keep the same object Exploration during all the game
+    var deckAllie=Deck().stackAllie
 
     //register all the visible cards
     var listProposedCard=mutableListOf<Allie>()
@@ -21,16 +25,16 @@ class Exploration (listPlayer:Container<Player>,deckAllie:MutableList<Allie>){
     var currentCost=1
 
     init {
-        initializeExplo(listPlayer,deckAllie)
+        initializeExplo(listPlayer)
     }
 
     //Always called when generate a new exploration
-    fun initializeExplo(listPlayer:Container<Player>,deckAllie:MutableList<Allie>)
+    fun initializeExplo(listPlayer:Container<Player>)
     {
         listProposedCard.clear()
         this.listPlayer= ContainerPlayerExplo(listPlayer.listElt,listPlayer.index)
         currentCost=1
-        this.deckAllie=deckAllie
+        //this.deckAllie=deckAllie
 
         //aucun des jeourus n'a achete d'allie pour cette explo
         this.listPlayer.listElt.forEach { it.dejaAcheteExplo=false }
@@ -86,6 +90,14 @@ class Exploration (listPlayer:Container<Player>,deckAllie:MutableList<Allie>){
             listPlayer.getCurrent().perl++
 
         listPlayer.getCurrent().getAllie(cardToBuy)
+        controller.explorationFinish()
+    }
+
+    fun sendToConseil():MutableList<Allie>
+    {
+        val cardsToSend=listProposedCard
+        listProposedCard.clear()
+        return cardsToSend
     }
 
     enum class Choice{
@@ -94,9 +106,8 @@ class Exploration (listPlayer:Container<Player>,deckAllie:MutableList<Allie>){
     }
 
     override fun toString(): String {
-        return "***Explo*** COST =$currentCost \nBUYER : ${listPlayer.getCurrent().nom} " +
+        return "=====Explo===== \nCOST =$currentCost \nBUYER : ${listPlayer.getCurrent().nom} " +
                 "\nSELLER : ${listPlayer.getMainPlayer().nom}\n" +
-                listProposedCard.joinToString(separator = "\n"){ it.toString()} +
-                "\n***********"
+                listProposedCard.joinToString(separator = "\n"){ it.toString()}
     }
 }

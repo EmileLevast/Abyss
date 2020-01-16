@@ -1,16 +1,20 @@
 package fr.emile.abyss.modelClass
 
 import fr.emile.abyss.Container
+import fr.emile.abyss.modelClass.gameItems.Conseil
+import fr.emile.abyss.modelClass.gameItems.Cour
 import fr.emile.abyss.modelClass.gameItems.Deck
 
 const val PLAYER_NUMBER=4
 class Game {
 
     var listPlayer= Container<Player>()
-    var deck= Deck()
+
 
     //intialized when create exploration
     var exploration:Exploration? = null
+    var cour= Cour()
+    var conseil=Conseil()
 
     init {
 
@@ -25,17 +29,22 @@ class Game {
     {
         if(exploration==null)
         {
-            exploration=Exploration(listPlayer,deck.stackAllie)
+            exploration=Exploration(listPlayer)
         }else
         {
-            exploration!!.initializeExplo(listPlayer,deck.stackAllie)
+            exploration!!.initializeExplo(listPlayer)
         }
 
         exploration?.explore()
     }
 
     override fun toString(): String {
-        return "Game:$deck"
+        return "=====Game====="+exploration.toString()+cour.toString()
+    }
+
+    fun explorationFinish() {
+        conseil.addExplorationDroppedCards(exploration!!.sendToConseil())
+        listPlayer.next()
     }
 
 

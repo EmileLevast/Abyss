@@ -3,4 +3,7 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="plateauAbyss">#1C3E66</color>
+    <color name="plateauAbyssSombre">#122843</color>
+    <color name="writeColorHomeButton">#245697</color>
 </resources>
