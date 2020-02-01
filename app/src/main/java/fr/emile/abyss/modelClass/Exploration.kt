@@ -90,7 +90,7 @@ class Exploration (listPlayer:Container<Player>){
             listPlayer.getCurrent().perl++
 
         listPlayer.getCurrent().getAllie(cardToBuy)
-        controller.explorationFinish()
+        controller!!.explorationFinish()
     }
 
     fun sendToConseil():MutableList<Allie>

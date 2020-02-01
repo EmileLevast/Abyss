@@ -9,13 +9,25 @@
     </style>
 
     <style name="AccueilBouton">
-        <item name="android:layout_margin">20dp</item>
-        <item name="android:textSize">30sp</item>
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:padding">10dp</item>
-        <item name="android:titleMarginTop">40dp</item>
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:textColor">@color/writeColorHomeButton</item>
         <item name="android:background">@drawable/background_button</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <style name="buttonFragment">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textColor">@color/writeButtonFragment</item>
+        <item name="android:background">@drawable/background_button_fragment</item>
     </style>
 
 </resources>

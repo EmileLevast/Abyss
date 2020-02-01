@@ -2,12 +2,15 @@ package fr.emile.abyss.modelClass.gameItems
 
 import fr.emile.abyss.modelClass.Player
 
-
+//nombre des seigneurs disponible a la cour
 const val NUMBER_VISIBLE_LORD=7
 //cour des seigneurs avec tous les seigneurs dispos
 class Cour {
 
+    //contient tous les seigneurs restants de la pioche
     var deckLord= mutableListOf<Lord>()
+
+    //contient les seigneurs de la cour
     var listProposedLord= mutableListOf<Lord>()
     init {
         initalize()

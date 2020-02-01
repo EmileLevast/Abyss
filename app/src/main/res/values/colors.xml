@@ -6,4 +6,7 @@
     <color name="plateauAbyss">#1C3E66</color>
     <color name="plateauAbyssSombre">#122843</color>
     <color name="writeColorHomeButton">#245697</color>
+    <color name="backgroundFragment">#99C0C0FF</color>
+    <color name="backgroundButtonFragment">#C0C0FF</color>
+    <color name="writeButtonFragment">#4060D0</color>
 </resources>

@@ -31,7 +31,10 @@ class Deck {
 
     companion object {
 
-        val listLord= mutableListOf(Lord(FishType.CRAB,"le geolier",0,12,3,FishType.CRAB),Lord(FishType.CRAB,"The highway man",0,12,3,FishType.CRAB),Lord(FishType.CRAB,"le chef des armées",0,12,3,FishType.CRAB))
+        val listLord= mutableListOf(Lord(FishType.CRAB,"le geolier",0,12,3,FishType.CRAB),Lord(FishType.CRAB,"The highway man",0,12,3,FishType.CRAB),Lord(FishType.CRAB,"le chef des armées",0,12,3,FishType.CRAB),
+            Lord(FishType.CRAB,"le geolier",0,12,3,FishType.CRAB),Lord(FishType.CRAB,"The highway man",0,12,3,FishType.CRAB),Lord(FishType.CRAB,"le chef des armées",0,12,3,FishType.CRAB),
+            Lord(FishType.CRAB,"le geolier",0,12,3,FishType.CRAB),Lord(FishType.CRAB,"The highway man",0,12,3,FishType.CRAB),Lord(FishType.CRAB,"le chef des armées",0,12,3,FishType.CRAB),
+            Lord(FishType.CRAB,"le geolier",0,12,3,FishType.CRAB),Lord(FishType.CRAB,"The highway man",0,12,3,FishType.CRAB),Lord(FishType.CRAB,"le chef des armées",0,12,3,FishType.CRAB))
 
         fun partialSum(n:Int)=n*(n+1)/2
 
