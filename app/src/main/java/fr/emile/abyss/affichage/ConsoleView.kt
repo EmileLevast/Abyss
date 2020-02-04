@@ -1,3 +1,4 @@
+/*
 package fr.emile.abyss.affichage
 
 import android.util.Log
@@ -17,4 +18,4 @@ class ConsoleView : IView{
     override fun createExploration(exploration: Exploration) {
         //rien a initialiser pour un affichage console
     }
-}
+}*/

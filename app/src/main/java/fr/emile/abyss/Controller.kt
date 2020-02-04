@@ -1,6 +1,5 @@
 package fr.emile.abyss
 
-import fr.emile.abyss.affichage.ConsoleView
 import fr.emile.abyss.affichage.GUIView
 import fr.emile.abyss.affichage.IView
 import fr.emile.abyss.modelClass.Exploration
@@ -13,10 +12,6 @@ class Controller(activity:MainActivity) {
     //must be an IView in order to call its methods
     var view:IView= GUIView(activity)
 
-    fun updateView()
-    {
-        view.showGame(game)
-    }
 
     fun playerLaunchExploration()
     {
@@ -30,8 +25,11 @@ class Controller(activity:MainActivity) {
     fun playerBuyOrNotExploCard(choice:Exploration.Choice)
     {
         game.exploration?.playerMakeChoice(choice)
-        view.updateExploration(game.exploration!!)
+    }
 
+    fun updateExplorationView()
+    {
+        view.updateExploration(game.exploration!!)
     }
 
     fun explorationFinish()

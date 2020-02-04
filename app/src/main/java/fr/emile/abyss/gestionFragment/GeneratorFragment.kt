@@ -10,7 +10,7 @@ class GeneratorFragment(val mainActivity: MainActivity){
         tag_last_frag=0
     }
 
-    fun addFragToActivity(frag:CustomFragment)
+    fun <T>addFragToActivity(frag:CustomFragment<T>)
     {
         tag_last_frag++
 

@@ -43,7 +43,9 @@ class Game {
     }
 
     fun explorationFinish() {
+        //we send all the allies to the council
         conseil.addExplorationDroppedCards(exploration!!.sendToConseil())
+        //we call the next player
         listPlayer.next()
     }
 

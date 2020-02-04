@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
+              android:layout_height="match_parent"
               android:layout_weight="1">
 
     <TextView
@@ -13,16 +13,19 @@
 
     <TextView
             style="@style/buttonFragment"
+            android:id="@+id/textPerlPlayer"
             android:text="Perles"
     />
 
     <TextView
             style="@style/buttonFragment"
+            android:id="@+id/textNbrAlliePlayer"
             android:text="Allies en main"
     />
 
     <TextView
             style="@style/buttonFragment"
+            android:id="@+id/textNbrLordPlayer"
             android:text="Seigneur acquis"
     />
 
