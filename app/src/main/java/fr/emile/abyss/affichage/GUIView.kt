@@ -14,14 +14,13 @@ import fr.emile.abyss.modelClass.Game
 import fr.emile.abyss.modelClass.Player
 import kotlin.coroutines.coroutineContext
 
-class GUIView( activity: MainActivity) :IView{
+class GUIView( activity: MainActivity) {
 
     var stuffPlayerFrag:StuffPlayerFrag?=null
     var explorationFrag:ExplorationFrag?=null
 
 
     init {
-        //instantiate all the view
 
         //button
         val explorationButton:Button=activity.findViewById(R.id.explorationButton)
@@ -31,40 +30,45 @@ class GUIView( activity: MainActivity) :IView{
         }
     }
 
-    override fun showGame(game: Game) {
-    }
 
-    override fun createPlayerScreen(player: Player) {
-        if(stuffPlayerFrag==null)
-        {
-            stuffPlayerFrag= StuffPlayerFrag(player)
-        }
+
+    fun createPlayerScreen(player: Player) {
+
+        stuffPlayerFrag= StuffPlayerFrag(player)
 
         MainActivity.generatorFragment!!.addFragToActivity(stuffPlayerFrag!!)
     }
 
-    override fun updatePlayerScreen(player: Player) {
+    fun updatePlayerScreen(player: Player) {
         stuffPlayerFrag?.updateView(player)
     }
 
-    override fun updateExploration(exploration: Exploration) {
+    fun updateExploration(exploration: Exploration) {
         explorationFrag?.updateView(exploration)
         stuffPlayerFrag?.updateView(exploration.listPlayer.getCurrent())
     }
 
-    override fun createExploration(exploration: Exploration)
+    fun createExploration(exploration: Exploration)
     {
         //FragmentGeneartor should be instantiate on OnResume
         //we create layout params to give a weight to the fragment (when there is many framgents in this container
 
-        if(explorationFrag==null)
-        {
-            explorationFrag= ExplorationFrag(exploration)
-        }
+
+
+        explorationFrag= ExplorationFrag(exploration)
 
         MainActivity.generatorFragment!!.addFragToActivity(explorationFrag!!)
 
         //we create also a frag to show player stuff
         createPlayerScreen(exploration.listPlayer.getCurrent())
+    }
+
+    fun explorationFinish()
+    {
+        //we take off fragment
+        MainActivity.generatorFragment?.pop()
+
+        //twice to take off both fragment player and exploration
+        MainActivity.generatorFragment?.pop()
     }
 }

@@ -1,7 +1,6 @@
 package fr.emile.abyss
 
 import fr.emile.abyss.affichage.GUIView
-import fr.emile.abyss.affichage.IView
 import fr.emile.abyss.modelClass.Exploration
 import fr.emile.abyss.modelClass.Game
 
@@ -10,7 +9,7 @@ class Controller(activity:MainActivity) {
     //we create the game
     var game =Game()
     //must be an IView in order to call its methods
-    var view:IView= GUIView(activity)
+    var view:GUIView= GUIView(activity)
 
 
     fun playerLaunchExploration()
@@ -35,5 +34,8 @@ class Controller(activity:MainActivity) {
     fun explorationFinish()
     {
         game.explorationFinish()
+
+        //we take off fragment
+        view.explorationFinish()
     }
 }

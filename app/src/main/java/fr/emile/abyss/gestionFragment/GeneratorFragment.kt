@@ -5,7 +5,6 @@ import fr.emile.abyss.R
 
 
 class GeneratorFragment(val mainActivity: MainActivity){
-
     init {
         tag_last_frag=0
     }
@@ -19,6 +18,11 @@ class GeneratorFragment(val mainActivity: MainActivity){
         ft.add(R.id.fragmentContainer,frag, tag_last_frag.toString())
         ft.addToBackStack(null)
         ft.commit()
+    }
+
+    fun pop()
+    {
+        mainActivity.supportFragmentManager.popBackStack()
     }
 
     companion object {
