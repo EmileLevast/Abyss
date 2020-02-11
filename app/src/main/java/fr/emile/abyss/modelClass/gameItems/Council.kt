@@ -1,6 +1,6 @@
 package fr.emile.abyss.modelClass.gameItems
 
-class Conseil {
+class Council {
     var decksAllie= hashMapOf<FishType,MutableList<Allie>>()
 
     init {
@@ -18,7 +18,7 @@ class Conseil {
 
     fun takeStack(fishTypeOfChosenStack: FishType):MutableList<Allie>
     {
-        val cardsToRetrieve=decksAllie[fishTypeOfChosenStack]
+        val cardsToRetrieve=decksAllie[fishTypeOfChosenStack]?.toMutableList()
         decksAllie[fishTypeOfChosenStack]?.clear()
         return cardsToRetrieve!!
     }

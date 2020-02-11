@@ -1,10 +1,9 @@
-package fr.emile.abyss.gestionFragment
+package fr.emile.abyss.affichage.gestionFragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 
 /**

@@ -1,11 +1,11 @@
-package fr.emile.abyss.gestionFragment.fragmentList
+package fr.emile.abyss.affichage.gestionFragment.fragmentList
 
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import fr.emile.abyss.R
 import fr.emile.abyss.controller
-import fr.emile.abyss.gestionFragment.CustomFragment
+import fr.emile.abyss.affichage.gestionFragment.CustomFragment
 import fr.emile.abyss.modelClass.Exploration
 
 class ExplorationFrag(val exploration: Exploration):CustomFragment<Exploration>()

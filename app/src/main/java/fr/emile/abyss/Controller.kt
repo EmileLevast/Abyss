@@ -3,6 +3,8 @@ package fr.emile.abyss
 import fr.emile.abyss.affichage.GUIView
 import fr.emile.abyss.modelClass.Exploration
 import fr.emile.abyss.modelClass.Game
+import fr.emile.abyss.modelClass.Player
+import fr.emile.abyss.modelClass.gameItems.FishType
 
 class Controller(activity:MainActivity) {
 
@@ -11,6 +13,8 @@ class Controller(activity:MainActivity) {
     //must be an IView in order to call its methods
     var view:GUIView= GUIView(activity)
 
+
+    /**Exploration**/
 
     fun playerLaunchExploration()
     {
@@ -36,6 +40,32 @@ class Controller(activity:MainActivity) {
         game.explorationFinish()
 
         //we take off fragment
-        view.explorationFinish()
+        view.clearScreen()
     }
+
+    /**Council**/
+
+    fun takeCouncilStack(fishType: FishType)
+    {
+        game.takeCouncilStack(fishType)
+        view.clearScreen()
+    }
+
+    fun launchCouncil()
+    {
+        view.createCouncil(game.conseil)
+    }
+
+    /**Court**/
+    fun courtFinish(playerBought:Boolean,player: Player)
+    {
+        //si le joueur a acheté  alors on enleve ses allies qui ont servi à acheter
+        if(playerBought)
+        {
+            game.sendPlayerAllieToDiscard(player)
+        }
+
+        view.clearScreen()
+    }
+
 }

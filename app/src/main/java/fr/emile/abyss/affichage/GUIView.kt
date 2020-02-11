@@ -1,18 +1,15 @@
 package fr.emile.abyss.affichage
 
-import android.view.View
 import android.widget.Button
-import android.widget.LinearLayout
 import fr.emile.abyss.MainActivity
 import fr.emile.abyss.R
+import fr.emile.abyss.affichage.gestionFragment.fragmentList.CouncilFrag
 import fr.emile.abyss.controller
-import fr.emile.abyss.gestionFragment.CustomFragment
-import fr.emile.abyss.gestionFragment.fragmentList.ExplorationFrag
-import fr.emile.abyss.gestionFragment.fragmentList.StuffPlayerFrag
+import fr.emile.abyss.affichage.gestionFragment.fragmentList.ExplorationFrag
+import fr.emile.abyss.affichage.gestionFragment.fragmentList.StuffPlayerFrag
 import fr.emile.abyss.modelClass.Exploration
-import fr.emile.abyss.modelClass.Game
 import fr.emile.abyss.modelClass.Player
-import kotlin.coroutines.coroutineContext
+import fr.emile.abyss.modelClass.gameItems.Council
 
 class GUIView( activity: MainActivity) {
 
@@ -23,10 +20,18 @@ class GUIView( activity: MainActivity) {
     init {
 
         //button
+        //Exploration
         val explorationButton:Button=activity.findViewById(R.id.explorationButton)
 
         explorationButton.setOnClickListener {
             controller!!.playerLaunchExploration()
+        }
+
+        //council
+        val councilButton:Button=activity.findViewById(R.id.councilButton)
+
+        councilButton.setOnClickListener {
+            controller!!.launchCouncil()
         }
     }
 
@@ -63,12 +68,23 @@ class GUIView( activity: MainActivity) {
         createPlayerScreen(exploration.listPlayer.getCurrent())
     }
 
-    fun explorationFinish()
-    {
-        //we take off fragment
-        MainActivity.generatorFragment?.pop()
 
-        //twice to take off both fragment player and exploration
-        MainActivity.generatorFragment?.pop()
+    /**
+     * Council
+     * **/
+
+    fun createCouncil(council: Council)
+    {
+        val councilFrag= CouncilFrag(council)
+
+        MainActivity.generatorFragment!!.addFragToActivity(councilFrag)
+
+    }
+
+
+    /**remove all the fragment, back to home screen**/
+    fun clearScreen()
+    {
+        MainActivity.generatorFragment!!.popAll()
     }
 }

@@ -2,8 +2,7 @@ package fr.emile.abyss
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import fr.emile.abyss.gestionFragment.GeneratorFragment
-import fr.emile.abyss.modelClass.Exploration
+import fr.emile.abyss.affichage.gestionFragment.GeneratorFragment
 
 var controller:Controller?=null
 

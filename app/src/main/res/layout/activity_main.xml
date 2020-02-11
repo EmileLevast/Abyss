@@ -19,7 +19,7 @@
 
     <Button
             style="@style/AccueilBouton"
-            android:id="@+id/TakeCouncilStack"
+            android:id="@+id/councilButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/explorationButton"
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Buy a Lord"
-            android:layout_below="@+id/TakeCouncilStack"
+            android:layout_below="@+id/councilButton"
     />
 
     <LinearLayout

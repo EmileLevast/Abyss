@@ -1,5 +1,6 @@
 package fr.emile.abyss.modelClass.gameItems
 
+import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.Player
 
 //nombre des seigneurs disponible a la cour
@@ -29,22 +30,27 @@ class Cour {
 
     fun playerWantToBuy(player:Player,lordToBuy:Lord)
     {
-        val sumValueAllie:Int=player.listCardToBuy.fold(0) { sum, allie->sum+allie.number}
-        val listDifferentType=player.listCardToBuy.map{allie -> allie.type }.distinct()
+        //does the player buy or something or not
+        var playerBought=false
+
+        val listCardToBuy=player.listAllie.filter{allie->allie.selectedToBuyLord}
+        val sumValueAllie:Int=listCardToBuy.fold(0) { sum, allie->sum+allie.number}
+        val listDifferentType=listCardToBuy.map{allie -> allie.type }.distinct()
 
         //si il ya le prix, le numbre de type d'allie et l'allie obligatoire, alors on peut acheter
         if(sumValueAllie>=lordToBuy.price && listDifferentType.size>=lordToBuy.numberAllieType &&
             listDifferentType.contains(lordToBuy.obligedType))
         {
             //on enleve le seigneur et on l'ajoute a la liste des seigneurs achetés du joueur
-            player.listLord.add(listProposedLord.removeAt(listProposedLord.indexOf(lordToBuy)))
+            player.buyLord(listProposedLord.removeAt(listProposedLord.indexOf(lordToBuy)),listCardToBuy)
             //si le joueur tire l'entepenultieme seigneur il gagne 2 perles
             if(drawNewLords())player.perl+=2
 
-        }else//sinon on redonne les cartes que le joueur avait choisi pour acheter
-        {
-            player.listAllie.addAll(player.listCardToBuy)
+            //the player actually buy something
+            playerBought=true
         }
+
+        controller!!.courtFinish(playerBought,player)
 
     }
 

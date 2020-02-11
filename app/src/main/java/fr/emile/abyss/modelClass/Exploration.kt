@@ -18,9 +18,7 @@ class Exploration (listPlayer:Container<Player>){
     //register all the visible cards
     var listProposedCard=mutableListOf<Allie>()
 
-    //refer to the player who is currently choosing between buy or not the card
-    //lateinit var playerCurrentlyChoosing:ListIterator<Player>
-    //var currentChoosingPlayer=0
+    var listDiscard=mutableListOf<Allie>()
 
     var currentCost=1
 
@@ -46,6 +44,13 @@ class Exploration (listPlayer:Container<Player>){
         {
             //we take card from the deck and add it to the visible card
             listProposedCard.add(deckAllie.removeAt(0))
+        }
+        else//soi la pioche est vide on melange la discard et on redonne des cartes
+        {
+            deckAllie.addAll(listDiscard.shuffled())
+
+            //apres avoir donne des nouvelles cartes on vide la pioche de defausse
+            listDiscard.clear()
         }
 
         listPlayer.reset()
@@ -100,15 +105,19 @@ class Exploration (listPlayer:Container<Player>){
             //so he wins 1 perl
             listPlayer.getCurrent().perl++
 
-        listPlayer.getCurrent().getAllie(cardToBuy)
+        listPlayer.getCurrent().addAllie(cardToBuy)
         controller!!.explorationFinish()
     }
 
     fun sendToConseil():MutableList<Allie>
     {
-        val cardsToSend=listProposedCard
-        listProposedCard.clear()
-        return cardsToSend
+        return listProposedCard
+    }
+
+    /**add [listAllieToDiscard] to the [listDiscard], doesn't create new references**/
+    fun sendToDiscardList(listAllieToDiscard:List<Allie>)
+    {
+        listDiscard.addAll(listAllieToDiscard)
     }
 
     enum class Choice{
