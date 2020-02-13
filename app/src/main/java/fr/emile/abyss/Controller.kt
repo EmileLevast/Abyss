@@ -5,6 +5,7 @@ import fr.emile.abyss.modelClass.Exploration
 import fr.emile.abyss.modelClass.Game
 import fr.emile.abyss.modelClass.Player
 import fr.emile.abyss.modelClass.gameItems.FishType
+import fr.emile.abyss.modelClass.gameItems.Lord
 
 class Controller(activity:MainActivity) {
 
@@ -16,7 +17,7 @@ class Controller(activity:MainActivity) {
 
     /**Exploration**/
 
-    fun playerLaunchExploration()
+    fun launchExploration()
     {
         game.createExploration()
 
@@ -44,7 +45,6 @@ class Controller(activity:MainActivity) {
     }
 
     /**Council**/
-
     fun takeCouncilStack(fishType: FishType)
     {
         game.takeCouncilStack(fishType)
@@ -53,10 +53,20 @@ class Controller(activity:MainActivity) {
 
     fun launchCouncil()
     {
-        view.createCouncil(game.conseil)
+        view.createCouncil(game.council)
     }
 
     /**Court**/
+    fun LaunchCourt()
+    {
+        view.createCourt(game.court)
+    }
+
+    fun playerWantToBuyLord(lordClicked: Lord)
+    {
+        game.playerWantToBuyLord(lordClicked)
+    }
+
     fun courtFinish(playerBought:Boolean,player: Player)
     {
         //si le joueur a acheté  alors on enleve ses allies qui ont servi à acheter

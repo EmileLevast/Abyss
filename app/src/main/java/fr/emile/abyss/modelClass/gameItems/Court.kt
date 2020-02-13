@@ -3,15 +3,15 @@ package fr.emile.abyss.modelClass.gameItems
 import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.Player
 
-//nombre des seigneurs disponible a la cour
+//nombre des seigneurs disponible a la court
 const val NUMBER_VISIBLE_LORD=7
-//cour des seigneurs avec tous les seigneurs dispos
-class Cour {
+//court des seigneurs avec tous les seigneurs dispos
+class Court {
 
     //contient tous les seigneurs restants de la pioche
     var deckLord= mutableListOf<Lord>()
 
-    //contient les seigneurs de la cour
+    //contient les seigneurs de la court
     var listProposedLord= mutableListOf<Lord>()
     init {
         initalize()
@@ -70,6 +70,6 @@ class Cour {
     }
 
     override fun toString(): String {
-        return "=====Cour====="+listProposedLord.joinToString(separator = "\n"){ it.toString()}
+        return "=====Court====="+listProposedLord.joinToString(separator = "\n"){ it.toString()}
     }
 }

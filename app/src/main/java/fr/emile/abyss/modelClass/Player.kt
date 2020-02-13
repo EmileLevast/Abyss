@@ -22,7 +22,7 @@ class Player (var nom:String){
         dejaAcheteExplo=true
     }
 
-    /**Take the [Lord] and add it to the purchased Lords [listLord] , and federate the allie**/
+    /**Take the [lordToBuy] and add it to the purchased Lords [listLord] , and federate the allie**/
     fun buyLord(lordToBuy:Lord,listAllieUsedToBuy:List<Allie>)
     {
         listLord.add(lordToBuy)

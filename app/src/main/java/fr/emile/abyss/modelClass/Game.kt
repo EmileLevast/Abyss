@@ -2,8 +2,9 @@ package fr.emile.abyss.modelClass
 
 import fr.emile.abyss.Container
 import fr.emile.abyss.modelClass.gameItems.Council
-import fr.emile.abyss.modelClass.gameItems.Cour
+import fr.emile.abyss.modelClass.gameItems.Court
 import fr.emile.abyss.modelClass.gameItems.FishType
+import fr.emile.abyss.modelClass.gameItems.Lord
 
 const val PLAYER_NUMBER=4
 class Game {
@@ -13,8 +14,8 @@ class Game {
 
     //intialized when create exploration
     var exploration:Exploration? = null
-    var cour= Cour()
-    var conseil=Council()
+    var court= Court()
+    var council=Council()
 
     init {
 
@@ -43,7 +44,7 @@ class Game {
 
     fun explorationFinish() {
         //we send all the allies to the council
-        conseil.addExplorationDroppedCards(exploration!!.sendToConseil())
+        council.addExplorationDroppedCards(exploration!!.sendToConseil())
         //we call the next player
         listPlayer.next()
     }
@@ -51,12 +52,16 @@ class Game {
     /**council**/
     fun takeCouncilStack(fishType: FishType)
     {
-        listPlayer.getCurrent().addAllie(conseil.takeStack(fishType))
+        listPlayer.getCurrent().addAllie(council.takeStack(fishType))
     }
 
 
 
     /**Court**/
+    fun playerWantToBuyLord(lordToBuy: Lord)
+    {
+        court.playerWantToBuy(listPlayer.getCurrent(),lordToBuy)
+    }
 
     /**when the [player] buy a lord, we take his allie cards to send it to the **/
     fun sendPlayerAllieToDiscard(player: Player)
@@ -69,6 +74,6 @@ class Game {
     }
 
     override fun toString(): String {
-        return "=====Game====="+exploration.toString()+cour.toString()
+        return "=====Game====="+exploration.toString()+court.toString()
     }
 }

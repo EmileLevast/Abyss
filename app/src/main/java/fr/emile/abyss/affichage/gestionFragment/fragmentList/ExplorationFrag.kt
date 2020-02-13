@@ -8,7 +8,7 @@ import fr.emile.abyss.controller
 import fr.emile.abyss.affichage.gestionFragment.CustomFragment
 import fr.emile.abyss.modelClass.Exploration
 
-class ExplorationFrag(val exploration: Exploration):CustomFragment<Exploration>()
+class ExplorationFrag(private val exploration: Exploration):CustomFragment<Exploration>()
 {
     override val idLayoutToInflate: Int= R.layout.frag_layout_exploration
 

@@ -4,12 +4,14 @@ import android.widget.Button
 import fr.emile.abyss.MainActivity
 import fr.emile.abyss.R
 import fr.emile.abyss.affichage.gestionFragment.fragmentList.CouncilFrag
+import fr.emile.abyss.affichage.gestionFragment.fragmentList.CourtFrag
 import fr.emile.abyss.controller
 import fr.emile.abyss.affichage.gestionFragment.fragmentList.ExplorationFrag
 import fr.emile.abyss.affichage.gestionFragment.fragmentList.StuffPlayerFrag
 import fr.emile.abyss.modelClass.Exploration
 import fr.emile.abyss.modelClass.Player
 import fr.emile.abyss.modelClass.gameItems.Council
+import fr.emile.abyss.modelClass.gameItems.Court
 
 class GUIView( activity: MainActivity) {
 
@@ -22,16 +24,20 @@ class GUIView( activity: MainActivity) {
         //button
         //Exploration
         val explorationButton:Button=activity.findViewById(R.id.explorationButton)
-
         explorationButton.setOnClickListener {
-            controller!!.playerLaunchExploration()
+            controller!!.launchExploration()
         }
 
         //council
         val councilButton:Button=activity.findViewById(R.id.councilButton)
-
         councilButton.setOnClickListener {
             controller!!.launchCouncil()
+        }
+
+        //court
+        val courtButton:Button=activity.findViewById(R.id.courtButton)
+        courtButton.setOnClickListener {
+            controller!!.LaunchCourt()
         }
     }
 
@@ -72,13 +78,20 @@ class GUIView( activity: MainActivity) {
     /**
      * Council
      * **/
-
     fun createCouncil(council: Council)
     {
         val councilFrag= CouncilFrag(council)
 
         MainActivity.generatorFragment!!.addFragToActivity(councilFrag)
+    }
 
+    /**
+     *
+     */
+    fun createCourt(court: Court)
+    {
+        val courtFrag=CourtFrag(court)
+        MainActivity.generatorFragment!!.addFragToActivity(courtFrag)
     }
 
 
