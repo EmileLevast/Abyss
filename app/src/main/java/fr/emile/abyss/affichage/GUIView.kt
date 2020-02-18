@@ -3,11 +3,9 @@ package fr.emile.abyss.affichage
 import android.widget.Button
 import fr.emile.abyss.MainActivity
 import fr.emile.abyss.R
-import fr.emile.abyss.affichage.gestionFragment.fragmentList.CouncilFrag
-import fr.emile.abyss.affichage.gestionFragment.fragmentList.CourtFrag
+import fr.emile.abyss.affichage.gestionFragment.fragmentList.*
 import fr.emile.abyss.controller
-import fr.emile.abyss.affichage.gestionFragment.fragmentList.ExplorationFrag
-import fr.emile.abyss.affichage.gestionFragment.fragmentList.StuffPlayerFrag
+import fr.emile.abyss.modelClass.EndGame
 import fr.emile.abyss.modelClass.Exploration
 import fr.emile.abyss.modelClass.Player
 import fr.emile.abyss.modelClass.gameItems.Council
@@ -86,7 +84,7 @@ class GUIView( activity: MainActivity) {
     }
 
     /**
-     *
+     *Court
      */
     fun createCourt(court: Court)
     {
@@ -94,6 +92,14 @@ class GUIView( activity: MainActivity) {
         MainActivity.generatorFragment!!.addFragToActivity(courtFrag)
     }
 
+    /**
+     * End game
+     */
+    fun createEndGameScreen(endGame: EndGame)
+    {
+        val endGameFrag=EndGameFrag(endGame)
+        MainActivity.generatorFragment!!.addFragToActivity(endGameFrag)
+    }
 
     /**remove all the fragment, back to home screen**/
     fun clearScreen()

@@ -1,6 +1,7 @@
 package fr.emile.abyss.modelClass
 
 import fr.emile.abyss.Container
+import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.gameItems.Council
 import fr.emile.abyss.modelClass.gameItems.Court
 import fr.emile.abyss.modelClass.gameItems.FishType
@@ -16,6 +17,7 @@ class Game {
     var exploration:Exploration? = null
     var court= Court()
     var council=Council()
+    var endGame=EndGame(listPlayer)
 
     init {
 
@@ -26,7 +28,7 @@ class Game {
         }
     }
 
-    /**Explorration**/
+    /**[Exploration]**/
 
 
     fun createExploration()
@@ -46,18 +48,20 @@ class Game {
         //we send all the allies to the council
         council.addExplorationDroppedCards(exploration!!.sendToConseil())
         //we call the next player
-        listPlayer.next()
+        nextTurn()
     }
 
-    /**council**/
+    /**[Council]**/
     fun takeCouncilStack(fishType: FishType)
     {
         listPlayer.getCurrent().addAllie(council.takeStack(fishType))
+
+        nextTurn()
     }
 
 
 
-    /**Court**/
+    /**[Court]**/
     fun playerWantToBuyLord(lordToBuy: Lord)
     {
         court.playerWantToBuy(listPlayer.getCurrent(),lordToBuy)
@@ -72,6 +76,29 @@ class Game {
         //we take of the card to discard
         player.listAllie.removeAll { allie->allie.selectedToBuyLord }
     }
+
+    /**
+     * when the player bought something and his turn is finished
+     */
+    fun courtFinish(player: Player)
+    {
+        sendPlayerAllieToDiscard(player)
+        nextTurn()
+    }
+
+    /**===Rule===**/
+    private fun nextTurn()
+    {
+        //on pointe le joueur suivant
+        listPlayer.next()
+
+        //on regarde si le jeu est fini
+        if(endGame.isGameFinished())
+        {
+            controller!!.gameFinished()
+        }
+    }
+
 
     override fun toString(): String {
         return "=====Game====="+exploration.toString()+court.toString()

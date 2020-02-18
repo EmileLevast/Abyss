@@ -16,7 +16,7 @@ abstract class  CustomFragment<T> : Fragment(){
      */
     abstract val idLayoutToInflate:Int
 
-    /**called in on createView
+    /**called in onCreateView()
      *instantiate some view here if you have to do so (typeface, programmatically UI)
      * initiate values in view
      */
@@ -24,7 +24,6 @@ abstract class  CustomFragment<T> : Fragment(){
 
     abstract fun updateView(dataGame:T)
 
-    //abstract fun updateView()
 
     //just get the layout to inflate, create the view
     final override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

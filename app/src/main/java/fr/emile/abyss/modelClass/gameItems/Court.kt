@@ -31,7 +31,6 @@ class Court {
     fun playerWantToBuy(player:Player,lordToBuy:Lord)
     {
         //does the player buy or something or not
-        var playerBought=false
 
         val listCardToBuy=player.listAllie.filter{allie->allie.selectedToBuyLord}
         val sumValueAllie:Int=listCardToBuy.fold(0) { sum, allie->sum+allie.number}
@@ -47,10 +46,11 @@ class Court {
             if(drawNewLords())player.perl+=2
 
             //the player actually buy something
-            playerBought=true
+
+            //si le joueur a achete quelque chose il finit son tour
+            controller!!.courtFinish(player)
         }
 
-        controller!!.courtFinish(playerBought,player)
 
     }
 

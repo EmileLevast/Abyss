@@ -67,15 +67,18 @@ class Controller(activity:MainActivity) {
         game.playerWantToBuyLord(lordClicked)
     }
 
-    fun courtFinish(playerBought:Boolean,player: Player)
+    fun courtFinish(player: Player)
     {
-        //si le joueur a acheté  alors on enleve ses allies qui ont servi à acheter
-        if(playerBought)
-        {
-            game.sendPlayerAllieToDiscard(player)
-        }
-
+        game.courtFinish(player)
         view.clearScreen()
+    }
+
+    /**
+     * The game finish
+     */
+    fun gameFinished()
+    {
+        view.createEndGameScreen(game.endGame)
     }
 
 }

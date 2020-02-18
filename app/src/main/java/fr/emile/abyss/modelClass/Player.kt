@@ -3,6 +3,8 @@ package fr.emile.abyss.modelClass
 import fr.emile.abyss.modelClass.gameItems.Allie
 import fr.emile.abyss.modelClass.gameItems.Lord
 
+private const val NBR_MAX_LORD=7
+
 class Player (var nom:String){
 
     //true quand le joueur a deja achete un allie dans cette explo
@@ -45,5 +47,10 @@ class Player (var nom:String){
     fun addAllie(listCardToAdd:MutableList<Allie>)
     {
         listAllie.addAll(listCardToAdd)
+    }
+
+    fun hasMaxNbrLord():Boolean
+    {
+        return listLord.size>= NBR_MAX_LORD
     }
 }
