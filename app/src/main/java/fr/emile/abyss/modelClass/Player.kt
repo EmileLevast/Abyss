@@ -1,7 +1,6 @@
 package fr.emile.abyss.modelClass
 
-import fr.emile.abyss.modelClass.gameItems.Allie
-import fr.emile.abyss.modelClass.gameItems.Lord
+import fr.emile.abyss.modelClass.gameItems.*
 
 private const val NBR_MAX_LORD=7
 
@@ -15,6 +14,8 @@ class Player (var nom:String){
 
     var perl=1
     var listAllie=mutableListOf<Allie>()
+
+    var listPower:RulesPower= RulesPower()
 
     fun buyAllieCard(cardToAdd:Allie,cost:Int)
     {
@@ -52,5 +53,10 @@ class Player (var nom:String){
     fun hasMaxNbrLord():Boolean
     {
         return listLord.size>= NBR_MAX_LORD
+    }
+
+    fun playerUnderAttackMilitaryLord(powerAttack: InstantEffectPower,game: Game)
+    {
+        listPower.getPower(object : MilitaryLordAttack{})
     }
 }

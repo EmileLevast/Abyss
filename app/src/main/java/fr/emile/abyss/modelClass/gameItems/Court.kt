@@ -30,14 +30,21 @@ class Court {
 
     fun playerWantToBuy(player:Player,lordToBuy:Lord)
     {
-        //does the player buy or something or not
 
+        //we take only the allie that the player selected
         val listCardToBuy=player.listAllie.filter{allie->allie.selectedToBuyLord}
+        //we calculate the sum that the chosen allies give
         val sumValueAllie:Int=listCardToBuy.fold(0) { sum, allie->sum+allie.number}
+        //We retrieve all the different type that are used
         val listDifferentType=listCardToBuy.map{allie -> allie.type }.distinct()
 
+        //we calculate the cost of the lord (depending on power or not
+        var purchasePrice=lordToBuy.price
+        player.listPower.getPower(object : BuyLordPrice{}).forEach { purchasePrice=it.computePrice(purchasePrice) }
+
+
         //si il ya le prix, le numbre de type d'allie et l'allie obligatoire, alors on peut acheter
-        if(sumValueAllie>=lordToBuy.price && listDifferentType.size>=lordToBuy.numberAllieType &&
+        if(sumValueAllie>=purchasePrice && listDifferentType.size>=lordToBuy.numberAllieType &&
             listDifferentType.contains(lordToBuy.obligedType))
         {
             //on enleve le seigneur et on l'ajoute a la liste des seigneurs achetés du joueur

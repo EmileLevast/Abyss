@@ -41,13 +41,62 @@ abstract class ActivePermanentPower:Power,InstantEffectPower
 
 /**these powers runs always in background and changes continuously the rules of the game**/
 interface PassivePermanentPower:Power
+{
+    fun getKeyForMap()=this::class.java.simpleName
+
+    override fun init(player: Player, game: Game) {
+        //TODO add to the rulesPower of players
+    }
+}
 
 /**All interface that represents [PassivePermanentPower]*/
+
+
+//when someone purchases a lord, determine his price
 interface BuyLordPrice:PassivePermanentPower
 {
     /**Add modification to the old price and return the new Price**/
-    fun computePrice(originPrice:Int,lord: Lord):Int
+    fun computePrice(originPrice:Int):Int {
+        return originPrice
+    }
 }
 
-interface MilitaryLordAttack
+
+//when someone is under attack from military Lord
+interface MilitaryLordAttack:PassivePermanentPower
+{
+    fun runAttack(player:Player,game: Game,powerAttack: InstantEffectPower)
+    {
+        powerAttack.activate(player,game)
+    }
+}
+
+interface BoughtLordFederateAllie:PassivePermanentPower
+{
+    fun federateAllie(player: Player,listAllieUsedToBuy:List<Allie>)
+    {
+        //federate allies
+        val federatedAllie=listAllieUsedToBuy.minBy {allieBuying->allieBuying.number}
+
+        //on ajoute l'allie a la liste d'allie federe
+        player.listAllieFedere.add(federatedAllie!!)
+    }
+}
+
+interface BuyLordColorAllie
+{
+    fun isAuthorizedToBuy(listDifferentTypeUseForBuy: List<FishType>,lordToBuy:Lord):Boolean
+    {
+        return listDifferentTypeUseForBuy.size>=lordToBuy.numberAllieType &&
+                listDifferentTypeUseForBuy.contains(lordToBuy.obligedType)
+    }
+}
+
+/**for example :The armies chef. Implement [InstantEffectPower] because can be activated as Polymorphism with
+ * [InstantPower] and [ActivePermanentPower]**/
+interface limitAllieHand : InstantEffectPower,PassivePermanentPower
+{
+
+}
+
 
