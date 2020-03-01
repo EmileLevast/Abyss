@@ -15,7 +15,7 @@ class Player (var nom:String){
     var perl=1
     var listAllie=mutableListOf<Allie>()
 
-    var listPower:RulesPower= RulesPower()
+    var listRulesPower:RulesPower= RulesPower()
 
     fun buyAllieCard(cardToAdd:Allie,cost:Int)
     {
@@ -57,6 +57,10 @@ class Player (var nom:String){
 
     fun playerUnderAttackMilitaryLord(powerAttack: InstantEffectPower,game: Game)
     {
-        listPower.getPower(object : MilitaryLordAttack{})
+        //on itere a travers tous les pouvoirs concernant les attaques de seigneurs militaires
+        //on demande de chercher le premier pouvoir qui interdit l'attaque du seigneur militaire.
+        //s'il y en a pas, null est retourné ,ainsi avec l'operateur elvis on active le pouvoir
+        listRulesPower.getPower(object : MilitaryLordAttack{}).
+            find {power -> !power.isAttackAvailable() } ?: powerAttack.activate(this,game)
     }
 }

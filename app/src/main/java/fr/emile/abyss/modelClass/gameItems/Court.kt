@@ -40,7 +40,7 @@ class Court {
 
         //we calculate the cost of the lord (depending on power or not
         var purchasePrice=lordToBuy.price
-        player.listPower.getPower(object : BuyLordPrice{}).forEach { purchasePrice=it.computePrice(purchasePrice) }
+        player.listRulesPower.getPower(object : BuyLordPrice{}).forEach { purchasePrice=it.computePrice(purchasePrice) }
 
 
         //si il ya le prix, le numbre de type d'allie et l'allie obligatoire, alors on peut acheter

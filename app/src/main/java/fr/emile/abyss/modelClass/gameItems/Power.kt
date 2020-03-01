@@ -45,7 +45,37 @@ interface PassivePermanentPower:Power
     fun getKeyForMap()=this::class.java.simpleName
 
     override fun init(player: Player, game: Game) {
-        //TODO add to the rulesPower of players
+        player.listRulesPower.addPower(this)
+    }
+
+    fun remove(player: Player, game: Game)
+    {
+        player.listRulesPower.deletePower(this)
+    }
+}
+
+
+//use this interface to implement power of military Lord
+interface passivePowerInfluenceOthers:PassivePermanentPower
+{
+    override fun init(player: Player, game: Game) {
+        //because all other players have to see it in their rules
+        iterateOnlyOtherPlayers(player,game.listPlayer.listElt,RulesPower::addPower)
+
+    }
+
+    override fun remove(player: Player, game: Game) {
+        iterateOnlyOtherPlayers(player,game.listPlayer.listElt,RulesPower::deletePower)
+    }
+
+    fun iterateOnlyOtherPlayers(player: Player,allPlayers: MutableList<Player>, transform:RulesPower.(power:PassivePermanentPower)-> Unit)
+    {
+        allPlayers.forEach {
+            if(it!==player)
+            {
+                it.listRulesPower.transform(this)
+            }
+        }
     }
 }
 
@@ -65,9 +95,9 @@ interface BuyLordPrice:PassivePermanentPower
 //when someone is under attack from military Lord
 interface MilitaryLordAttack:PassivePermanentPower
 {
-    fun runAttack(player:Player,game: Game,powerAttack: InstantEffectPower)
+    fun isAttackAvailable(): Boolean
     {
-        powerAttack.activate(player,game)
+        return true
     }
 }
 
