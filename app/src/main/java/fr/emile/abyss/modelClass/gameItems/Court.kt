@@ -22,7 +22,7 @@ class Court {
         deckLord.clear()
         listProposedLord.clear()
 
-        deckLord.addAll(Deck.listLord)
+        deckLord.addAll(Lord.listLord)
         deckLord.shuffle()
 
         for(i in 1..NUMBER_VISIBLE_LORD)listProposedLord.add(deckLord.removeAt(0))

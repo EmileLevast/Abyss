@@ -27,11 +27,8 @@ interface InstantPower:Power,InstantEffectPower
 
 
 /**For the power that are permanent but affect the game only when the player decides to**/
-abstract class ActivePermanentPower:Power,InstantEffectPower
+interface ActivePermanentPower:Power,InstantEffectPower
 {
-    //for example if the lord is killed by assassin, this goes to false
-    var isAvailable=true
-
     //do nothing when bought
     override fun init(player: Player, game: Game) {
         //the power is called when the player clicks on the lord
@@ -42,7 +39,7 @@ abstract class ActivePermanentPower:Power,InstantEffectPower
 /**these powers runs always in background and changes continuously the rules of the game**/
 interface PassivePermanentPower:Power
 {
-    fun getKeyForMap()=this::class.java.simpleName
+    fun getKeyForMap():String=this::class.java.simpleName
 
     override fun init(player: Player, game: Game) {
         player.listRulesPower.addPower(this)
@@ -56,7 +53,7 @@ interface PassivePermanentPower:Power
 
 
 //use this interface to implement power of military Lord
-interface passivePowerInfluenceOthers:PassivePermanentPower
+interface PassivePowerInfluenceOthers:PassivePermanentPower
 {
     override fun init(player: Player, game: Game) {
         //because all other players have to see it in their rules
@@ -95,10 +92,7 @@ interface BuyLordPrice:PassivePermanentPower
 //when someone is under attack from military Lord
 interface MilitaryLordAttack:PassivePermanentPower
 {
-    fun isAttackAvailable(): Boolean
-    {
-        return true
-    }
+    fun isAttackAvailable()=true
 }
 
 interface BoughtLordFederateAllie:PassivePermanentPower

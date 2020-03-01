@@ -1,6 +1,5 @@
 package fr.emile.abyss.modelClass.gameItems
 
-import fr.emile.abyss.R
 import kotlin.math.sqrt
 
 //the number of different allies (jellyfish, crab...)
@@ -31,19 +30,6 @@ class Deck {
     }
 
     companion object {
-
-        val listLord= mutableListOf(Lord(FishType.CRAB,"le geolier", R.drawable.armateur,12,3,FishType.CRAB,8),
-            Lord(FishType.CRAB,"The highway man",R.drawable.armateur,12,3,FishType.CRAB,8),
-            Lord(FishType.CRAB,"le chef des armées",R.drawable.armateur,12,3,FishType.CRAB,8),
-            Lord(FishType.CRAB,"le geolier",R.drawable.armateur,12,3,FishType.CRAB,8),
-            Lord(FishType.CRAB,"The highway man",R.drawable.armateur,12,3,FishType.CRAB,8),
-            Lord(FishType.CRAB,"le chef des armées",R.drawable.armateur,12,3,FishType.CRAB,8),
-            Lord(FishType.CRAB,"le geolier",R.drawable.armateur,12,3,FishType.CRAB,8),
-            Lord(FishType.CRAB,"The highway man",R.drawable.armateur,12,3,FishType.CRAB,8),
-            Lord(FishType.CRAB,"le chef des armées",R.drawable.armateur,12,3,FishType.CRAB,8),
-            Lord(FishType.CRAB,"le geolier",R.drawable.armateur,12,3,FishType.CRAB,8)
-            ,Lord(FishType.CRAB,"The highway man",R.drawable.armateur,12,3,FishType.CRAB,8),
-            Lord(FishType.CRAB,"le chef des armées",R.drawable.armateur,12,3,FishType.CRAB,8))
 
         fun partialSum(n:Int)=n*(n+1)/2
 
