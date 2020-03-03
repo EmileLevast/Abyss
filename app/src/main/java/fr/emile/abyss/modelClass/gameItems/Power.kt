@@ -97,10 +97,10 @@ interface MilitaryLordAttack:PassivePermanentPower
 
 interface BoughtLordFederateAllie:PassivePermanentPower
 {
-    fun federateAllie(player: Player,listAllieUsedToBuy:List<Allie>)
+    fun federateAllie(player: Player, listAllyUsedToBuy:List<Ally>)
     {
         //federate allies
-        val federatedAllie=listAllieUsedToBuy.minBy {allieBuying->allieBuying.number}
+        val federatedAllie=listAllyUsedToBuy.minBy { allieBuying->allieBuying.number}
 
         //on ajoute l'allie a la liste d'allie federe
         player.listAllieFedere.add(federatedAllie!!)

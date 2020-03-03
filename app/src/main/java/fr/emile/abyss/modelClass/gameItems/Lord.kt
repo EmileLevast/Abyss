@@ -2,12 +2,13 @@ package fr.emile.abyss.modelClass.gameItems
 
 import android.util.Log
 import fr.emile.abyss.R
+import fr.emile.abyss.affichage.IShowImage
 import fr.emile.abyss.modelClass.Game
 import fr.emile.abyss.modelClass.Player
 
-class Lord (var FishType: FishType, var name:String, var imgId:Int, var price:Int,
+class Lord (var FishType: FishType, var name:String, override var imgId:Int, var price:Int,
             var numberAllieType:Int, var obligedType:FishType, var influencePoint:Int,
-            val power: Power) {
+            val power: Power) :IShowImage{
 
     override fun toString(): String {
         return "Lord(FishType=$FishType, name='$name', influence Point='$influencePoint', imgId=$imgId, price=$price, numberAllieType=$numberAllieType, obligedType=$obligedType)"

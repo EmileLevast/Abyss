@@ -13,7 +13,7 @@ class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
     override val idLayoutToInflate: Int= R.layout.frag_layout_player
 
     lateinit var textviewName:TextView
-    lateinit var textNbrAllie:TextView
+    lateinit var textNbrAlly:TextView
     lateinit var textNbrLord:TextView
     lateinit var textPerl:TextView
 
@@ -25,12 +25,12 @@ class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
         textviewName.text = dataGame.nom
         textNbrLord.text=("Lord:"+dataGame.listLord.size.toString())
         textPerl.text=("Perl:"+dataGame.perl.toString())
-        textNbrAllie.text=("Allie:"+dataGame.listAllie.size.toString())
+        textNbrAlly.text=("Ally:"+dataGame.listAlly.size.toString())
     }
 
     override fun createView(viewInflated: View) {
         textviewName=viewInflated.findViewById(R.id.namePlayer)
-        textNbrAllie=viewInflated.findViewById(R.id.textNbrAlliePlayer)
+        textNbrAlly=viewInflated.findViewById(R.id.textNbrAlliePlayer)
         textPerl=viewInflated.findViewById(R.id.textPerlPlayer)
         textNbrLord=viewInflated.findViewById(R.id.textNbrLordPlayer)
 

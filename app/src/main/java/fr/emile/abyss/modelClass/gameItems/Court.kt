@@ -32,7 +32,7 @@ class Court {
     {
 
         //we take only the allie that the player selected
-        val listCardToBuy=player.listAllie.filter{allie->allie.selectedToBuyLord}
+        val listCardToBuy=player.listAlly.filter{ allie->allie.selectedToBuyLord}
         //we calculate the sum that the chosen allies give
         val sumValueAllie:Int=listCardToBuy.fold(0) { sum, allie->sum+allie.number}
         //We retrieve all the different type that are used

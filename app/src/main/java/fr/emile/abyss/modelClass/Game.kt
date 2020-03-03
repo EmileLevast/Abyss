@@ -71,10 +71,10 @@ class Game {
     fun sendPlayerAllieToDiscard(player: Player)
     {
         //select card that the player chose to buy the lord and send it to the discard list
-        exploration!!.sendToDiscardList(player.listAllie.filter { allie -> allie.selectedToBuyLord })
+        exploration!!.sendToDiscardList(player.listAlly.filter { allie -> allie.selectedToBuyLord })
 
         //we take of the card to discard
-        player.listAllie.removeAll { allie->allie.selectedToBuyLord }
+        player.listAlly.removeAll { allie->allie.selectedToBuyLord }
     }
 
     /**

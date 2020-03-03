@@ -9,7 +9,7 @@ const val NUMBER_OF_ALLIE_TYPE=5
 const val NUMBER_MAX_ALLIE=5
 
 class Deck {
-    var stackAllie:MutableList<Allie>
+    var stackAlly:MutableList<Ally>
 
     init {
         //we get an instance of all the type of fish
@@ -20,13 +20,13 @@ class Deck {
 
         //we populate the deck
         //we populate like this : "Jelly Fish 111112222333445 ...
-        stackAllie= MutableList(numberTotalOfAllie){ i->Allie(((6.0- invPartialSum(
+        stackAlly= MutableList(numberTotalOfAllie){ i->Ally(((6.0- invPartialSum(
             i % numberAllieForType + 1
         )).toInt()),
             listFishType[i/numberAllieForType])}
 
         //we shuffle the deck
-        stackAllie.shuffle()
+        stackAlly.shuffle()
     }
 
     companion object {
@@ -40,7 +40,7 @@ class Deck {
     }
 
     override fun toString(): String {
-        return "Deck :\n" + stackAllie.joinToString(separator = "\n") { it.toString() }
+        return "Deck :\n" + stackAlly.joinToString(separator = "\n") { it.toString() }
     }
 
 

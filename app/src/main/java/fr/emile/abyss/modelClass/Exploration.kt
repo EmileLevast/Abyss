@@ -3,7 +3,7 @@ package fr.emile.abyss.modelClass
 import fr.emile.abyss.Container
 import fr.emile.abyss.ContainerPlayerExplo
 import fr.emile.abyss.controller
-import fr.emile.abyss.modelClass.gameItems.Allie
+import fr.emile.abyss.modelClass.gameItems.Ally
 import fr.emile.abyss.modelClass.gameItems.Deck
 
 const val NUMBER_MAX_CARD_EXPLO_SHOW=8
@@ -13,12 +13,12 @@ class Exploration (listPlayer:Container<Player>){
     lateinit var listPlayer: ContainerPlayerExplo
 
     //created one time, same for all explorations because we keep the same object Exploration during all the game
-    var deckAllie=Deck().stackAllie
+    var deckAllie=Deck().stackAlly
 
     //register all the visible cards
-    var listProposedCard=mutableListOf<Allie>()
+    var listProposedCard=mutableListOf<Ally>()
 
-    var listDiscard=mutableListOf<Allie>()
+    var listDiscard=mutableListOf<Ally>()
 
     var currentCost=1
 
@@ -98,7 +98,7 @@ class Exploration (listPlayer:Container<Player>){
     /**
      * This function call the end of the exploration
      */
-    fun playerWhoLaunchedExlpoTakeAllie(cardToBuy:Allie)
+    fun playerWhoLaunchedExlpoTakeAllie(cardToBuy:Ally)
     {
         //if the player take the last card
         if(listProposedCard.size== NUMBER_MAX_CARD_EXPLO_SHOW)
@@ -109,15 +109,15 @@ class Exploration (listPlayer:Container<Player>){
         controller!!.explorationFinish()
     }
 
-    fun sendToConseil():MutableList<Allie>
+    fun sendToConseil():MutableList<Ally>
     {
         return listProposedCard
     }
 
-    /**add [listAllieToDiscard] to the [listDiscard], doesn't create new references**/
-    fun sendToDiscardList(listAllieToDiscard:List<Allie>)
+    /**add [listAllyToDiscard] to the [listDiscard], doesn't create new references**/
+    fun sendToDiscardList(listAllyToDiscard:List<Ally>)
     {
-        listDiscard.addAll(listAllieToDiscard)
+        listDiscard.addAll(listAllyToDiscard)
     }
 
     enum class Choice{
