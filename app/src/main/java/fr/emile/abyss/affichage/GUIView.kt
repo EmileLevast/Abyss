@@ -1,6 +1,7 @@
 package fr.emile.abyss.affichage
 
 import android.widget.Button
+import android.widget.RelativeLayout
 import fr.emile.abyss.MainActivity
 import fr.emile.abyss.R
 import fr.emile.abyss.affichage.gestionFragment.fragmentList.*
@@ -11,6 +12,9 @@ import fr.emile.abyss.modelClass.Player
 import fr.emile.abyss.modelClass.gameItems.Council
 import fr.emile.abyss.modelClass.gameItems.Court
 
+var WIDTH_SCREEN:Int? = null
+var HEIGHT_SCREEN:Int? = null
+
 class GUIView( activity: MainActivity) {
 
     var stuffPlayerFrag:StuffPlayerFrag?=null
@@ -18,6 +22,8 @@ class GUIView( activity: MainActivity) {
 
 
     init {
+
+
 
         //button
         //Exploration
@@ -37,6 +43,9 @@ class GUIView( activity: MainActivity) {
         courtButton.setOnClickListener {
             controller!!.LaunchCourt()
         }
+
+        //we use a view to call on post and get screen size
+        courtButton.post { saveSizeScreen(activity) }
     }
 
 
@@ -105,5 +114,12 @@ class GUIView( activity: MainActivity) {
     fun clearScreen()
     {
         MainActivity.generatorFragment!!.popAll()
+    }
+
+    /**called once at the launching to register the size of the screen in [WIDTH_SCREEN] et [HEIGHT_SCREEN] **/
+    fun saveSizeScreen(activity: MainActivity)
+    {
+        WIDTH_SCREEN=activity.findViewById<RelativeLayout>(R.id.ecran).width
+        HEIGHT_SCREEN=activity.findViewById<RelativeLayout>(R.id.ecran).height
     }
 }
