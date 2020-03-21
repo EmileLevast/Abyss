@@ -10,10 +10,14 @@ import fr.emile.abyss.affichage.HEIGHT_SCREEN
 import fr.emile.abyss.affichage.WIDTH_SCREEN
 import fr.emile.abyss.affichage.gestionFragment.CustomFragment
 import fr.emile.abyss.affichage.gestionFragment.adapter.ImageAdapter
+import fr.emile.abyss.affichage.gestionFragment.recyclerView.HorizontalRecyclerView
 import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.Player
 import fr.emile.abyss.modelClass.gameItems.Deck
 
+const val RATIO_X_ALLY=0.4f
+const val RATIO_Y_ALLY=0.1f
+const val RATIO_X_RECYCLER_VIEW=0.5f
 
 class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
 
@@ -24,7 +28,7 @@ class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
     lateinit var textNbrAlly:TextView
     private lateinit var textNbrLord:TextView
     lateinit var textPerl:TextView
-    lateinit var recyclerViewAlly:RecyclerView
+    lateinit var recyclerViewAlly:HorizontalRecyclerView
     private lateinit var adapterAlly:ImageAdapter
 
 
@@ -53,9 +57,9 @@ class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
         //TODO change [Deck().stackAlly] by dataGame.listAlly
         adapterAlly= ImageAdapter(Deck().stackAlly,activity!!,0.4f,0.1f)
 
-
+        recyclerViewAlly.ratioScreen= RATIO_X_RECYCLER_VIEW
         recyclerViewAlly.adapter=adapterAlly
-        recyclerViewAlly.layoutParams=LinearLayout.LayoutParams(WIDTH_SCREEN!!/2,recyclerViewAlly.layoutParams.height)
+        //recyclerViewAlly.layoutParams=LinearLayout.LayoutParams(WIDTH_SCREEN!!/2,recyclerViewAlly.layoutParams.height)
 
         //textNbrAlly.text=("Ally:"+dataGame.listAlly.size.toString())
     }

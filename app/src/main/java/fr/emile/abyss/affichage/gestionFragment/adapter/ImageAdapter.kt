@@ -25,7 +25,7 @@ class ImageAdapter(
 ) : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
 
     private val reqHeight: Int= (HEIGHT_SCREEN!!*ratioHeightScreen).toInt()
-    private val reqWidth: Int= (WIDTH_SCREEN!!*ratioWidthScreen).toInt()
+    val reqWidth: Int= (WIDTH_SCREEN!!*ratioWidthScreen).toInt()
 
     override fun getItemCount(): Int {
         return listImg.size
