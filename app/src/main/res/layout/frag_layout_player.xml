@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!--
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="wrap_content"
@@ -42,9 +42,6 @@
             android:id="@+id/recyclerViewAlliePlayer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/colorPrimary"
-
     />
 
 
@@ -52,69 +49,4 @@
 
 
 </LinearLayout>
--->
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
 
-
-    <LinearLayout
-            android:id="@+id/linearlayout"
-            android:layout_alignParentTop="true"
-
-                  android:orientation="vertical"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content">
-
-
-
-
-
-        <TextView
-                style="@style/buttonFragment"
-                android:id="@+id/textNbrAlliePlayer"
-                android:text="Ally"
-        />
-
-
-        <TextView
-                style="@style/buttonFragment"
-                android:id="@+id/namePlayer"
-                android:text="Nom"
-        />
-
-        <TextView
-                style="@style/buttonFragment"
-                android:id="@+id/textPerlPlayer"
-                android:text="Perles"
-        />
-
-        <TextView
-                style="@style/buttonFragment"
-                android:id="@+id/textNbrLordPlayer"
-                android:text="Seigneur acquis"
-        />
-
-    </LinearLayout>
-
-        <fr.emile.abyss.affichage.gestionFragment.recyclerView.HorizontalRecyclerView
-                android:id="@+id/recyclerViewAlliePlayer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_below="@id/linearlayout"
-                android:layout_centerHorizontal="true"
-                android:background="@color/colorPrimary"
-
-        />
-
-
-
-
-
-
-
-</RelativeLayout>

@@ -57,7 +57,6 @@ class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
         //TODO change [Deck().stackAlly] by dataGame.listAlly
         adapterAlly= ImageAdapter(Deck().stackAlly,activity!!,0.4f,0.1f)
 
-        recyclerViewAlly.ratioScreen= RATIO_X_RECYCLER_VIEW
         recyclerViewAlly.adapter=adapterAlly
         //recyclerViewAlly.layoutParams=LinearLayout.LayoutParams(WIDTH_SCREEN!!/2,recyclerViewAlly.layoutParams.height)
 

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Abyss</string>
+    <integer name="width_stroke_recycler_view">4</integer>
 </resources>

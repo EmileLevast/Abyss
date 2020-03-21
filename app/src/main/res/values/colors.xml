@@ -9,4 +9,5 @@
     <color name="backgroundFragment">#99C0C0FF</color>
     <color name="backgroundButtonFragment">#C0C0FF</color>
     <color name="writeButtonFragment">#4060D0</color>
+    <color name="transparent">#00000000</color>
 </resources>
