@@ -1,59 +1,39 @@
 package fr.emile.abyss.affichage.gestionFragment.adapter
 
 import android.content.Context
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
-import fr.emile.abyss.MainActivity
-import fr.emile.abyss.R
 import fr.emile.abyss.affichage.HEIGHT_SCREEN
 import fr.emile.abyss.affichage.IShowImage
 import fr.emile.abyss.affichage.WIDTH_SCREEN
-import fr.emile.abyss.controller
-import fr.emile.abyss.decodeSampledBitmapFromResource
 
 
-class ImageAdapter(
-    private val listImg: List<IShowImage>,
+class ImageAdapter<T:IShowImage>(
+    val listImg: List<T>,
     private val activity: Context,
-    ratioHeightScreen: Float,
-    ratioWidthScreen: Float
-) : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
+    ratioHeightScreenItem: Float,
+    ratioWidthScreenItem: Float,
+    private val factoryViewHolder:(parent: ViewGroup, activity: Context,
+                                   reqHeight: Int, reqWidth: Int,
+                                   onclick:((view:View) -> Unit))->ViewHolder<T>,
+    private val onclickItem:((view: View) -> Unit))
 
-    private val reqHeight: Int= (HEIGHT_SCREEN!!*ratioHeightScreen).toInt()
-    val reqWidth: Int= (WIDTH_SCREEN!!*ratioWidthScreen).toInt()
+ : RecyclerView.Adapter<ViewHolder<T>>() {
+
+    private val reqHeightItem: Int= (HEIGHT_SCREEN!!*ratioHeightScreenItem).toInt()
+    private val reqWidthItem: Int= (WIDTH_SCREEN!!*ratioWidthScreenItem).toInt()
 
     override fun getItemCount(): Int {
         return listImg.size
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_image_only, parent, false)
-        return ViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<T> {
+        return factoryViewHolder(parent,activity,reqHeightItem,reqWidthItem,onclickItem)//ViewHolder<T>(this, view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.setImage(listImg[position].imgId)
+    override fun onBindViewHolder(holder: ViewHolder<T>, position: Int) {
+        holder.initImageView(listImg[position])
+}
 
-        holder.img.setOnClickListener { Log.w("msg","click recyclerView") }
-    }
-
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-
-        val img= view.findViewById<ImageView>(R.id.image_recycler_view)!!
-        init {
-            val param= LinearLayout.LayoutParams(reqWidth,reqHeight)
-            img.layoutParams=param
-        }
-
-        fun setImage(resId:Int)
-        {
-            img.setImageBitmap(decodeSampledBitmapFromResource(resId,reqHeight,reqWidth, activity))
-        }
-    }
 }

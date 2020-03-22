@@ -1,5 +1,6 @@
 package fr.emile.abyss.affichage.gestionFragment.fragmentList
 
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -7,9 +8,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fr.emile.abyss.R
 import fr.emile.abyss.affichage.HEIGHT_SCREEN
+import fr.emile.abyss.affichage.IShowImage
 import fr.emile.abyss.affichage.WIDTH_SCREEN
 import fr.emile.abyss.affichage.gestionFragment.CustomFragment
 import fr.emile.abyss.affichage.gestionFragment.adapter.ImageAdapter
+import fr.emile.abyss.affichage.gestionFragment.adapter.ViewHolder
+import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderImageOnly
 import fr.emile.abyss.affichage.gestionFragment.recyclerView.HorizontalRecyclerView
 import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.Player
@@ -29,7 +33,7 @@ class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
     private lateinit var textNbrLord:TextView
     lateinit var textPerl:TextView
     lateinit var recyclerViewAlly:HorizontalRecyclerView
-    private lateinit var adapterAlly:ImageAdapter
+    private lateinit var adapterAlly:ImageAdapter<IShowImage>
 
 
 
@@ -53,9 +57,9 @@ class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
         //textNbrLord.text=("Lord:"+dataGame.listLord.size.toString())
         textPerl.text=("Perl:"+dataGame.perl.toString())
 
-        //adapterAlly= ImageAdapter(dataGame.listAlly,activity!!,0.4f,0.1f)
         //TODO change [Deck().stackAlly] by dataGame.listAlly
-        adapterAlly= ImageAdapter(Deck().stackAlly,activity!!,0.4f,0.1f)
+        adapterAlly= ImageAdapter(Deck().stackAlly,activity!!,0.4f,0.1f,
+            ::createViewHolderImageOnly){ Log.w("msg","click item")}
 
         recyclerViewAlly.adapter=adapterAlly
         //recyclerViewAlly.layoutParams=LinearLayout.LayoutParams(WIDTH_SCREEN!!/2,recyclerViewAlly.layoutParams.height)
