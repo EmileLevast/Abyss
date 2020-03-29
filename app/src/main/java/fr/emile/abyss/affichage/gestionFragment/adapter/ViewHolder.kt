@@ -6,15 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.emile.abyss.R
 import fr.emile.abyss.affichage.IShowImage
 import fr.emile.abyss.decodeSampledBitmapFromResource
+import fr.emile.abyss.modelClass.gameItems.Ally
 
 abstract class ViewHolder<K:IShowImage> protected constructor(layoutInflated:View, private val activity: Context,
                                                               protected val reqHeight: Int,
                                                               protected val reqWidth: Int,
-                                                              private val onclick:((view:View) -> Unit)
+                                                              private val listener:ImageAdapter<K>
 
 ) : RecyclerView.ViewHolder(layoutInflated) {
 
@@ -42,7 +44,7 @@ abstract class ViewHolder<K:IShowImage> protected constructor(layoutInflated:Vie
 
         initPotentialView(itemToShow)
 
-        img.setOnClickListener { onclick }
+        itemView.setOnClickListener (listener)
 
     }
 
@@ -54,14 +56,33 @@ abstract class ViewHolder<K:IShowImage> protected constructor(layoutInflated:Vie
 
 fun createViewHolderImageOnly(parent: ViewGroup, activity: Context,
                               reqHeight: Int, reqWidth: Int,
-                              onclick:((view:View) -> Unit)): ViewHolder<IShowImage> {
+                              listener:ImageAdapter<IShowImage>): ViewHolder<IShowImage> {
 
 
     return object : ViewHolder<IShowImage>(
         LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_image_only, parent, false)
-        , activity, reqHeight, reqWidth, onclick){
+        , activity, reqHeight, reqWidth, listener){
         override fun initPotentialView(itemToShow: IShowImage) {
             //no other view for now
+        }
+    }
+}
+
+fun createViewHolderAlly(parent: ViewGroup, activity: Context,
+                         reqHeight: Int, reqWidth: Int,
+                         listener: ImageAdapter<Ally>
+): ViewHolder<Ally> {
+
+
+    return object : ViewHolder<Ally>(
+        LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_ally, parent, false)
+        , activity, reqHeight, reqWidth, listener){
+
+        //view added in the recycler view
+        private val textViewValueAlly: TextView =itemView.findViewById(R.id.textValueAllyRecyclerView)
+
+        override fun initPotentialView(itemToShow: Ally) {
+            textViewValueAlly.text = itemToShow.number.toString()
         }
     }
 }

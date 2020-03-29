@@ -8,16 +8,6 @@
               android:layout_weight="1">
 
 
-
-
-
-    <TextView
-            style="@style/buttonFragment"
-            android:id="@+id/textNbrAlliePlayer"
-            android:text="Ally"
-    />
-
-
     <TextView
             style="@style/buttonFragment"
             android:id="@+id/namePlayer"
@@ -29,13 +19,6 @@
             android:id="@+id/textPerlPlayer"
             android:text="Perles"
     />
-
-    <TextView
-            style="@style/buttonFragment"
-            android:id="@+id/textNbrLordPlayer"
-            android:text="Seigneur acquis"
-    />
-
 
 
     <fr.emile.abyss.affichage.gestionFragment.recyclerView.HorizontalRecyclerView

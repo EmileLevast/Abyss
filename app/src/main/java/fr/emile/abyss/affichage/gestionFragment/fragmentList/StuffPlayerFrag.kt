@@ -11,12 +11,11 @@ import fr.emile.abyss.affichage.HEIGHT_SCREEN
 import fr.emile.abyss.affichage.IShowImage
 import fr.emile.abyss.affichage.WIDTH_SCREEN
 import fr.emile.abyss.affichage.gestionFragment.CustomFragment
-import fr.emile.abyss.affichage.gestionFragment.adapter.ImageAdapter
-import fr.emile.abyss.affichage.gestionFragment.adapter.ViewHolder
-import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderImageOnly
+import fr.emile.abyss.affichage.gestionFragment.adapter.*
 import fr.emile.abyss.affichage.gestionFragment.recyclerView.HorizontalRecyclerView
 import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.Player
+import fr.emile.abyss.modelClass.gameItems.Ally
 import fr.emile.abyss.modelClass.gameItems.Deck
 
 const val RATIO_X_ALLY=0.4f
@@ -29,19 +28,15 @@ class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
     override val idLayoutToInflate: Int= R.layout.frag_layout_player
 
     lateinit var textviewName:TextView
-    lateinit var textNbrAlly:TextView
-    private lateinit var textNbrLord:TextView
     lateinit var textPerl:TextView
     lateinit var recyclerViewAlly:HorizontalRecyclerView
-    private lateinit var adapterAlly:ImageAdapter<IShowImage>
+    private lateinit var adapterAlly:ImageAdapter<Ally>
 
 
 
     override fun createView(viewInflated: View) {
         textviewName=viewInflated.findViewById(R.id.namePlayer)
-        //textNbrAlly=viewInflated.findViewById(R.id.textNbrAlliePlayer)
         textPerl=viewInflated.findViewById(R.id.textPerlPlayer)
-        //textNbrLord=viewInflated.findViewById(R.id.textNbrLordPlayer)
         recyclerViewAlly=viewInflated.findViewById(R.id.recyclerViewAlliePlayer)
 
         recyclerViewAlly.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
@@ -54,17 +49,17 @@ class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
      */
     override fun updateView(dataGame: Player) {
         textviewName.text = dataGame.nom
-        //textNbrLord.text=("Lord:"+dataGame.listLord.size.toString())
         textPerl.text=("Perl:"+dataGame.perl.toString())
 
         //TODO change [Deck().stackAlly] by dataGame.listAlly
-        adapterAlly= ImageAdapter(Deck().stackAlly,activity!!,0.4f,0.1f,
-            ::createViewHolderImageOnly){ Log.w("msg","click item")}
+        adapterAlly= object : ImageAdapter<Ally>(Deck().stackAlly,activity!!,0.4f,0.1f,recyclerViewAlly, ::createViewHolderAlly){
+            override fun onClickItem(position: Int) {
+                Log.w("msg", "pos:$position")
+            }
+        }
 
         recyclerViewAlly.adapter=adapterAlly
-        //recyclerViewAlly.layoutParams=LinearLayout.LayoutParams(WIDTH_SCREEN!!/2,recyclerViewAlly.layoutParams.height)
 
-        //textNbrAlly.text=("Ally:"+dataGame.listAlly.size.toString())
     }
 
 }
