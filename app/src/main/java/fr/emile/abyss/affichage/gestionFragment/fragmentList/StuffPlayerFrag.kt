@@ -17,6 +17,7 @@ import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.Player
 import fr.emile.abyss.modelClass.gameItems.Ally
 import fr.emile.abyss.modelClass.gameItems.Deck
+import fr.emile.abyss.modelClass.gameItems.Lord
 
 const val RATIO_X_ALLY=0.4f
 const val RATIO_Y_ALLY=0.1f
@@ -30,7 +31,9 @@ class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
     lateinit var textviewName:TextView
     lateinit var textPerl:TextView
     lateinit var recyclerViewAlly:HorizontalRecyclerView
+    lateinit var recyclerViewLord:HorizontalRecyclerView
     private lateinit var adapterAlly:ImageAdapter<Ally>
+    private lateinit var adapterLord:ImageAdapter<Lord>
 
 
 
@@ -38,8 +41,10 @@ class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
         textviewName=viewInflated.findViewById(R.id.namePlayer)
         textPerl=viewInflated.findViewById(R.id.textPerlPlayer)
         recyclerViewAlly=viewInflated.findViewById(R.id.recyclerViewAlliePlayer)
+        recyclerViewLord=viewInflated.findViewById(R.id.recyclerViewLordPlayer)
 
         recyclerViewAlly.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
+        recyclerViewLord.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
 
         updateView(player)
     }
@@ -51,14 +56,23 @@ class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
         textviewName.text = dataGame.nom
         textPerl.text=("Perl:"+dataGame.perl.toString())
 
-        //TODO change [Deck().stackAlly] by dataGame.listAlly
-        adapterAlly= object : ImageAdapter<Ally>(Deck().stackAlly,activity!!,0.4f,0.1f,recyclerViewAlly, ::createViewHolderAlly){
+        adapterAlly= object : ImageAdapter<Ally>(dataGame.listAlly,activity!!,0.4f,0.1f,recyclerViewAlly, ::createViewHolderAlly){
             override fun onClickItem(position: Int) {
                 Log.w("msg", "pos:$position")
             }
         }
 
+        adapterLord= object : ImageAdapter<Lord>(dataGame.listLord,activity!!,0.4f,0.1f,recyclerViewLord,
+            ::createViewHolderImageOnly){
+            override fun onClickItem(position: Int) {
+                Log.w("msg", "pos:$position")
+            }
+        }
+
+
+
         recyclerViewAlly.adapter=adapterAlly
+        recyclerViewLord.adapter=adapterLord
 
     }
 

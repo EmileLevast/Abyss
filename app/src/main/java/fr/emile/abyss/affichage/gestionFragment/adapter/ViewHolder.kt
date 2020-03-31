@@ -54,15 +54,15 @@ abstract class ViewHolder<K:IShowImage> protected constructor(layoutInflated:Vie
 }
 
 
-fun createViewHolderImageOnly(parent: ViewGroup, activity: Context,
+fun <T:IShowImage> createViewHolderImageOnly(parent: ViewGroup, activity: Context,
                               reqHeight: Int, reqWidth: Int,
-                              listener:ImageAdapter<IShowImage>): ViewHolder<IShowImage> {
+                              listener:ImageAdapter<T>): ViewHolder<T> {
 
 
-    return object : ViewHolder<IShowImage>(
+    return object : ViewHolder<T>(
         LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_image_only, parent, false)
         , activity, reqHeight, reqWidth, listener){
-        override fun initPotentialView(itemToShow: IShowImage) {
+        override fun initPotentialView(itemToShow: T) {
             //no other view for now
         }
     }

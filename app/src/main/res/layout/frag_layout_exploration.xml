@@ -4,20 +4,28 @@
               android:layout_height="match_parent"
               android:layout_weight="1">
 
+    <fr.emile.abyss.affichage.gestionFragment.recyclerView.HorizontalRecyclerView
+            android:id="@+id/recyclerViewAllieExploration"
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+    />
+
+
+    <!--
     <TextView
             style="@style/viewFragmentRelativeLayout"
             android:id="@+id/TextcardToBuy"
-            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:text="Card To Buy"
     />
-
+    -->
 
     <Button
             style="@style/viewFragmentRelativeLayout"
             android:id="@+id/buttonBuy"
-            android:layout_below="@+id/TextcardToBuy"
-            android:layout_alignStart="@+id/TextcardToBuy"
+            android:layout_below="@+id/recyclerViewAllieExploration"
+            android:layout_alignParentLeft="true"
             android:text="Buy"
     />
 

@@ -6,7 +6,7 @@ import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.gameItems.Ally
 import fr.emile.abyss.modelClass.gameItems.Deck
 
-const val NUMBER_MAX_CARD_EXPLO_SHOW=8
+const val NUMBER_MAX_CARD_EXPLO_SHOW=5
 
 class Exploration (listPlayer:Container<Player>){
 
