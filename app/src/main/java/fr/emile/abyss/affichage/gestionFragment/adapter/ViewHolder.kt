@@ -34,13 +34,15 @@ abstract class ViewHolder<K:IShowImage> protected constructor(layoutInflated:Vie
      */
     fun initImageView(itemToShow:K)
     {
-        img.setImageBitmap(decodeSampledBitmapFromResource(
+        /*img.setImageBitmap(decodeSampledBitmapFromResource(
                 itemToShow.imgId,
                 reqHeight,
                 reqWidth,
                 activity
             )
-        )
+        )*/
+
+        img.setImageResource(itemToShow.imgId)
 
         initPotentialView(itemToShow)
 

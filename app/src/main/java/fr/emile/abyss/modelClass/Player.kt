@@ -55,6 +55,9 @@ class Player (var nom:String){
         return listLord.size>= NBR_MAX_LORD
     }
 
+    //TODO il n'y a pas que des pouvoirs instantanés pour les seigneurs militaire
+    //TODO pense au geolier, reflechit bien, en gros cette fonction ne traite qu'une partie du jeu donc autant tout
+    //rereflechir le concept de se faire attaquer par un seigneur militaire
     fun playerUnderAttackMilitaryLord(powerAttack: InstantEffectPower,game: Game)
     {
         //on itere a travers tous les pouvoirs concernant les attaques de seigneurs militaires

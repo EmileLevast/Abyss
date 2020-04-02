@@ -45,6 +45,14 @@ class ExplorationFrag(private val exploration: Exploration):CustomFragment<Explo
 
         recyclerViewAlly.layoutManager= LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL,false)
 
+        adapterAlly= object : ImageAdapter<Ally>(exploration.listProposedCard,activity!!,0.4f,0.1f,recyclerViewAlly, ::createViewHolderAlly){
+            override fun onClickItem(position: Int) {
+                Log.w("msg", "pos:$position")
+            }
+        }
+
+        recyclerViewAlly.adapter=adapterAlly
+
         //we make the first update
         updateView(exploration)
     }
@@ -54,13 +62,7 @@ class ExplorationFrag(private val exploration: Exploration):CustomFragment<Explo
         textCostExplo.text=dataGame.currentCost.toString()
         textCardRefused.text=dataGame.listProposedCard.size.toString()
 
-        adapterAlly= object : ImageAdapter<Ally>(dataGame.listProposedCard,activity!!,0.4f,0.1f,recyclerViewAlly, ::createViewHolderAlly){
-            override fun onClickItem(position: Int) {
-                Log.w("msg", "pos:$position")
-            }
-        }
-
-        recyclerViewAlly.adapter=adapterAlly
+        adapterAlly.notifyDataSetChanged()
 
     }
 

@@ -50,9 +50,11 @@ class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
     }
 
     /**
-     * must give a player to this function, to update the view with the caracs of this player
+     * this function is call to show an other player but on the same frag
+     * so a new adapter must be created each time for this new player
      */
     override fun updateView(dataGame: Player) {
+
         textviewName.text = dataGame.nom
         textPerl.text=("Perl:"+dataGame.perl.toString())
 
@@ -68,8 +70,6 @@ class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
                 Log.w("msg", "pos:$position")
             }
         }
-
-
 
         recyclerViewAlly.adapter=adapterAlly
         recyclerViewLord.adapter=adapterLord

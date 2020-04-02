@@ -5,8 +5,3 @@ interface IShowImage {
 
 }
 
-fun List<IShowImage>.getOnlyIdImage():List<Int>{
-    val list= mutableListOf<Int>()
-    this.forEach { list.add(it.imgId) }
-    return list
-}

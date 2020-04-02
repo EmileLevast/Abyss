@@ -11,6 +11,8 @@ import fr.emile.abyss.modelClass.Exploration
 import fr.emile.abyss.modelClass.Player
 import fr.emile.abyss.modelClass.gameItems.Council
 import fr.emile.abyss.modelClass.gameItems.Court
+import android.view.View
+
 
 var WIDTH_SCREEN:Int? = null
 var HEIGHT_SCREEN:Int? = null
@@ -46,6 +48,7 @@ class GUIView( activity: MainActivity) {
 
         //we use a view to call on post and get screen size
         courtButton.post { saveSizeScreen(activity) }
+
     }
 
 
@@ -122,4 +125,6 @@ class GUIView( activity: MainActivity) {
         WIDTH_SCREEN=activity.findViewById<RelativeLayout>(R.id.ecran).width
         HEIGHT_SCREEN=activity.findViewById<RelativeLayout>(R.id.ecran).height
     }
+
+
 }

@@ -64,7 +64,7 @@ class Exploration (listPlayer:Container<Player>){
             //si le dernier joueur prend la carte ou qu'il est a la fin
             if(choice==Choice.BUY||listProposedCard.size== NUMBER_MAX_CARD_EXPLO_SHOW)
             {
-                playerWhoLaunchedExlpoTakeAllie(listProposedCard.removeAt(listProposedCard.size-1))
+                playerWhoLaunchedExlpoTakeAllie()
                 //this is the end, on arrete
                 return
             }else
@@ -98,12 +98,14 @@ class Exploration (listPlayer:Container<Player>){
     /**
      * This function call the end of the exploration
      */
-    fun playerWhoLaunchedExlpoTakeAllie(cardToBuy:Ally)
+    fun playerWhoLaunchedExlpoTakeAllie()
     {
         //if the player take the last card
         if(listProposedCard.size== NUMBER_MAX_CARD_EXPLO_SHOW)
             //so he wins 1 perl
             listPlayer.getCurrent().perl++
+
+        val cardToBuy:Ally=listProposedCard.removeAt(listProposedCard.size-1)
 
         listPlayer.getCurrent().addAllie(cardToBuy)
         controller!!.explorationFinish()
