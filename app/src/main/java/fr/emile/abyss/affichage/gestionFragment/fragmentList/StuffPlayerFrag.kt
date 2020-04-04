@@ -60,7 +60,8 @@ class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
 
         adapterAlly= object : ImageAdapter<Ally>(dataGame.listAlly,activity!!,0.4f,0.1f,recyclerViewAlly, ::createViewHolderAlly){
             override fun onClickItem(position: Int) {
-                Log.w("msg", "pos:$position")
+                listImg[position].selectedToBuyLord=!listImg[position].selectedToBuyLord
+                notifyDataSetChanged()
             }
         }
 

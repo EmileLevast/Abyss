@@ -5,7 +5,7 @@ import android.widget.Button
 import fr.emile.abyss.R
 import fr.emile.abyss.affichage.gestionFragment.CustomFragment
 import fr.emile.abyss.controller
-import fr.emile.abyss.modelClass.gameItems.Council
+import fr.emile.abyss.modelClass.Council
 import fr.emile.abyss.modelClass.gameItems.FishType
 
 class CouncilFrag(val council: Council) :CustomFragment<Council>(){

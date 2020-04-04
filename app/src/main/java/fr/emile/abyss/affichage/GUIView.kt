@@ -9,9 +9,8 @@ import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.EndGame
 import fr.emile.abyss.modelClass.Exploration
 import fr.emile.abyss.modelClass.Player
-import fr.emile.abyss.modelClass.gameItems.Council
-import fr.emile.abyss.modelClass.gameItems.Court
-import android.view.View
+import fr.emile.abyss.modelClass.Council
+import fr.emile.abyss.modelClass.Court
 
 
 var WIDTH_SCREEN:Int? = null

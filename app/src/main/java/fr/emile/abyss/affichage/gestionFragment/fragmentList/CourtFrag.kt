@@ -2,8 +2,6 @@ package fr.emile.abyss.affichage.gestionFragment.fragmentList
 
 import android.util.Log
 import android.view.View
-import android.widget.ListView
-import android.widget.SimpleAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.emile.abyss.R
 import fr.emile.abyss.affichage.gestionFragment.CustomFragment
@@ -11,13 +9,12 @@ import fr.emile.abyss.affichage.gestionFragment.adapter.ImageAdapter
 import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderImageOnly
 import fr.emile.abyss.affichage.gestionFragment.recyclerView.HorizontalRecyclerView
 import fr.emile.abyss.controller
-import fr.emile.abyss.modelClass.gameItems.Ally
 
-import fr.emile.abyss.modelClass.gameItems.Court
+import fr.emile.abyss.modelClass.Court
 import fr.emile.abyss.modelClass.gameItems.Lord
 
 //TODO the propriety court is only used to initiate and i don't release it after that
-class CourtFrag(private val court:Court?) :CustomFragment<Court>(){
+class CourtFrag(private val court: Court?) :CustomFragment<Court>(){
 
     lateinit var recyclerViewLord: HorizontalRecyclerView
     private lateinit var adapterLord: ImageAdapter<Lord>
@@ -33,7 +30,7 @@ class CourtFrag(private val court:Court?) :CustomFragment<Court>(){
         adapterLord= object : ImageAdapter<Lord>(court!!.listProposedLord,activity!!,0.5f,0.15f,recyclerViewLord,
             ::createViewHolderImageOnly){
             override fun onClickItem(position: Int) {
-                Log.w("msg", "pos:$position")
+                controller!!.playerWantToBuyLord(listImg[position])
             }
         }
 

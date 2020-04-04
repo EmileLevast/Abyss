@@ -1,7 +1,8 @@
-package fr.emile.abyss.modelClass.gameItems
+package fr.emile.abyss.modelClass
 
 import fr.emile.abyss.controller
-import fr.emile.abyss.modelClass.Player
+import fr.emile.abyss.modelClass.gameItems.BuyLordPrice
+import fr.emile.abyss.modelClass.gameItems.Lord
 
 //nombre des seigneurs disponible a la court
 const val NUMBER_VISIBLE_LORD=7
@@ -28,7 +29,7 @@ class Court {
         for(i in 1..NUMBER_VISIBLE_LORD)listProposedLord.add(deckLord.removeAt(0))
     }
 
-    fun playerWantToBuy(player:Player,lordToBuy:Lord)
+    fun playerWantToBuy(player:Player,lordToBuy: Lord)
     {
 
         //we take only the allie that the player selected
@@ -40,7 +41,8 @@ class Court {
 
         //we calculate the cost of the lord (depending on power or not
         var purchasePrice=lordToBuy.price
-        player.listRulesPower.getPower(object : BuyLordPrice{}).forEach { purchasePrice=it.computePrice(purchasePrice) }
+        player.listRulesPower.applyToCorrespondingEvent(object : BuyLordPrice {},player)
+        { purchasePrice=it.computePrice(purchasePrice) }
 
 
         //si il ya le prix, le numbre de type d'allie et l'allie obligatoire, alors on peut acheter

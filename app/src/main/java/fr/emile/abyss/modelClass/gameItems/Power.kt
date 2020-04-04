@@ -52,8 +52,8 @@ interface PassivePermanentPower:Power
 }
 
 
-//use this interface to implement power of military Lord
-interface PassivePowerInfluenceOthers:PassivePermanentPower
+/**use this interface to implement passive power of military Lord**/
+interface PassivePowerInfluenceOthers:PassivePermanentPower,InstantEffectPower
 {
     override fun init(player: Player, game: Game) {
         //because all other players have to see it in their rules
@@ -74,6 +74,9 @@ interface PassivePowerInfluenceOthers:PassivePermanentPower
             }
         }
     }
+
+    //override this to do describe the power of the military Lord
+    override fun activate(player: Player, game: Game) {}
 }
 
 /**All interface that represents [PassivePermanentPower]*/
@@ -89,7 +92,7 @@ interface BuyLordPrice:PassivePermanentPower
 }
 
 
-//when someone is under attack from military Lord
+/**when someone is under attack from military Lord**/
 interface MilitaryLordAttack:PassivePermanentPower
 {
     fun isAttackAvailable()=true
@@ -107,20 +110,13 @@ interface BoughtLordFederateAllie:PassivePermanentPower
     }
 }
 
-interface BuyLordColorAllie
+interface BuyLordColorAllie:PassivePermanentPower
 {
     fun isAuthorizedToBuy(listDifferentTypeUseForBuy: List<FishType>,lordToBuy:Lord):Boolean
     {
         return listDifferentTypeUseForBuy.size>=lordToBuy.numberAllieType &&
                 listDifferentTypeUseForBuy.contains(lordToBuy.obligedType)
     }
-}
-
-/**for example :The armies chef. Implement [InstantEffectPower] because can be activated as Polymorphism with
- * [InstantPower] and [ActivePermanentPower]**/
-interface limitAllieHand : InstantEffectPower,PassivePermanentPower
-{
-
 }
 
 

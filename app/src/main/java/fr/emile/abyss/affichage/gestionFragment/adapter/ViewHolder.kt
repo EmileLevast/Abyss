@@ -1,9 +1,11 @@
 package fr.emile.abyss.affichage.gestionFragment.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -44,9 +46,10 @@ abstract class ViewHolder<K:IShowImage> protected constructor(layoutInflated:Vie
 
         img.setImageResource(itemToShow.imgId)
 
+        itemView.setOnClickListener (listener)
+
         initPotentialView(itemToShow)
 
-        itemView.setOnClickListener (listener)
 
     }
 
@@ -82,9 +85,11 @@ fun createViewHolderAlly(parent: ViewGroup, activity: Context,
 
         //view added in the recycler view
         private val textViewValueAlly: TextView =itemView.findViewById(R.id.textValueAllyRecyclerView)
+        private val checkBoxBuyWithAlly: CheckBox =itemView.findViewById(R.id.checkboxBuyWithAllyRecyclerView)
 
         override fun initPotentialView(itemToShow: Ally) {
             textViewValueAlly.text = itemToShow.number.toString()
+            checkBoxBuyWithAlly.isChecked=itemToShow.selectedToBuyLord
         }
     }
 }

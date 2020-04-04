@@ -2,8 +2,6 @@ package fr.emile.abyss.modelClass
 
 import fr.emile.abyss.Container
 import fr.emile.abyss.controller
-import fr.emile.abyss.modelClass.gameItems.Council
-import fr.emile.abyss.modelClass.gameItems.Court
 import fr.emile.abyss.modelClass.gameItems.FishType
 import fr.emile.abyss.modelClass.gameItems.Lord
 
@@ -16,7 +14,7 @@ class Game {
     //intialized when create exploration
     var exploration:Exploration? = null
     var court= Court()
-    var council=Council()
+    var council= Council()
     var endGame=EndGame(listPlayer)
 
     init {

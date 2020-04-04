@@ -55,15 +55,10 @@ class Player (var nom:String){
         return listLord.size>= NBR_MAX_LORD
     }
 
-    //TODO il n'y a pas que des pouvoirs instantanés pour les seigneurs militaire
-    //TODO pense au geolier, reflechit bien, en gros cette fonction ne traite qu'une partie du jeu donc autant tout
-    //rereflechir le concept de se faire attaquer par un seigneur militaire
-    fun playerUnderAttackMilitaryLord(powerAttack: InstantEffectPower,game: Game)
+
+    /**call this function to execute a non-passive miltary power**/
+    fun playerUnderAttackMilitaryLord(powerAttack: InstantEffectPower)
     {
-        //on itere a travers tous les pouvoirs concernant les attaques de seigneurs militaires
-        //on demande de chercher le premier pouvoir qui interdit l'attaque du seigneur militaire.
-        //s'il y en a pas, null est retourné ,ainsi avec l'operateur elvis on active le pouvoir
-        listRulesPower.getPower(object : MilitaryLordAttack{}).
-            find {power -> !power.isAttackAvailable() } ?: powerAttack.activate(this,game)
+        listRulesPower.applyPowerReactingToMilitaryLord(powerAttack,this)
     }
 }

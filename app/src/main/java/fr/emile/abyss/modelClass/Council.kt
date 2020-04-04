@@ -1,4 +1,7 @@
-package fr.emile.abyss.modelClass.gameItems
+package fr.emile.abyss.modelClass
+
+import fr.emile.abyss.modelClass.gameItems.Ally
+import fr.emile.abyss.modelClass.gameItems.FishType
 
 class Council {
     var decksAllie= hashMapOf<FishType,MutableList<Ally>>()
