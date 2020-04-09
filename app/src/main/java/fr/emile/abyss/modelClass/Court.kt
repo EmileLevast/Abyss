@@ -45,9 +45,9 @@ class Court {
         { purchasePrice=it.computePrice(purchasePrice) }
 
 
-        //si il ya le prix, le numbre de type d'allie et l'allie obligatoire, alors on peut acheter
-        if(sumValueAllie>=purchasePrice && listDifferentType.size>=lordToBuy.numberAllieType &&
-            listDifferentType.contains(lordToBuy.obligedType))
+        //si il ya le prix, le numbre de type d'allie et si il y a un allie obligatoire demande est-il la, alors on peut acheter
+        if(sumValueAllie>=purchasePrice && listDifferentType.size>=lordToBuy.numberAllieType
+            && lordToBuy.obligedType!= null && listDifferentType.contains(lordToBuy.obligedType!!))
         {
             //on enleve le seigneur et on l'ajoute a la liste des seigneurs achetés du joueur
             player.buyLord(listProposedLord.removeAt(listProposedLord.indexOf(lordToBuy)),listCardToBuy)

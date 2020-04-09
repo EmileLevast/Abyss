@@ -7,5 +7,17 @@ enum class FishType(val imgId:Int) {
     JELLYFISH(R.drawable.jellyfish_ally),
     OCTOPUS(R.drawable.octopussy_ally),
     SEA_HORSE(R.drawable.sea_horse_ally),
-    SEA_SHELL(R.drawable.sea_shell_ally)
+    SEA_SHELL(R.drawable.sea_shell_ally),
+    AMBASSADOR(R.drawable.ancien);
+
+
+    companion object {
+        fun getListAlly(): MutableList<FishType> {
+            //on enleve l'amabssadeur qui ne compte pas dans les allies achetable
+            val listAlly = values().toMutableList()
+            listAlly.remove(AMBASSADOR)
+            return listAlly
+        }
+    }
 }
+

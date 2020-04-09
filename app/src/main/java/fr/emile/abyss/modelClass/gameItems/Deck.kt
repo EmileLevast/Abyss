@@ -13,7 +13,7 @@ class Deck {
 
     init {
         //we get an instance of all the type of fish
-        val listFishType=FishType.values()
+        val listFishType=FishType.getListAlly()
         val numberAllieForType=
             partialSum(NUMBER_MAX_ALLIE)
         val numberTotalOfAllie= NUMBER_OF_ALLIE_TYPE * numberAllieForType
