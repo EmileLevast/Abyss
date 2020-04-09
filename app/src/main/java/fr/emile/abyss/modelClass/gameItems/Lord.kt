@@ -76,7 +76,7 @@ class Lord (var FishType: FishType, var name:String, override var imgId:Int, var
             Lord(FishType.CRAB,"Le Questeur", R.drawable.le_questeur,7,2,FishType.CRAB,7,mockedActivePermanentPower),
             Lord(FishType.CRAB,"Le Recruteur", R.drawable.le_recruteur,10,2,FishType.CRAB,4,mockedActivePermanentPower),
             Lord(FishType.SEA_SHELL,"Le Rentier", R.drawable.le_rentier,10,2,FishType.SEA_SHELL,5,mockedActivePermanentPower),
-            Lord(FishType.AMBASSADOR,"Le Sage", R.drawable.armateur,10,5,null,4,mockedActivePermanentPower),
+            Lord(FishType.AMBASSADOR,"Le Sage", R.drawable.le_sage,10,5,null,4,mockedActivePermanentPower),
             Lord(FishType.OCTOPUS,"Le Traitre", R.drawable.le_traitre,12,3,FishType.OCTOPUS,6,mockedActivePermanentPower),
             Lord(FishType.OCTOPUS,"Le Trésorier", R.drawable.le_tresorier,10,2,FishType.OCTOPUS,5,mockedActivePermanentPower),
             Lord(FishType.OCTOPUS,"L' Opportuniste", R.drawable.opportuniste,6,3,FishType.OCTOPUS,5,mockedActivePermanentPower),

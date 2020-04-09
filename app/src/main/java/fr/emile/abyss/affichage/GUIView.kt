@@ -101,6 +101,8 @@ class GUIView( activity: MainActivity) {
     {
         val courtFrag=CourtFrag(court)
         MainActivity.generatorFragment!!.addFragToActivity(courtFrag)
+        //we create also a frag to show player stuff
+        createPlayerScreen(controller!!.game.listPlayer.getCurrent())
     }
 
     /**
