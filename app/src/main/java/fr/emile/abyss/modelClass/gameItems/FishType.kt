@@ -1,8 +1,9 @@
 package fr.emile.abyss.modelClass.gameItems
 
 import fr.emile.abyss.R
+import fr.emile.abyss.affichage.IShowImage
 
-enum class FishType(val imgId:Int) {
+enum class FishType(override var imgId:Int):IShowImage {
     CRAB(R.drawable.crab_ally),
     JELLYFISH(R.drawable.jellyfish_ally),
     OCTOPUS(R.drawable.octopussy_ally),
