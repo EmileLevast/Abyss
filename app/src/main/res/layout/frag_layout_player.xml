@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-
-<ScrollView
+<RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:id="@+id/rootView"
+        android:layout_height="match_parent">
+
+<!--we wrap the scroll view because the root view can't be onTouchListener and the scroll view need to be touch -->
+<ScrollView
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     <LinearLayout
@@ -43,4 +47,4 @@
 
 </ScrollView>
 
-
+</RelativeLayout>

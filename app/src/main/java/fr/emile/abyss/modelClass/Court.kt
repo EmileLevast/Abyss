@@ -5,7 +5,7 @@ import fr.emile.abyss.modelClass.gameItems.BuyLordPrice
 import fr.emile.abyss.modelClass.gameItems.Lord
 
 //nombre des seigneurs disponible a la court
-const val NUMBER_VISIBLE_LORD=7
+const val NUMBER_VISIBLE_LORD=20
 //court des seigneurs avec tous les seigneurs dispos
 class Court {
 
@@ -61,8 +61,9 @@ class Court {
 
                 //the player actually buy something
 
+
                 //si le joueur a achete quelque chose il finit son tour
-                controller!!.courtFinish(player)
+                controller!!.courtFinish(player,lordToBuy)
             }
 
         }

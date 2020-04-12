@@ -38,7 +38,7 @@ abstract class  CustomFragment<T> : Fragment(){
         /*prepare the background of the fragment*/
         val rootView:View=viewInflated.findViewById(idRootView)
         //we prevent more click on the screen behind
-        rootView.setOnTouchListener{_,_->true}
+        rootView.setOnTouchListener{_,_-> true}
         //we set a background to see a fragis launched
         rootView.setBackgroundResource(R.color.backgroundFragment)
 

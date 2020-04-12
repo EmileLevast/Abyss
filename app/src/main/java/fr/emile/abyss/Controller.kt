@@ -71,9 +71,9 @@ class Controller(activity:MainActivity) {
         game.playerWantToBuyLord(lordClicked)
     }
 
-    fun courtFinish(player: Player)
+    fun courtFinish(player: Player, lordToBuy: Lord)
     {
-        game.courtFinish(player)
+        game.courtFinish(player,lordToBuy)
         view.clearScreen()
     }
 

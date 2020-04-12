@@ -93,9 +93,10 @@ class Game {
     /**
      * when the player bought something and his turn is finished
      */
-    fun courtFinish(player: Player)
+    fun courtFinish(player: Player, lordToBuy: Lord)
     {
         sendPlayerAllieToDiscard(player)
+        lordToBuy.power.init(player,this)
         nextTurn()
     }
 
