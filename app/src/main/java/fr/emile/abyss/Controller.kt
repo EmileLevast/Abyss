@@ -48,12 +48,16 @@ class Controller(activity:MainActivity) {
     fun takeCouncilStack(fishType: FishType)
     {
         game.takeCouncilStack(fishType)
+
+        //we call next turn here because we want to only call game.takeCouncilStack(fishType)
+        // for the power that can take too stack
+        game.nextTurn()
         view.clearScreen()
     }
 
     fun launchCouncil()
     {
-        view.createCouncil(game.council)
+        view.createCouncil(game.council,game.whatToDoWithCouncil())
     }
 
     /**Court**/

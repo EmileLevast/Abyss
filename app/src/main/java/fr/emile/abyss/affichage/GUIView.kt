@@ -11,6 +11,7 @@ import fr.emile.abyss.modelClass.Exploration
 import fr.emile.abyss.modelClass.Player
 import fr.emile.abyss.modelClass.Council
 import fr.emile.abyss.modelClass.Court
+import fr.emile.abyss.modelClass.gameItems.FishType
 
 
 var WIDTH_SCREEN:Int? = null
@@ -20,6 +21,7 @@ class GUIView( activity: MainActivity) {
 
     var stuffPlayerFrag:StuffPlayerFrag?=null
     var explorationFrag:ExplorationFrag?=null
+    var councilFrag:CouncilFrag?=null
 
 
     init {
@@ -87,11 +89,19 @@ class GUIView( activity: MainActivity) {
     /**
      * Council
      * **/
-    fun createCouncil(council: Council)
+    fun createCouncil(
+        council: Council,
+        whatToDoWithCouncil: ((FishType) -> Unit)?=null
+    )
     {
-        val councilFrag= CouncilFrag(council)
+        //if there is no action, we don't give the parameter and the councilFrag will take the default action
+        councilFrag = if(whatToDoWithCouncil!=null) {
+            CouncilFrag(council,whatToDoWithCouncil)
+        }else {
+            CouncilFrag(council)
+        }
 
-        MainActivity.generatorFragment!!.addFragToActivity(councilFrag)
+        MainActivity.generatorFragment!!.addFragToActivity(councilFrag!!)
     }
 
     /**

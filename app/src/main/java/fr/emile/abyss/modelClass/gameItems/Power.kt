@@ -1,5 +1,6 @@
 package fr.emile.abyss.modelClass.gameItems
 
+import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.Game
 import fr.emile.abyss.modelClass.Player
 
@@ -110,6 +111,8 @@ interface BoughtLordFederateAllie:PassivePermanentPower
     }
 }
 
+
+//which color is used to buy the lord and is it the right color.
 interface BuyLordColorAllie:PassivePermanentPower
 {
     fun isAuthorizedToBuy(listDifferentTypeUseForBuy: List<FishType>,lordToBuy:Lord):Boolean
@@ -120,3 +123,13 @@ interface BuyLordColorAllie:PassivePermanentPower
 }
 
 
+//What to do when you launch a council
+//can you take too stack or something else
+//which color is used to buy the lord and is it the right color.
+interface councilStack:PassivePermanentPower
+{
+    fun getActionOnStack():(fishtype:FishType)->Unit
+    {
+        return {fishtype: FishType ->  controller!!.takeCouncilStack(fishtype)}
+    }
+}

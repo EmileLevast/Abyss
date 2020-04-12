@@ -4,6 +4,7 @@ import fr.emile.abyss.Container
 import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.gameItems.FishType
 import fr.emile.abyss.modelClass.gameItems.Lord
+import fr.emile.abyss.modelClass.gameItems.councilStack
 
 const val PLAYER_NUMBER=4
 class Game {
@@ -54,7 +55,21 @@ class Game {
     {
         listPlayer.getCurrent().addAllie(council.takeStack(fishType))
 
-        nextTurn()
+        //next turn si called in the controller , see there for mor information
+
+    }
+
+    /**watch within the power of the player to see what to do with the council**/
+    fun whatToDoWithCouncil(): (FishType) -> Unit {
+
+        //we intialize with no action but normally if there  is no power corresponding
+        //to a stack draw, the default action define in the interface councilStack is taken
+        var actionOnStackClick:(fishtype:FishType)->Unit={}
+        val player=listPlayer.getCurrent()
+        player.listRulesPower.applyToCorrespondingEvent(object : councilStack {},player)
+        { actionOnStackClick=it.getActionOnStack() }
+
+        return actionOnStackClick
     }
 
 
@@ -85,7 +100,7 @@ class Game {
     }
 
     /**===Rule===**/
-    private fun nextTurn()
+    fun nextTurn()
     {
         //on pointe le joueur suivant
         listPlayer.next()

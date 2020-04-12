@@ -3,6 +3,7 @@ package fr.emile.abyss.modelClass.gameItems
 import android.util.Log
 import fr.emile.abyss.R
 import fr.emile.abyss.affichage.IShowImage
+import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.Game
 import fr.emile.abyss.modelClass.Player
 
@@ -47,7 +48,19 @@ class Lord (var FishType: FishType, var name:String, override var imgId:Int, var
 
 
         //Lord armateur with his power
-        val listLord= mutableListOf(Lord(FishType.JELLYFISH,"l'Alchimiste", R.drawable.alchimiste,7,1,FishType.JELLYFISH,5, mockedActivePermanentPower),
+        val listLord= mutableListOf(Lord(FishType.JELLYFISH,"l'Alchimiste", R.drawable.alchimiste,7,1,FishType.JELLYFISH,5,
+            object : councilStack{
+                override fun getActionOnStack(): (fishtype: FishType) -> Unit {
+                    return {
+                        //we just add the stack to the player hand
+                        controller!!.game.takeCouncilStack(it)
+                        //we detroy the frag
+                        controller!!.view.clearScreen()
+                        //and we create again the council to take the second stack
+                        controller!!.view.createCouncil(controller!!.game.council)
+                    }
+                }
+            }),
             Lord(FishType.AMBASSADOR,"L'Ancien", R.drawable.ancien,10,5,null,3, mockedInstantPower),
             Lord(FishType.JELLYFISH,"L'Apprenti", R.drawable.apprenti,6,3,FishType.JELLYFISH,9,mockedActivePermanentPower),
             Lord(FishType.SEA_HORSE,"L'Aquaculteur", R.drawable.aquaculteur,9,3,FishType.SEA_HORSE,11,mockedPassivePermanentPower),
