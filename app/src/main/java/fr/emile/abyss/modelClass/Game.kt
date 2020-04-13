@@ -2,11 +2,12 @@ package fr.emile.abyss.modelClass
 
 import fr.emile.abyss.Container
 import fr.emile.abyss.controller
+import fr.emile.abyss.modelClass.gameItems.Deck
 import fr.emile.abyss.modelClass.gameItems.FishType
 import fr.emile.abyss.modelClass.gameItems.Lord
 import fr.emile.abyss.modelClass.gameItems.councilStack
 
-const val PLAYER_NUMBER=4
+const val PLAYER_NUMBER=3
 class Game {
 
     var listPlayer= Container<Player>()
@@ -21,10 +22,12 @@ class Game {
     init {
 
         //TODO let the user choose his name
-        for(i in (65..(PLAYER_NUMBER+65)))
+        for(i in (65 until (PLAYER_NUMBER+65)))
         {
             listPlayer.add(Player(i.toChar().toString()))
         }
+
+        cheatFirstPLayer()
     }
 
     /**[Exploration]**/
@@ -66,7 +69,7 @@ class Game {
         //to a stack draw, the default action define in the interface councilStack is taken
         var actionOnStackClick:(fishtype:FishType)->Unit={}
         val player=listPlayer.getCurrent()
-        player.listRulesPower.applyToCorrespondingEvent(object : councilStack {},player)
+        player.listRulesPower.applyToCorrespondingEvent<councilStack>(object : councilStack {},player)
         { actionOnStackClick=it.getActionOnStack() }
 
         return actionOnStackClick
@@ -116,5 +119,12 @@ class Game {
 
     override fun toString(): String {
         return "=====Game====="+exploration.toString()+court.toString()
+    }
+
+    //TODO remove this cheat
+    private fun cheatFirstPLayer()
+    {
+        createExploration()
+        listPlayer.getCurrent().addAllie(exploration!!.deckAllie)
     }
 }

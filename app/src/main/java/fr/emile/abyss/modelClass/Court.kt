@@ -5,7 +5,7 @@ import fr.emile.abyss.modelClass.gameItems.BuyLordPrice
 import fr.emile.abyss.modelClass.gameItems.Lord
 
 //nombre des seigneurs disponible a la court
-const val NUMBER_VISIBLE_LORD=20
+const val NUMBER_VISIBLE_LORD=33
 //court des seigneurs avec tous les seigneurs dispos
 class Court {
 
@@ -23,7 +23,7 @@ class Court {
         deckLord.clear()
         listProposedLord.clear()
 
-        deckLord.addAll(Lord.listLord)
+        deckLord.addAll(Lord.listLord.toList())
         deckLord.shuffle()
 
         for(i in 1..NUMBER_VISIBLE_LORD)listProposedLord.add(deckLord.removeAt(0))
@@ -40,7 +40,7 @@ class Court {
 
         //we calculate the cost of the lord (depending on power or not
         var purchasePrice=lordToBuy.price
-        player.listRulesPower.applyToCorrespondingEvent(object : BuyLordPrice {},player)
+        player.listRulesPower.applyToCorrespondingEvent<BuyLordPrice>(object : BuyLordPrice {},player)
         { purchasePrice=it.computePrice(purchasePrice) }
 
 
