@@ -1,5 +1,6 @@
 package fr.emile.abyss.modelClass.gameItems
 
+import android.util.Log
 import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.Player
 import java.util.*
@@ -15,6 +16,7 @@ class RulesPower {
     fun addPower(power:PassivePermanentPower)
     {
         val key=power.getKeyForMap()
+        Log.w("msg","interface name:$key")
         mapCurrentActivePower[key]?.add(power)
             ?: mapCurrentActivePower.put(key,LinkedList(listOf(power)))
     }

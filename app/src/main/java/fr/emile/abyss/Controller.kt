@@ -15,6 +15,20 @@ class Controller(activity:MainActivity) {
     var view:GUIView= GUIView(activity)
 
 
+    /**Déroulement du jeu**/
+
+    //le joueur clic sur le bouton pour passer au tour suivant
+    fun playerClickToBeginNewTurn()
+    {
+        game.nextTurn()
+    }
+
+    fun playerFinishTurn(playerName:String)
+    {
+        view.AuthorizeNextTurn(playerName)
+    }
+
+
     /**Exploration**/
 
     fun launchExploration()
@@ -42,6 +56,7 @@ class Controller(activity:MainActivity) {
 
         //we take off fragment
         view.clearScreen()
+        playerFinishTurn(game.listPlayer.getCurrent().nom)
     }
 
     /**Council**/
@@ -51,7 +66,8 @@ class Controller(activity:MainActivity) {
 
         //we call next turn here because we want to only call game.takeCouncilStack(fishType)
         // for the power that can take too stack
-        game.nextTurn()
+        //game.nextTurn()
+        playerFinishTurn(game.listPlayer.getCurrent().nom)
         view.clearScreen()
     }
 
@@ -75,6 +91,7 @@ class Controller(activity:MainActivity) {
     {
         game.courtFinish(player,lordToBuy)
         view.clearScreen()
+        playerFinishTurn(player.nom)
     }
 
     /**

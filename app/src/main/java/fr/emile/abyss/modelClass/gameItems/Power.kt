@@ -40,7 +40,7 @@ interface ActivePermanentPower:Power,InstantEffectPower
 /**these powers runs always in background and changes continuously the rules of the game**/
 interface PassivePermanentPower:Power
 {
-    fun getKeyForMap():String=this::class.java.simpleName
+    fun getKeyForMap():String=this::class.java.interfaces.first().simpleName
 
     override fun init(player: Player, game: Game) {
         player.listRulesPower.addPower(this)

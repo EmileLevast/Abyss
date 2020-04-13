@@ -35,6 +35,29 @@
             android:layout_below="@+id/councilButton"
     />
 
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/nextTurnLayout"
+            android:visibility="gone"
+            android:background="@color/backgroundFragment"
+
+    >
+
+        <Button
+            style="@style/buttonFragment"
+            android:id="@+id/nextTurnButton"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="Next Turn"
+    />
+
+    </FrameLayout>
+
+
+
     <LinearLayout
             android:id="@+id/fragmentContainer"
             android:orientation="horizontal"

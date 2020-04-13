@@ -62,7 +62,16 @@ class Lord (var FishType: FishType, var name:String, override var imgId:Int, var
                 }
             }),
             Lord(FishType.AMBASSADOR,"L'Ancien", R.drawable.ancien,10,5,null,3, mockedInstantPower),
-            Lord(FishType.JELLYFISH,"L'Apprenti", R.drawable.apprenti,6,3,FishType.JELLYFISH,9,mockedActivePermanentPower),
+            Lord(FishType.JELLYFISH,"L'Apprenti", R.drawable.apprenti,6,3,FishType.JELLYFISH,9,
+                object:InstantPower{
+                    override fun activate(player: Player, game: Game) {
+                        //we launch a council with the default action
+                        controller!!.view.createCouncil(game.council) {
+                            //we call the normal function to
+                            controller!!.takeCouncilStack(it)
+                        }
+                    }
+                }),
             Lord(FishType.SEA_HORSE,"L'Aquaculteur", R.drawable.aquaculteur,9,3,FishType.SEA_HORSE,11,mockedPassivePermanentPower),
             Lord(FishType.SEA_SHELL,"L'Armateur", R.drawable.armateur,6,3,FishType.SEA_SHELL,6,mockedPassivePermanentInfluencePower),
             Lord(FishType.CRAB,"L'Assassin", R.drawable.assassin,10,1,FishType.CRAB,6,mockedPassivePermanentInfluencePower),

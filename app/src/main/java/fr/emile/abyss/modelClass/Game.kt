@@ -50,7 +50,7 @@ class Game {
         //we send all the allies to the council
         council.addExplorationDroppedCards(exploration!!.sendToConseil())
         //we call the next player
-        nextTurn()
+        //nextTurn()
     }
 
     /**[Council]**/
@@ -100,7 +100,7 @@ class Game {
     {
         sendPlayerAllieToDiscard(player)
         lordToBuy.power.init(player,this)
-        nextTurn()
+        //nextTurn()
     }
 
     /**===Rule===**/

@@ -30,10 +30,11 @@ class GeneratorFragment(val mainActivity: MainActivity){
         mainActivity.supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 
-    fun setSizeAllFragment()
+    private fun setSizeAllFragment()
     {
         val containerLayout=mainActivity.findViewById<LinearLayout>(R.id.fragmentContainer)
         containerLayout.post {
+
             val preferredWidthFrag = WIDTH_SCREEN!! / containerLayout.childCount
 
             var currentHeight: Int

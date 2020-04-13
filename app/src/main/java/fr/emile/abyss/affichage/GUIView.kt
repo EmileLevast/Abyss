@@ -1,6 +1,8 @@
 package fr.emile.abyss.affichage
 
+import android.view.View
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import fr.emile.abyss.MainActivity
 import fr.emile.abyss.R
@@ -23,6 +25,8 @@ class GUIView( activity: MainActivity) {
     var explorationFrag:ExplorationFrag?=null
     var councilFrag:CouncilFrag?=null
 
+    var nextTurnLayout:FrameLayout=activity.findViewById(R.id.nextTurnLayout)
+    var nextTurnButton:Button=activity.findViewById(R.id.nextTurnButton)
 
     init {
 
@@ -47,9 +51,27 @@ class GUIView( activity: MainActivity) {
             controller!!.LaunchCourt()
         }
 
+        //init action when click on next turn button
+        nextTurnButton.setOnClickListener {
+            newTurnBegan()
+            controller!!.playerClickToBeginNewTurn()
+        }
+
         //we use a view to call on post and get screen size
         courtButton.post { saveSizeScreen(activity) }
 
+    }
+
+    //change visibility of the button to go to next turn
+    fun AuthorizeNextTurn(nameNextPlayer: String)
+    {
+        nextTurnButton.text="Finish turn : $nameNextPlayer"
+        nextTurnLayout.visibility=View.VISIBLE
+    }
+
+    fun newTurnBegan()
+    {
+        nextTurnLayout.visibility=View.GONE
     }
 
 
