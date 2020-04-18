@@ -5,6 +5,13 @@
         android:layout_height="match_parent"
         android:id="@+id/rootView"
 >
+    <ImageView
+            android:scaleType="centerInside"
+            android:src="@drawable/assassin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.5"
+    />
 
     <TextView
             style="@style/textAboveAlly"
@@ -25,15 +32,5 @@
             android:layout_centerInParent="true"
     />
 
-    <ImageView
-            android:scaleType="centerInside"
-            android:src="@drawable/assassin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@id/recyclerViewLordAssassin"
-            android:layout_alignStart="@id/recyclerViewLordAssassin"
-            android:layout_alignTop="@id/recyclerViewLordAssassin"
-            android:layout_alignBottom="@id/recyclerViewLordAssassin"
-    />
 
 </RelativeLayout>

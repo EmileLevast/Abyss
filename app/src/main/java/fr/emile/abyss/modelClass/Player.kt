@@ -57,8 +57,8 @@ class Player (var nom:String){
 
 
     /**call this function to execute a non-passive miltary power**/
-    fun playerUnderAttackMilitaryLord(powerAttack: InstantEffectPower)
+    fun playerUnderAttackMilitaryLord(powerEffect:(playerAttacking:Player,Game)->Unit)
     {
-        listRulesPower.applyPowerReactingToMilitaryLord(powerAttack,this)
+        listRulesPower.applyPowerReactingToMilitaryLord(powerEffect,this)
     }
 }

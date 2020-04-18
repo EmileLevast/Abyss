@@ -14,14 +14,18 @@
                android:layout_centerInParent="true"
                android:contentDescription="containsImageToShow">
     </ImageView>
-
     <ImageView
             android:id="@+id/imageview_dead_lord"
             android:scaleType="centerInside"
             android:src="@drawable/skull_sea"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/image_recycler_view"
+            android:layout_alignStart="@id/image_recycler_view"
+            android:layout_alignTop="@id/image_recycler_view"
+            android:layout_alignBottom="@id/image_recycler_view"
     />
+
 </RelativeLayout>
 
 

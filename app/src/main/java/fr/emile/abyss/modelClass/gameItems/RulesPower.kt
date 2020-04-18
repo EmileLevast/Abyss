@@ -2,6 +2,7 @@ package fr.emile.abyss.modelClass.gameItems
 
 import android.util.Log
 import fr.emile.abyss.controller
+import fr.emile.abyss.modelClass.Game
 import fr.emile.abyss.modelClass.Player
 import java.util.*
 
@@ -47,19 +48,22 @@ class RulesPower {
             else
             {
                 //sinon on envoie le pouvoir a executer a cette fonction
-                applyPowerReactingToMilitaryLord(it,playerAttacked)
+                applyPowerReactingToMilitaryLord(it::activate,playerAttacked)
             }
         }
     }
 
     /**method to check if the player has somehting to do with
-     * one of his other power before resolve the effects of the attack [powerAttack]**/
-    fun applyPowerReactingToMilitaryLord(powerAttack: InstantEffectPower,playerAttacked: Player)
+     * one of his other power before resolve the effects of the attack [powerAttack]
+     * And if the military power is Authorized (i.e. Chamanesse)
+     * I use a lambda and not an InstantEffectPower because I didn't find the way to deal deal otherwise
+     * with the assassin power**/
+    fun applyPowerReactingToMilitaryLord(powerEffect:(playerAttacking:Player, Game)->Unit,playerAttacked: Player)
     {
         //on recupere tous les pouvoirs qui se declenche lors de l'attaque d'un seigneur
         //on regarde si y en a pas un qui empeche le pouvoirde s'executer, sinon on l'execute
-        getPower(object : MilitaryLordAttack{}).find {power -> !power.isAttackAvailable() } ?: powerAttack.activate(playerAttacked,
-            controller!!.game)
+        getPower(object : MilitaryLordAttack{}).find {power -> !power.isAttackAvailable() } ?:
+        powerEffect(playerAttacked, controller!!.game)
     }
 }
 

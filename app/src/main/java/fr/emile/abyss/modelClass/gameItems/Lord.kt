@@ -45,14 +45,7 @@ class Lord (var FishType: FishType, var name:String, override var imgId:Int, var
             }
         }
 
-        //order of implemented interfaces really important,choose the receiver for the function init and remove
-        private val mockedPassivePermanentInfluencePower=object : PassivePowerInfluenceOthers,MilitaryLordAttack{
-            override fun isAttackAvailable():Boolean
-            {
-                Log.w("msg","PassivePowerInfluenceOthers mocked activated")
-                return false
-            }
-        }
+
 
 
         //Lord armateur with his power
@@ -81,7 +74,7 @@ class Lord (var FishType: FishType, var name:String, override var imgId:Int, var
                     }
                 }),
             Lord(FishType.SEA_HORSE,"L'Aquaculteur", R.drawable.aquaculteur,9,3,FishType.SEA_HORSE,11,mockedPassivePermanentPower),
-            Lord(FishType.SEA_SHELL,"L'Armateur", R.drawable.armateur,6,3,FishType.SEA_SHELL,6,mockedPassivePermanentInfluencePower),
+            Lord(FishType.SEA_SHELL,"L'Armateur", R.drawable.armateur,6,3,FishType.SEA_SHELL,6, mockedActivePermanentPower),
             Lord(FishType.CRAB,"L'Assassin", R.drawable.assassin,10,1,FishType.CRAB,6,
                 object : InstantPower{
                     override fun activate(player: Player, game: Game) {
@@ -96,14 +89,20 @@ class Lord (var FishType: FishType, var name:String, override var imgId:Int, var
                             //tant qu'il y a des personnages
                             if (iterListTarget.hasNext()) {
                                 val playerAttacked=iterListTarget.next()
-                                //on verifie qu'il y a des seigneurs a tuer
-                                if(!playerAttacked.listLord.isEmpty()){
-                                    //on créé le frag pour assassiner
-                                    controller!!.view.createAssassinFrag(player, iterListTarget.next()) {lord->
-                                        lord.die()
-                                        //on suppr le fragment assassin actuel
-                                        MainActivity.generatorFragment!!.popLast()
-                                        actionOnClick()
+
+                                //on lance l'evenement attackmilitarylord
+                                //comme ça le joueur n'est pas attaque s'il a la chamanesse
+                                playerAttacked.playerUnderAttackMilitaryLord {_,_->
+
+                                    //on verifie qu'il y a des seigneurs a tuer
+                                    if (!playerAttacked.listLord.isEmpty()) {
+                                        //on créé le frag pour assassiner
+                                        controller!!.view.createAssassinFrag(player, playerAttacked) { lord ->
+                                            lord.die()
+                                            //on suppr le fragment assassin actuel
+                                            MainActivity.generatorFragment!!.popLast()
+                                            actionOnClick()
+                                        }
                                     }
                                 }
                             }
@@ -111,22 +110,6 @@ class Lord (var FishType: FishType, var name:String, override var imgId:Int, var
 
                         //we call the first assassin frag
                         actionOnClick()
-
-                        //on crée un frag assassin pour chacun des joueurs
-                        /*listPlayerTargeted.forEach {
-                            //seulement si le joueur a des seigneurs à tuer
-                            if(!it.listLord.isEmpty())
-                            {
-                                //on definit ce qu'il se passe losrque l'on clique sur un seigneur
-                                controller!!.view.createAssassinFrag(player,it) { lord ->
-                                    //on tue le seigneur
-                                    lord.die()
-                                    //et on passe au frag suivant
-                                    MainActivity.generatorFragment!!.popLast()
-                                }
-
-                            }
-                        }*/
 
                     }
                 }),

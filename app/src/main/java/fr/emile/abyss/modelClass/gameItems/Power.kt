@@ -77,7 +77,7 @@ interface PassivePowerInfluenceOthers:PassivePermanentPower,InstantEffectPower
     }
 
     //override this to do describe the power of the military Lord
-    override fun activate(player: Player, game: Game) {}
+    override fun activate(player: Player, game: Game)
 }
 
 /**All interface that represents [PassivePermanentPower]*/
