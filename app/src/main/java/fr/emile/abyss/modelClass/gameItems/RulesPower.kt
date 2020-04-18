@@ -35,7 +35,7 @@ class RulesPower {
         return (mapCurrentActivePower[eventPowerTriggered.getKeyForMap()] as? List<T>) ?: listOf(eventPowerTriggered)
     }
 
-    fun <T:PassivePermanentPower> applyToCorrespondingEvent(eventPowerTriggered:T,playerAttacked: Player,action: (t:T)->Unit)
+    fun <T:PassivePermanentPower> applyToCorrespondingEvent(eventPowerTriggered:T, player: Player, action: (t:T)->Unit)
     {
         getPower(eventPowerTriggered).forEach {
 
@@ -48,7 +48,9 @@ class RulesPower {
             else
             {
                 //sinon on envoie le pouvoir a executer a cette fonction
-                applyPowerReactingToMilitaryLord(it::activate,playerAttacked)
+                //ici s'il y a une attaque c'est forcément le joueur lui même qui se fait attaquer donc c'est logique
+                //d'envoyer la variable player pour le paramètre playerAttacked
+                applyPowerReactingToMilitaryLord(it::activate,player)
             }
         }
     }

@@ -37,6 +37,11 @@ class Lord (var FishType: FishType, var name:String, override var imgId:Int, var
                 Log.w("msg","ActivePermanentPower mocked activated")
             }
         }
+        //use this noPower to implement Farmer Lord
+        private val noPower= object : InstantPower {
+            override fun activate(player: Player, game: Game) {
+            }
+        }
         private val mockedPassivePermanentPower=object : MilitaryLordAttack{
             override fun isAttackAvailable():Boolean
             {
@@ -62,7 +67,9 @@ class Lord (var FishType: FishType, var name:String, override var imgId:Int, var
                     }
                 }
             }),
+
             Lord(FishType.AMBASSADOR,"L'Ancien", R.drawable.ancien,10,5,null,3, mockedInstantPower),
+
             Lord(FishType.JELLYFISH,"L'Apprenti", R.drawable.apprenti,6,3,FishType.JELLYFISH,9,
                 object:InstantPower{
                     override fun activate(player: Player, game: Game) {
@@ -73,8 +80,18 @@ class Lord (var FishType: FishType, var name:String, override var imgId:Int, var
                         }
                     }
                 }),
-            Lord(FishType.SEA_HORSE,"L'Aquaculteur", R.drawable.aquaculteur,9,3,FishType.SEA_HORSE,11,mockedPassivePermanentPower),
-            Lord(FishType.SEA_SHELL,"L'Armateur", R.drawable.armateur,6,3,FishType.SEA_SHELL,6, mockedActivePermanentPower),
+
+            Lord(FishType.SEA_HORSE,"L'Aquaculteur", R.drawable.aquaculteur,9,3,FishType.SEA_HORSE,11, noPower),
+
+            Lord(FishType.SEA_SHELL,"L'Armateur", R.drawable.armateur,6,3,FishType.SEA_SHELL,6,
+                object : explorationSendToCouncil{
+                    override fun actionAccordingTo(listCardSendToCouncil: MutableList<Ally>, player: Player) {
+                        //on compte le nombre de type différents dans la liste
+                        //et on l'ajoute au total de perl
+                        player.perl+=listCardSendToCouncil.map{allie -> allie.type }.distinct().size
+                    }
+                }),
+
             Lord(FishType.CRAB,"L'Assassin", R.drawable.assassin,10,1,FishType.CRAB,6,
                 object : InstantPower{
                     override fun activate(player: Player, game: Game) {

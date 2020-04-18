@@ -137,3 +137,11 @@ interface CouncilStack:PassivePermanentPower
 
 //when a player finish an exploration, does he win something
 //(armateur give one pearl for eachcolor allie send to council)
+interface explorationSendToCouncil:PassivePermanentPower
+{
+    //what the player can win thanks to this exploration
+    //Armateur ;)
+    //par defaut il se passe rien
+    fun actionAccordingTo(listCardSendToCouncil:MutableList<Ally>,player:Player)=Unit
+
+}
