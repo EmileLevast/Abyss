@@ -21,6 +21,7 @@ class Game {
     init {
 
         //TODO let the user choose his name
+        //TODO interdire plusieurs joueur même nom, voir le pouvoir de l'assassin
         for(i in (65 until (PLAYER_NUMBER+65)))
         {
             listPlayer.add(Player(i.toChar().toString()))
@@ -125,5 +126,7 @@ class Game {
     {
         createExploration()
         listPlayer.getCurrent().addAllie(exploration!!.deckAllie)
+        //on ajoute des cartes à un autre joueur aussi
+        listPlayer.listElt[1].addAllie(exploration!!.deckAllie)
     }
 }

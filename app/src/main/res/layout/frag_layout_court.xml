@@ -6,14 +6,7 @@
 
 >
 
-    <!--
-    <ListView
-            android:id="@+id/listViewCourt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-    </ListView>
-    -->
     <fr.emile.abyss.affichage.gestionFragment.recyclerView.HorizontalRecyclerView
             android:id="@+id/recyclerViewLordCourt"
             android:layout_width="match_parent"

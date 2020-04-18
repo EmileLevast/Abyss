@@ -1,7 +1,6 @@
 package fr.emile.abyss.affichage.gestionFragment.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +11,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.emile.abyss.R
 import fr.emile.abyss.affichage.IShowImage
-import fr.emile.abyss.decodeSampledBitmapFromResource
 import fr.emile.abyss.modelClass.gameItems.Ally
+import fr.emile.abyss.modelClass.gameItems.Lord
 
 abstract class ViewHolder<K:IShowImage> protected constructor(layoutInflated:View, private val activity: Context,
                                                               protected val reqHeight: Int,
@@ -73,10 +72,27 @@ fun <T:IShowImage> createViewHolderImageOnly(parent: ViewGroup, activity: Contex
     }
 }
 
+fun createViewHolderLord(parent: ViewGroup, activity: Context,
+                                             reqHeight: Int, reqWidth: Int,
+                                             listener:ImageAdapter<Lord>): ViewHolder<Lord> {
+
+
+    return object : ViewHolder<Lord>(
+        LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_lord, parent, false)
+        , activity, reqHeight, reqWidth, listener){
+
+        private val imageDeadLord:ImageView=itemView.findViewById(R.id.imageview_dead_lord)
+
+        override fun initPotentialView(itemToShow: Lord) {
+            imageDeadLord.visibility=if(itemToShow.isAlive){View.GONE}else{View.VISIBLE}
+        }
+    }
+}
+
+
 fun createViewHolderAlly(parent: ViewGroup, activity: Context,
                          reqHeight: Int, reqWidth: Int,
-                         listener: ImageAdapter<Ally>
-): ViewHolder<Ally> {
+                         listener: ImageAdapter<Ally>): ViewHolder<Ally> {
 
 
     return object : ViewHolder<Ally>(

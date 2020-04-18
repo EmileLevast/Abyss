@@ -35,8 +35,6 @@ class CourtFrag(private val court: Court?) :CustomFragment<Court>(){
         }
 
         recyclerViewLord.adapter=adapterLord
-
-        updateView(court!!)
     }
 
     override fun updateView(dataGame: Court) {

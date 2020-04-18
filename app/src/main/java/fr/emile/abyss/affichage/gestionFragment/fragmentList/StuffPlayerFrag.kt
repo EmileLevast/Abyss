@@ -77,7 +77,7 @@ class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
         }
 
         adapterLord= object : ImageAdapter<Lord>(dataGame.listLord,activity!!,0.4f,0.1f,recyclerViewLord,
-            ::createViewHolderImageOnly){
+            ::createViewHolderLord){
             override fun onClickItem(position: Int) {
                 Log.w("msg", "pos:$position")
             }

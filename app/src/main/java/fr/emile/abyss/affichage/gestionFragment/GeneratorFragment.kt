@@ -11,23 +11,28 @@ import fr.emile.abyss.affichage.WIDTH_SCREEN
 
 class GeneratorFragment(val mainActivity: MainActivity){
 
-    var lastIdentifier=-1
+    var tag_last_frag:Int=0
 
     fun <T>addFragToActivity(frag:CustomFragment<T>)
     {
-        //tag_last_frag++
+        tag_last_frag++
 
         val ft=mainActivity.supportFragmentManager.beginTransaction()
 
         ft.add(R.id.fragmentContainer,frag)//tag_last_frag.toString())
-        ft.addToBackStack(null)
-        lastIdentifier=ft.commit()
+        ft.addToBackStack(tag_last_frag.toString())
+        ft.commit()
         setSizeAllFragment()
     }
 
     fun popAll()
     {
         mainActivity.supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
+
+    fun popLast()
+    {
+        mainActivity.supportFragmentManager.popBackStack(tag_last_frag.toString(), FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 
     private fun setSizeAllFragment()

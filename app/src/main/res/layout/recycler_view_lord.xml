@@ -5,6 +5,8 @@
               android:layout_width="wrap_content"
 
 >
+
+
     <ImageView
                android:id="@+id/image_recycler_view"
                android:layout_width="wrap_content"
@@ -13,18 +15,13 @@
                android:contentDescription="containsImageToShow">
     </ImageView>
 
-    <TextView
-            style="@style/textAboveAlly"
-            android:id="@+id/textValueAllyRecyclerView"
+    <ImageView
+            android:id="@+id/imageview_dead_lord"
+            android:scaleType="centerInside"
+            android:src="@drawable/skull_sea"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_height="match_parent"
     />
-
-    <CheckBox
-            android:id="@+id/checkboxBuyWithAllyRecyclerView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
 </RelativeLayout>
 
 

@@ -1,6 +1,7 @@
 package fr.emile.abyss.modelClass.gameItems
 
 import android.util.Log
+import fr.emile.abyss.MainActivity
 import fr.emile.abyss.R
 import fr.emile.abyss.affichage.IShowImage
 import fr.emile.abyss.controller
@@ -10,6 +11,13 @@ import fr.emile.abyss.modelClass.Player
 class Lord (var FishType: FishType, var name:String, override var imgId:Int, var price:Int,
             var numberAllieType:Int, var obligedType:FishType?, var influencePoint:Int,
             val power: Power) :IShowImage{
+
+    var isAlive:Boolean=true
+    private set
+
+    fun die(){
+        isAlive=false
+    }
 
     override fun toString(): String {
         return "Lord(FishType=$FishType, name='$name', influence Point='$influencePoint', imgId=$imgId, price=$price, numberAllieType=$numberAllieType, obligedType=$obligedType)"
@@ -74,7 +82,54 @@ class Lord (var FishType: FishType, var name:String, override var imgId:Int, var
                 }),
             Lord(FishType.SEA_HORSE,"L'Aquaculteur", R.drawable.aquaculteur,9,3,FishType.SEA_HORSE,11,mockedPassivePermanentPower),
             Lord(FishType.SEA_SHELL,"L'Armateur", R.drawable.armateur,6,3,FishType.SEA_SHELL,6,mockedPassivePermanentInfluencePower),
-            Lord(FishType.CRAB,"L'Assassin", R.drawable.assassin,10,1,FishType.CRAB,6,mockedPassivePermanentInfluencePower),
+            Lord(FishType.CRAB,"L'Assassin", R.drawable.assassin,10,1,FishType.CRAB,6,
+                object : InstantPower{
+                    override fun activate(player: Player, game: Game) {
+                        //on recupere tous les joueurs et on enleve le joueur qui assassine
+                        val listPlayerTargeted= mutableListOf<Player>().apply{addAll(game.listPlayer.listElt)}.filter{it.nom!=player.nom}
+
+                        val iterListTarget=listPlayerTargeted.iterator()
+
+                        //what to do when you finish an assassin frag
+                        fun actionOnClick()
+                        {
+                            //tant qu'il y a des personnages
+                            if (iterListTarget.hasNext()) {
+                                val playerAttacked=iterListTarget.next()
+                                //on verifie qu'il y a des seigneurs a tuer
+                                if(!playerAttacked.listLord.isEmpty()){
+                                    //on créé le frag pour assassiner
+                                    controller!!.view.createAssassinFrag(player, iterListTarget.next()) {lord->
+                                        lord.die()
+                                        //on suppr le fragment assassin actuel
+                                        MainActivity.generatorFragment!!.popLast()
+                                        actionOnClick()
+                                    }
+                                }
+                            }
+                        }
+
+                        //we call the first assassin frag
+                        actionOnClick()
+
+                        //on crée un frag assassin pour chacun des joueurs
+                        /*listPlayerTargeted.forEach {
+                            //seulement si le joueur a des seigneurs à tuer
+                            if(!it.listLord.isEmpty())
+                            {
+                                //on definit ce qu'il se passe losrque l'on clique sur un seigneur
+                                controller!!.view.createAssassinFrag(player,it) { lord ->
+                                    //on tue le seigneur
+                                    lord.die()
+                                    //et on passe au frag suivant
+                                    MainActivity.generatorFragment!!.popLast()
+                                }
+
+                            }
+                        }*/
+
+                    }
+                }),
             Lord(FishType.AMBASSADOR,"L'Ermite", R.drawable.ermite,10,5,null,5,mockedPassivePermanentPower),
             Lord(FishType.SEA_SHELL,"L'Esclavagiste", R.drawable.esclavagiste,8,1,FishType.SEA_SHELL,5,mockedPassivePermanentPower),
             Lord(FishType.SEA_HORSE,"L'Exploitant", R.drawable.exploitant,10,1,FishType.SEA_HORSE,12,mockedInstantPower),

@@ -7,6 +7,7 @@ import android.widget.RelativeLayout
 import fr.emile.abyss.MainActivity
 import fr.emile.abyss.R
 import fr.emile.abyss.affichage.gestionFragment.fragmentList.*
+import fr.emile.abyss.affichage.gestionFragment.fragmentList.fragmentLordPower.AssassinFrag
 import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.EndGame
 import fr.emile.abyss.modelClass.Exploration
@@ -14,6 +15,7 @@ import fr.emile.abyss.modelClass.Player
 import fr.emile.abyss.modelClass.Council
 import fr.emile.abyss.modelClass.Court
 import fr.emile.abyss.modelClass.gameItems.FishType
+import fr.emile.abyss.modelClass.gameItems.Lord
 
 
 var WIDTH_SCREEN:Int? = null
@@ -139,6 +141,17 @@ class GUIView( activity: MainActivity) {
         createPlayerScreen(controller!!.game.listPlayer.getCurrent())
     }
 
+
+    /**
+     * Power lord frag
+     */
+    fun createAssassinFrag(playerKilling:Player,playerKilled:Player,actionOnClick:(Lord)->Unit)
+    {
+        val courtFrag=AssassinFrag(playerKilling,playerKilled,actionOnClick)
+        MainActivity.generatorFragment!!.addFragToActivity(courtFrag)
+        //we create also a frag to show player stuff
+    }
+
     /**
      * End game
      */
@@ -147,6 +160,8 @@ class GUIView( activity: MainActivity) {
         val endGameFrag=EndGameFrag(endGame)
         MainActivity.generatorFragment!!.addFragToActivity(endGameFrag)
     }
+
+
 
     /**remove all the fragment, back to home screen**/
     fun clearScreen()
@@ -160,6 +175,8 @@ class GUIView( activity: MainActivity) {
         WIDTH_SCREEN=activity.findViewById<RelativeLayout>(R.id.ecran).width
         HEIGHT_SCREEN=activity.findViewById<RelativeLayout>(R.id.ecran).height
     }
+
+
 
 
 }

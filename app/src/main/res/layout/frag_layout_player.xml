@@ -52,18 +52,15 @@
         />
 
         <TextView
+                style="@style/textAboveAlly"
                 android:id="@+id/textViewFederatedPlayer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:gravity="center"
-                android:textSize="20sp"
                 android:textStyle="italic"
                 android:layout_alignParentTop="true"
                 android:layout_alignStart="@id/recyclerViewFederatedAllyPlayer"
                 android:layout_alignEnd="@id/recyclerViewFederatedAllyPlayer"
-                android:textColor="@color/plateauAbyssTresSombre"
-                android:background="@drawable/background_valueally_text"
                 android:text="Federated"
         />
 
