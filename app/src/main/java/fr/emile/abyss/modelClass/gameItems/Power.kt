@@ -126,10 +126,14 @@ interface BuyLordColorAllie:PassivePermanentPower
 //What to do when you launch a council
 //can you take too stack or something else
 //which color is used to buy the lord and is it the right color.
-interface councilStack:PassivePermanentPower
+interface CouncilStack:PassivePermanentPower
 {
     fun getActionOnStack():(fishtype:FishType)->Unit
     {
         return {fishtype: FishType ->  controller!!.takeCouncilStack(fishtype)}
     }
 }
+
+
+//when a player finish an exploration, does he win something
+//(armateur give one pearl for eachcolor allie send to council)

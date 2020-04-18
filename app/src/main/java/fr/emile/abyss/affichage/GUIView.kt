@@ -56,6 +56,8 @@ class GUIView( activity: MainActivity) {
             newTurnBegan()
             controller!!.playerClickToBeginNewTurn()
         }
+        
+        nextTurnLayout.setOnTouchListener{_,_->true}
 
         //we use a view to call on post and get screen size
         courtButton.post { saveSizeScreen(activity) }

@@ -12,21 +12,11 @@
             android:layout_height="wrap_content"
     />
 
-
-    <!--
-    <TextView
-            style="@style/viewFragmentRelativeLayout"
-            android:id="@+id/TextcardToBuy"
-            android:layout_centerHorizontal="true"
-            android:text="Card To Buy"
-    />
-    -->
-
     <Button
             style="@style/viewFragmentRelativeLayout"
             android:id="@+id/buttonBuy"
             android:layout_below="@+id/recyclerViewAllieExploration"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:text="Buy"
     />
 
@@ -40,16 +30,8 @@
 
     <TextView
             style="@style/viewFragmentRelativeLayout"
-            android:id="@+id/TextcardRefused"
-            android:layout_below="@+id/buttonBuy"
-            android:layout_centerHorizontal="true"
-            android:text="Card Refused"
-    />
-
-    <TextView
-            style="@style/viewFragmentRelativeLayout"
             android:id="@+id/textCostExplo"
-            android:layout_below="@+id/TextcardRefused"
+            android:layout_below="@+id/buttonNotBuy"
             android:layout_centerHorizontal="true"
             android:text="Cost Explo"
     />

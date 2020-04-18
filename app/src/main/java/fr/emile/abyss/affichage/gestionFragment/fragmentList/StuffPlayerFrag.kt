@@ -30,21 +30,27 @@ class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
 
     lateinit var textviewName:TextView
     lateinit var textPerl:TextView
+    lateinit var textFederated:TextView
     lateinit var recyclerViewAlly:HorizontalRecyclerView
     lateinit var recyclerViewLord:HorizontalRecyclerView
+    lateinit var recyclerViewFederatedAlly:HorizontalRecyclerView
     private lateinit var adapterAlly:ImageAdapter<Ally>
     private lateinit var adapterLord:ImageAdapter<Lord>
+    private lateinit var adapterFederatedAlly:ImageAdapter<Ally>
 
 
 
     override fun createView(viewInflated: View) {
         textviewName=viewInflated.findViewById(R.id.namePlayer)
         textPerl=viewInflated.findViewById(R.id.textPerlPlayer)
+        textFederated=viewInflated.findViewById(R.id.textViewFederatedPlayer)
         recyclerViewAlly=viewInflated.findViewById(R.id.recyclerViewAlliePlayer)
         recyclerViewLord=viewInflated.findViewById(R.id.recyclerViewLordPlayer)
+        recyclerViewFederatedAlly=viewInflated.findViewById(R.id.recyclerViewFederatedAllyPlayer)
 
         recyclerViewAlly.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
         recyclerViewLord.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
+        recyclerViewFederatedAlly.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
 
         updateView(player)
     }
@@ -57,12 +63,17 @@ class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
 
         textviewName.text = dataGame.nom
         textPerl.text=("Perl:"+dataGame.perl.toString())
+        textFederated.visibility=if(dataGame.listAllieFedere.isEmpty()){View.GONE} else {View.VISIBLE}
 
         adapterAlly= object : ImageAdapter<Ally>(dataGame.listAlly,activity!!,0.4f,0.1f,recyclerViewAlly, ::createViewHolderAlly){
             override fun onClickItem(position: Int) {
                 listImg[position].selectedToBuyLord=!listImg[position].selectedToBuyLord
                 notifyDataSetChanged()
             }
+        }
+
+        adapterFederatedAlly= object : ImageAdapter<Ally>(dataGame.listAllieFedere,activity!!,0.4f,0.1f,recyclerViewFederatedAlly, ::createViewHolderAlly){
+            override fun onClickItem(position: Int) {}
         }
 
         adapterLord= object : ImageAdapter<Lord>(dataGame.listLord,activity!!,0.4f,0.1f,recyclerViewLord,
@@ -74,6 +85,7 @@ class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
 
         recyclerViewAlly.adapter=adapterAlly
         recyclerViewLord.adapter=adapterLord
+        recyclerViewFederatedAlly.adapter=adapterFederatedAlly
 
     }
 

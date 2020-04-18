@@ -19,8 +19,6 @@ class ExplorationFrag(private val exploration: Exploration):CustomFragment<Explo
     override val idLayoutToInflate: Int= R.layout.frag_layout_exploration
 
 
-    //lateinit var textViewCardToBuy:TextView
-    lateinit var textCardRefused:TextView
     lateinit var textCostExplo:TextView
 
     lateinit var buyButton:Button
@@ -31,8 +29,6 @@ class ExplorationFrag(private val exploration: Exploration):CustomFragment<Explo
 
 
     override fun createView(viewInflated: View) {
-      //  textViewCardToBuy=viewInflated.findViewById(R.id.TextcardToBuy)
-        textCardRefused=viewInflated.findViewById(R.id.TextcardRefused)
         textCostExplo=viewInflated.findViewById(R.id.textCostExplo)
 
         buyButton=viewInflated.findViewById(R.id.buttonBuy)
@@ -58,9 +54,8 @@ class ExplorationFrag(private val exploration: Exploration):CustomFragment<Explo
     }
 
     override fun updateView(dataGame: Exploration) {
-        //textViewCardToBuy.text=dataGame.listProposedCard.last().toString()
-        textCostExplo.text=dataGame.currentCost.toString()
-        textCardRefused.text=dataGame.listProposedCard.size.toString()
+        val priceText="Current Price: ${dataGame.currentCost}"
+        textCostExplo.text=priceText
 
         adapterAlly.notifyDataSetChanged()
 

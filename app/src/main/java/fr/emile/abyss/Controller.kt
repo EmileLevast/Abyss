@@ -52,23 +52,24 @@ class Controller(activity:MainActivity) {
 
     fun explorationFinish()
     {
+        view.clearScreen()
+
         game.explorationFinish()
 
         //we take off fragment
-        view.clearScreen()
         playerFinishTurn(game.listPlayer.getCurrent().nom)
     }
 
     /**Council**/
     fun takeCouncilStack(fishType: FishType)
     {
+        view.clearScreen()
         game.takeCouncilStack(fishType)
 
         //we call next turn here because we want to only call game.takeCouncilStack(fishType)
         // for the power that can take too stack
         //game.nextTurn()
         playerFinishTurn(game.listPlayer.getCurrent().nom)
-        view.clearScreen()
     }
 
     fun launchCouncil()
@@ -89,8 +90,8 @@ class Controller(activity:MainActivity) {
 
     fun courtFinish(player: Player, lordToBuy: Lord)
     {
-        game.courtFinish(player,lordToBuy)
         view.clearScreen()
+        game.courtFinish(player,lordToBuy)
         playerFinishTurn(player.nom)
     }
 

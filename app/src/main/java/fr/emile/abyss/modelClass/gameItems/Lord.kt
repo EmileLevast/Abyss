@@ -49,7 +49,7 @@ class Lord (var FishType: FishType, var name:String, override var imgId:Int, var
 
         //Lord armateur with his power
         val listLord= mutableListOf(Lord(FishType.JELLYFISH,"l'Alchimiste", R.drawable.alchimiste,7,1,FishType.JELLYFISH,5,
-            object : councilStack{
+            object : CouncilStack{
                 override fun getActionOnStack(): (fishtype: FishType) -> Unit {
                     return {
                         //we just add the stack to the player hand

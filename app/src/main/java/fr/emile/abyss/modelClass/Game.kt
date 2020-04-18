@@ -2,10 +2,9 @@ package fr.emile.abyss.modelClass
 
 import fr.emile.abyss.Container
 import fr.emile.abyss.controller
-import fr.emile.abyss.modelClass.gameItems.Deck
 import fr.emile.abyss.modelClass.gameItems.FishType
 import fr.emile.abyss.modelClass.gameItems.Lord
-import fr.emile.abyss.modelClass.gameItems.councilStack
+import fr.emile.abyss.modelClass.gameItems.CouncilStack
 
 const val PLAYER_NUMBER=3
 class Game {
@@ -66,10 +65,10 @@ class Game {
     fun whatToDoWithCouncil(): (FishType) -> Unit {
 
         //we intialize with no action but normally if there  is no power corresponding
-        //to a stack draw, the default action define in the interface councilStack is taken
+        //to a stack draw, the default action define in the interface CouncilStack is taken
         var actionOnStackClick:(fishtype:FishType)->Unit={}
         val player=listPlayer.getCurrent()
-        player.listRulesPower.applyToCorrespondingEvent<councilStack>(object : councilStack {},player)
+        player.listRulesPower.applyToCorrespondingEvent<CouncilStack>(object : CouncilStack {},player)
         { actionOnStackClick=it.getActionOnStack() }
 
         return actionOnStackClick
