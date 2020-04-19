@@ -1,13 +1,17 @@
 package fr.emile.abyss.affichage
 
+import android.content.Context
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import fr.emile.abyss.MainActivity
 import fr.emile.abyss.R
+import fr.emile.abyss.affichage.gestionFragment.adapter.ImageAdapter
+import fr.emile.abyss.affichage.gestionFragment.adapter.ViewHolder
 import fr.emile.abyss.affichage.gestionFragment.fragmentList.*
-import fr.emile.abyss.affichage.gestionFragment.fragmentList.fragmentLordPower.AssassinFrag
+import fr.emile.abyss.affichage.gestionFragment.fragmentList.fragmentLordPower.PowerLordFrag
 import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.EndGame
 import fr.emile.abyss.modelClass.Exploration
@@ -15,7 +19,6 @@ import fr.emile.abyss.modelClass.Player
 import fr.emile.abyss.modelClass.Council
 import fr.emile.abyss.modelClass.Court
 import fr.emile.abyss.modelClass.gameItems.FishType
-import fr.emile.abyss.modelClass.gameItems.Lord
 
 
 var WIDTH_SCREEN:Int? = null
@@ -145,10 +148,16 @@ class GUIView( activity: MainActivity) {
     /**
      * Power lord frag
      */
-    fun createAssassinFrag(playerKilling:Player,playerKilled:Player,actionOnClick:(Lord)->Unit)
+    fun <T:IShowImage>createPowerLordFrag(listToShow: List<T>,
+                                          explicationPower:String,
+                                          resourceIdBackground:Int,
+                                          factoryViewHolder:(parent: ViewGroup, activity: Context,
+                                                          reqHeight: Int, reqWidth: Int,
+                                                          onclick: ImageAdapter<T>)-> ViewHolder<T>,
+                                          actionAfterClick:(T)->Unit)
     {
-        val courtFrag=AssassinFrag(playerKilling,playerKilled,actionOnClick)
-        MainActivity.generatorFragment!!.addFragToActivity(courtFrag)
+        val powerLordFrag=PowerLordFrag(listToShow,explicationPower,resourceIdBackground,factoryViewHolder,actionAfterClick)
+        MainActivity.generatorFragment!!.addFragToActivity(powerLordFrag)
         //we create also a frag to show player stuff
     }
 

@@ -4,19 +4,30 @@ import android.util.Log
 import fr.emile.abyss.MainActivity
 import fr.emile.abyss.R
 import fr.emile.abyss.affichage.IShowImage
+import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderImageOnly
 import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.Game
 import fr.emile.abyss.modelClass.Player
 
-class Lord (var FishType: FishType, var name:String, override var imgId:Int, var price:Int,
+class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override var imgId:Int, var price:Int,
             var numberAllieType:Int, var obligedType:FishType?, var influencePoint:Int,
             val power: Power) :IShowImage{
 
+    //if the lord has been targeted buy the assassin
     var isAlive:Boolean=true
+    private set
+
+    //if the lord is free or if he has already used his key to buy a place
+    var isFree:Boolean=true
     private set
 
     fun die(){
         isAlive=false
+    }
+
+    fun useToBuyLocation()
+    {
+        isFree=false
     }
 
     override fun toString(): String {
@@ -54,7 +65,8 @@ class Lord (var FishType: FishType, var name:String, override var imgId:Int, var
 
 
         //Lord armateur with his power
-        val listLord= mutableListOf(Lord(FishType.JELLYFISH,"l'Alchimiste", R.drawable.alchimiste,7,1,FishType.JELLYFISH,5,
+        val listLord= mutableListOf(
+            Lord(FishType.JELLYFISH,"l'Alchimiste",true, R.drawable.alchimiste,7,1,FishType.JELLYFISH,5,
             object : CouncilStack{
                 override fun getActionOnStack(): (fishtype: FishType) -> Unit {
                     return {
@@ -68,9 +80,9 @@ class Lord (var FishType: FishType, var name:String, override var imgId:Int, var
                 }
             }),
 
-            Lord(FishType.AMBASSADOR,"L'Ancien", R.drawable.ancien,10,5,null,3, mockedInstantPower),
+            Lord(FishType.AMBASSADOR,"L'Ancien",false, R.drawable.ancien,10,5,null,3, mockedInstantPower),
 
-            Lord(FishType.JELLYFISH,"L'Apprenti", R.drawable.apprenti,6,3,FishType.JELLYFISH,9,
+            Lord(FishType.JELLYFISH,"L'Apprenti",false, R.drawable.apprenti,6,3,FishType.JELLYFISH,9,
                 object:InstantPower{
                     override fun activate(player: Player, game: Game) {
                         //we launch a council with the default action
@@ -81,9 +93,9 @@ class Lord (var FishType: FishType, var name:String, override var imgId:Int, var
                     }
                 }),
 
-            Lord(FishType.SEA_HORSE,"L'Aquaculteur", R.drawable.aquaculteur,9,3,FishType.SEA_HORSE,11, noPower),
+            Lord(FishType.SEA_HORSE,"L'Aquaculteur",false, R.drawable.aquaculteur,9,3,FishType.SEA_HORSE,11, noPower),
 
-            Lord(FishType.SEA_SHELL,"L'Armateur", R.drawable.armateur,6,3,FishType.SEA_SHELL,6,
+            Lord(FishType.SEA_SHELL,"L'Armateur",true, R.drawable.armateur,6,3,FishType.SEA_SHELL,6,
                 object : explorationSendToCouncil{
                     override fun actionAccordingTo(listCardSendToCouncil: MutableList<Ally>, player: Player) {
                         //on compte le nombre de type différents dans la liste
@@ -92,7 +104,7 @@ class Lord (var FishType: FishType, var name:String, override var imgId:Int, var
                     }
                 }),
 
-            Lord(FishType.CRAB,"L'Assassin", R.drawable.assassin,10,1,FishType.CRAB,6,
+            Lord(FishType.CRAB,"L'Assassin",false, R.drawable.assassin,10,1,FishType.CRAB,6,
                 object : InstantPower{
                     override fun activate(player: Player, game: Game) {
                         //on recupere tous les joueurs et on enleve le joueur qui assassine
@@ -112,9 +124,15 @@ class Lord (var FishType: FishType, var name:String, override var imgId:Int, var
                                 playerAttacked.playerUnderAttackMilitaryLord {_,_->
 
                                     //on verifie qu'il y a des seigneurs a tuer
-                                    if (!playerAttacked.listLord.isEmpty()) {
+                                    val listFreeLordPlayer=playerAttacked.listLord.filter { it.isFree && it.isAlive }
+                                    if (!listFreeLordPlayer.isEmpty()) {
                                         //on créé le frag pour assassiner
-                                        controller!!.view.createAssassinFrag(player, playerAttacked) { lord ->
+                                        controller!!.view.createPowerLordFrag(
+                                            listFreeLordPlayer,
+                                            "${player.nom} is using Assassin\n${playerAttacked.nom} choose a lord to sacrifice",
+                                            R.drawable.assassin,
+                                            ::createViewHolderImageOnly)
+                                        { lord ->
                                             lord.die()
                                             //on suppr le fragment assassin actuel
                                             MainActivity.generatorFragment!!.popLast()
@@ -130,34 +148,34 @@ class Lord (var FishType: FishType, var name:String, override var imgId:Int, var
 
                     }
                 }),
-            Lord(FishType.AMBASSADOR,"L'Ermite", R.drawable.ermite,10,5,null,5,mockedPassivePermanentPower),
-            Lord(FishType.SEA_SHELL,"L'Esclavagiste", R.drawable.esclavagiste,8,1,FishType.SEA_SHELL,5,mockedPassivePermanentPower),
-            Lord(FishType.SEA_HORSE,"L'Exploitant", R.drawable.exploitant,10,1,FishType.SEA_HORSE,12,mockedInstantPower),
-            Lord(FishType.JELLYFISH,"L'Illusionniste", R.drawable.illusionniste,10,1,FishType.JELLYFISH,9,mockedActivePermanentPower),
-            Lord(FishType.JELLYFISH,"L'Invocateur", R.drawable.invocateur,8,1,FishType.JELLYFISH,8,mockedActivePermanentPower),
-            Lord(FishType.OCTOPUS,"L'Intriguant", R.drawable.l_intriguant,8,3,FishType.OCTOPUS,6,mockedActivePermanentPower),
-            Lord(FishType.SEA_HORSE,"La Bergère", R.drawable.la_bergere,8,1,FishType.SEA_HORSE,6,mockedActivePermanentPower),
-            Lord(FishType.JELLYFISH,"La Chamanesse", R.drawable.la_chamanesse,6,3,FishType.JELLYFISH,5,mockedActivePermanentPower),
-            Lord(FishType.SEA_HORSE,"La Gardienne", R.drawable.la_gardienne,6,3,FishType.SEA_HORSE,6,mockedActivePermanentPower),
-            Lord(FishType.SEA_SHELL,"La Negociante", R.drawable.la_negociante,10,3,FishType.SEA_SHELL,9,mockedActivePermanentPower),
-            Lord(FishType.SEA_SHELL,"Le Boutiquier", R.drawable.le_boutiquier,6,3,FishType.SEA_SHELL,9,mockedActivePermanentPower),
-            Lord(FishType.CRAB,"Le Chasseur", R.drawable.le_chasseur,8,2,FishType.CRAB,6,mockedActivePermanentPower),
-            Lord(FishType.CRAB,"le chef des armées", R.drawable.le_chef_des_armees,8,1,FishType.CRAB,4,mockedActivePermanentPower),
-            Lord(FishType.SEA_SHELL,"Le Colporteur", R.drawable.le_colporteur,8,1,FishType.SEA_SHELL,9,mockedActivePermanentPower),
-            Lord(FishType.OCTOPUS,"Le Corrupteur", R.drawable.le_corrupteur,10,1,FishType.OCTOPUS,6,mockedActivePermanentPower),
-            Lord(FishType.OCTOPUS,"Le Diplomate", R.drawable.le_diplomate,8,1,FishType.OCTOPUS,5,mockedActivePermanentPower),
-            Lord(FishType.SEA_HORSE,"Le Faucheur", R.drawable.le_faucheur,7,2,FishType.SEA_HORSE,6,mockedActivePermanentPower),
-            Lord(FishType.CRAB,"Le Geôlier", R.drawable.le_geolier,6,3,FishType.CRAB,7,mockedActivePermanentPower),
-            Lord(FishType.JELLYFISH,"Le Maître de magie", R.drawable.le_maitre_de_magie,10,3,FishType.JELLYFISH,6,mockedActivePermanentPower),
-            Lord(FishType.SEA_HORSE,"Le Meunier", R.drawable.le_meunier,8,2,FishType.SEA_HORSE,10,mockedActivePermanentPower),
-            Lord(FishType.CRAB,"Le Questeur", R.drawable.le_questeur,7,2,FishType.CRAB,7,mockedActivePermanentPower),
-            Lord(FishType.CRAB,"Le Recruteur", R.drawable.le_recruteur,10,2,FishType.CRAB,4,mockedActivePermanentPower),
-            Lord(FishType.SEA_SHELL,"Le Rentier", R.drawable.le_rentier,10,2,FishType.SEA_SHELL,5,mockedActivePermanentPower),
-            Lord(FishType.AMBASSADOR,"Le Sage", R.drawable.le_sage,10,5,null,4,mockedActivePermanentPower),
-            Lord(FishType.OCTOPUS,"Le Traitre", R.drawable.le_traitre,12,3,FishType.OCTOPUS,6,mockedActivePermanentPower),
-            Lord(FishType.OCTOPUS,"Le Trésorier", R.drawable.le_tresorier,10,2,FishType.OCTOPUS,5,mockedActivePermanentPower),
-            Lord(FishType.OCTOPUS,"L' Opportuniste", R.drawable.opportuniste,6,3,FishType.OCTOPUS,5,mockedActivePermanentPower),
-            Lord(FishType.JELLYFISH,"L'Oracle", R.drawable.oracle,8,2,FishType.JELLYFISH,5,mockedActivePermanentPower)
+            Lord(FishType.AMBASSADOR,"L'Ermite",false, R.drawable.ermite,10,5,null,5,mockedPassivePermanentPower),
+            Lord(FishType.SEA_SHELL,"L'Esclavagiste",true, R.drawable.esclavagiste,8,1,FishType.SEA_SHELL,5,mockedPassivePermanentPower),
+            Lord(FishType.SEA_HORSE,"L'Exploitant",false, R.drawable.exploitant,10,1,FishType.SEA_HORSE,12,mockedInstantPower),
+            Lord(FishType.JELLYFISH,"L'Illusionniste",false, R.drawable.illusionniste,10,1,FishType.JELLYFISH,9,mockedActivePermanentPower),
+            Lord(FishType.JELLYFISH,"L'Invocateur",false, R.drawable.invocateur,8,1,FishType.JELLYFISH,8,mockedActivePermanentPower),
+            Lord(FishType.OCTOPUS,"L'Intriguant",false, R.drawable.l_intriguant,8,3,FishType.OCTOPUS,6,mockedActivePermanentPower),
+            Lord(FishType.SEA_HORSE,"La Bergère",true, R.drawable.la_bergere,8,1,FishType.SEA_HORSE,6,mockedActivePermanentPower),
+            Lord(FishType.JELLYFISH,"La Chamanesse",true, R.drawable.la_chamanesse,6,3,FishType.JELLYFISH,5,mockedActivePermanentPower),
+            Lord(FishType.SEA_HORSE,"La Gardienne",true, R.drawable.la_gardienne,6,3,FishType.SEA_HORSE,6,mockedActivePermanentPower),
+            Lord(FishType.SEA_SHELL,"La Negociante",false, R.drawable.la_negociante,10,3,FishType.SEA_SHELL,9,mockedActivePermanentPower),
+            Lord(FishType.SEA_SHELL,"Le Boutiquier",false, R.drawable.le_boutiquier,6,3,FishType.SEA_SHELL,9,mockedActivePermanentPower),
+            Lord(FishType.CRAB,"Le Chasseur",false, R.drawable.le_chasseur,8,2,FishType.CRAB,6,mockedActivePermanentPower),
+            Lord(FishType.CRAB,"le chef des armées",true, R.drawable.le_chef_des_armees,8,1,FishType.CRAB,4,mockedActivePermanentPower),
+            Lord(FishType.SEA_SHELL,"Le Colporteur",false, R.drawable.le_colporteur,8,1,FishType.SEA_SHELL,9,mockedActivePermanentPower),
+            Lord(FishType.OCTOPUS,"Le Corrupteur",false, R.drawable.le_corrupteur,10,1,FishType.OCTOPUS,6,mockedActivePermanentPower),
+            Lord(FishType.OCTOPUS,"Le Diplomate",true, R.drawable.le_diplomate,8,1,FishType.OCTOPUS,5,mockedActivePermanentPower),
+            Lord(FishType.SEA_HORSE,"Le Faucheur",true, R.drawable.le_faucheur,7,2,FishType.SEA_HORSE,6,mockedActivePermanentPower),
+            Lord(FishType.CRAB,"Le Geôlier",false, R.drawable.le_geolier,6,3,FishType.CRAB,7,mockedActivePermanentPower),
+            Lord(FishType.JELLYFISH,"Le Maître de magie",true, R.drawable.le_maitre_de_magie,10,3,FishType.JELLYFISH,6,mockedActivePermanentPower),
+            Lord(FishType.SEA_HORSE,"Le Meunier",false, R.drawable.le_meunier,8,2,FishType.SEA_HORSE,10,mockedActivePermanentPower),
+            Lord(FishType.CRAB,"Le Questeur",false, R.drawable.le_questeur,7,2,FishType.CRAB,7,mockedActivePermanentPower),
+            Lord(FishType.CRAB,"Le Recruteur",true, R.drawable.le_recruteur,10,2,FishType.CRAB,4,mockedActivePermanentPower),
+            Lord(FishType.SEA_SHELL,"Le Rentier",true, R.drawable.le_rentier,10,2,FishType.SEA_SHELL,5,mockedActivePermanentPower),
+            Lord(FishType.AMBASSADOR,"Le Sage",false, R.drawable.le_sage,10,5,null,4,mockedActivePermanentPower),
+            Lord(FishType.OCTOPUS,"Le Traitre",false, R.drawable.le_traitre,12,3,FishType.OCTOPUS,6,mockedActivePermanentPower),
+            Lord(FishType.OCTOPUS,"Le Trésorier",true, R.drawable.le_tresorier,10,2,FishType.OCTOPUS,5,mockedActivePermanentPower),
+            Lord(FishType.OCTOPUS,"L' Opportuniste",true, R.drawable.opportuniste,6,3,FishType.OCTOPUS,5,mockedActivePermanentPower),
+            Lord(FishType.JELLYFISH,"L'Oracle",true, R.drawable.oracle,8,2,FishType.JELLYFISH,5,mockedActivePermanentPower)
         )
     }
 }
