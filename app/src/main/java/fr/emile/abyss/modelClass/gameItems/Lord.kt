@@ -4,6 +4,7 @@ import android.util.Log
 import fr.emile.abyss.MainActivity
 import fr.emile.abyss.R
 import fr.emile.abyss.affichage.IShowImage
+import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderAlly
 import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderImageOnly
 import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.Game
@@ -149,7 +150,29 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                     }
                 }),
             Lord(FishType.AMBASSADOR,"L'Ermite",false, R.drawable.ermite,10,5,null,5,mockedPassivePermanentPower),
-            Lord(FishType.SEA_SHELL,"L'Esclavagiste",true, R.drawable.esclavagiste,8,1,FishType.SEA_SHELL,5,mockedPassivePermanentPower),
+            Lord(FishType.SEA_SHELL,"L'Esclavagiste",true, R.drawable.esclavagiste,8,1,FishType.SEA_SHELL,5,
+                object :ActivePermanentPower{
+                    //Define what to do when you click on this Lord
+                    override fun activate(player: Player, game: Game) {
+                        //l'esclavagiste peut défausser 1 allie pour gagner 2 perles
+                        //nous activons donc son pouvoir seulement s'il a au moins 1 allie
+                        if(!player.listAlly.isEmpty())
+                        {
+                            controller!!.view.createPowerLordFrag(
+                                player.listAlly,
+                                "${player.nom} is using Esclavagiste\nPlease choose one ally to discard and gain 2 perls",
+                                R.drawable.esclavagiste,
+                                ::createViewHolderAlly)
+                            {ally->
+                                //now we define that when he chooses an ally, we destroy it and he gains 2 perls
+                                player.listAlly.remove(ally)
+                                player.perl+=2
+                                MainActivity.generatorFragment!!.popAll()
+                            }
+                        }
+                    }
+
+                }),
             Lord(FishType.SEA_HORSE,"L'Exploitant",false, R.drawable.exploitant,10,1,FishType.SEA_HORSE,12,mockedInstantPower),
             Lord(FishType.JELLYFISH,"L'Illusionniste",false, R.drawable.illusionniste,10,1,FishType.JELLYFISH,9,mockedActivePermanentPower),
             Lord(FishType.JELLYFISH,"L'Invocateur",false, R.drawable.invocateur,8,1,FishType.JELLYFISH,8,mockedActivePermanentPower),
