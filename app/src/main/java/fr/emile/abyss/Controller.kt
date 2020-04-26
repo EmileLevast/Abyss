@@ -14,6 +14,9 @@ class Controller(activity:MainActivity) {
     //must be an IView in order to call its methods
     var view:GUIView= GUIView(activity)
 
+    init {
+        updateNameOfCurrentPlayer(activity)
+    }
 
     /**Déroulement du jeu**/
 
@@ -21,9 +24,8 @@ class Controller(activity:MainActivity) {
     fun playerClickToBeginNewTurn(activity: MainActivity)
     {
         game.nextTurn()
-        //we change the title to print the name of the current's turn player
-        activity.supportActionBar!!.title = game.listPlayer.getCurrent().nom
 
+        updateNameOfCurrentPlayer(activity)
     }
 
     //Print a button to authorize next player to play
@@ -95,8 +97,13 @@ class Controller(activity:MainActivity) {
     fun courtFinish(player: Player, lordToBuy: Lord)
     {
         view.clearScreen()
-        game.courtFinish(player,lordToBuy)
+
+        /**must call [playerFinishTurn] before [courtFinish] because of the invocateur
+         * The player we print the button "next turn A" before the power of the lord done in courtfinish
+         * **/
         playerFinishTurn(player.nom)
+
+        game.courtFinish(player,lordToBuy)
     }
 
     /**
@@ -107,4 +114,9 @@ class Controller(activity:MainActivity) {
         view.createEndGameScreen(game.endGame)
     }
 
+    fun updateNameOfCurrentPlayer(activity: MainActivity)
+    {
+        //we change the title to print the name of the current's turn player
+        activity.supportActionBar!!.title = game.listPlayer.getCurrent().nom
+    }
 }

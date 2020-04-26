@@ -191,8 +191,8 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                 object : InstantPower{
                     override fun activate(player: Player, game: Game) {
 
-                        //if the player has at least one lord to discard
-                        val listFreeLordPlayer=player.listLord.filter { it.isFree}
+                        //if the player has at least one lord to discard, and we can't discard the intriguant himself
+                        val listFreeLordPlayer=player.listLord.filter { it.isFree && it.name!="L'Intriguant"}
                         if(!listFreeLordPlayer.isEmpty())
                         {
                             //we clear the screen in order to have a full screen frag
@@ -209,9 +209,14 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                                 player.listLord.remove(lord)
 
                                 //and we give him the first lord from the deck
-                                player.listLord.add(game.court.drawOneLord())
+                                val lordDrawn=game.court.drawOneLord()
+                                //we give the lord to the player
+                                player.listLord.add(lordDrawn)
 
                                 MainActivity.generatorFragment!!.popAll()
+
+                                //we activate the power
+                                lordDrawn.power.init(player, controller!!.game)
                             }
                         }
                     }
