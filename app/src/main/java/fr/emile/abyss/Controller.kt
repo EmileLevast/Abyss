@@ -18,11 +18,15 @@ class Controller(activity:MainActivity) {
     /**Déroulement du jeu**/
 
     //le joueur clic sur le bouton pour passer au tour suivant
-    fun playerClickToBeginNewTurn()
+    fun playerClickToBeginNewTurn(activity: MainActivity)
     {
         game.nextTurn()
+        //we change the title to print the name of the current's turn player
+        activity.supportActionBar!!.title = game.listPlayer.getCurrent().nom
+
     }
 
+    //Print a button to authorize next player to play
     fun playerFinishTurn(playerName:String)
     {
         view.AuthorizeNextTurn(playerName)

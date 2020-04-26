@@ -15,6 +15,7 @@ import fr.emile.abyss.affichage.gestionFragment.adapter.*
 import fr.emile.abyss.affichage.gestionFragment.recyclerView.HorizontalRecyclerView
 import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.Player
+import fr.emile.abyss.modelClass.gameItems.ActivePermanentPower
 import fr.emile.abyss.modelClass.gameItems.Ally
 import fr.emile.abyss.modelClass.gameItems.Deck
 import fr.emile.abyss.modelClass.gameItems.Lord
@@ -23,7 +24,7 @@ const val RATIO_X_ALLY=0.4f
 const val RATIO_Y_ALLY=0.1f
 const val RATIO_X_RECYCLER_VIEW=0.5f
 
-class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
+class StuffPlayerFrag(val player:Player, val isPowerLordEnabled:Boolean=true) : CustomFragment<Player>() {
 
     //indicate the layout that we use to show this fragment
     override val idLayoutToInflate: Int= R.layout.frag_layout_player
@@ -79,7 +80,14 @@ class StuffPlayerFrag(val player:Player) : CustomFragment<Player>() {
         adapterLord= object : ImageAdapter<Lord>(dataGame.listLord,activity!!,0.4f,0.1f,recyclerViewLord,
             ::createViewHolderLord){
             override fun onClickItem(position: Int) {
-                Log.w("msg", "pos:$position")
+                val lord=listImg[position]
+                //si le seigneur dispose d'un pouvoir actif
+                //et que le frag autorise le declenechement de ces pouvoirs
+                if(isPowerLordEnabled && lord.power is ActivePermanentPower)
+                {
+                    //alors on l'execute
+                    lord.power.activate(dataGame,controller!!.game)
+                }
             }
         }
 

@@ -59,7 +59,7 @@ class GUIView( activity: MainActivity) {
         //init action when click on next turn button
         nextTurnButton.setOnClickListener {
             newTurnBegan()
-            controller!!.playerClickToBeginNewTurn()
+            controller!!.playerClickToBeginNewTurn(activity)
         }
         
         nextTurnLayout.setOnTouchListener{_,_->true}
@@ -111,7 +111,9 @@ class GUIView( activity: MainActivity) {
         MainActivity.generatorFragment!!.addFragToActivity(explorationFrag!!)
 
         //we create also a frag to show player stuff
-        createPlayerScreen(exploration.listPlayer.getCurrent())
+        //we set false to disenabled power on Lord Click (because the xploration show player frag who it's not their turn
+        stuffPlayerFrag= StuffPlayerFrag(exploration.listPlayer.getCurrent(),false)
+        MainActivity.generatorFragment!!.addFragToActivity(stuffPlayerFrag!!)
     }
 
 

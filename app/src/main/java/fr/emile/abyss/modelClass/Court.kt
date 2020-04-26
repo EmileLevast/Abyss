@@ -86,6 +86,12 @@ class Court {
         return false
     }
 
+    /**Draw Lord, and return it. It is not added to the proposed lords list**/
+    fun drawOneLord():Lord
+    {
+        return deckLord.removeAt(0)
+    }
+
     override fun toString(): String {
         return "=====Court====="+listProposedLord.joinToString(separator = "\n"){ it.toString()}
     }

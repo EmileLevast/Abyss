@@ -6,6 +6,7 @@ import fr.emile.abyss.R
 import fr.emile.abyss.affichage.IShowImage
 import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderAlly
 import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderImageOnly
+import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderLord
 import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.Game
 import fr.emile.abyss.modelClass.Player
@@ -158,6 +159,8 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                         //nous activons donc son pouvoir seulement s'il a au moins 1 allie
                         if(!player.listAlly.isEmpty())
                         {
+                            //we clear the screen in order to have a full screen frag
+                            MainActivity.generatorFragment!!.popAll()
                             controller!!.view.createPowerLordFrag(
                                 player.listAlly,
                                 "${player.nom} is using Esclavagiste\nPlease choose one ally to discard and gain 2 perls",
@@ -173,10 +176,47 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                     }
 
                 }),
-            Lord(FishType.SEA_HORSE,"L'Exploitant",false, R.drawable.exploitant,10,1,FishType.SEA_HORSE,12,mockedInstantPower),
+            Lord(FishType.SEA_HORSE,"L'Exploitant",false, R.drawable.exploitant,10,1,FishType.SEA_HORSE,12, noPower),
             Lord(FishType.JELLYFISH,"L'Illusionniste",false, R.drawable.illusionniste,10,1,FishType.JELLYFISH,9,mockedActivePermanentPower),
-            Lord(FishType.JELLYFISH,"L'Invocateur",false, R.drawable.invocateur,8,1,FishType.JELLYFISH,8,mockedActivePermanentPower),
-            Lord(FishType.OCTOPUS,"L'Intriguant",false, R.drawable.l_intriguant,8,3,FishType.OCTOPUS,6,mockedActivePermanentPower),
+
+            Lord(FishType.JELLYFISH,"L'Invocateur",false, R.drawable.invocateur,8,1,FishType.JELLYFISH,8,
+                object : InstantPower{
+                    override fun activate(player: Player, game: Game) {
+                        //we just hide the button that let go to the next player
+                        controller!!.view.newTurnBegan()
+                    }
+                }),
+
+            Lord(FishType.OCTOPUS,"L'Intriguant",false, R.drawable.l_intriguant,8,3,FishType.OCTOPUS,6,
+                object : InstantPower{
+                    override fun activate(player: Player, game: Game) {
+
+                        //if the player has at least one lord to discard
+                        val listFreeLordPlayer=player.listLord.filter { it.isFree}
+                        if(!listFreeLordPlayer.isEmpty())
+                        {
+                            //we clear the screen in order to have a full screen frag
+                            MainActivity.generatorFragment!!.popAll()
+
+                            //we create a frag to show all the free lord of the player
+                            controller!!.view.createPowerLordFrag(
+                                listFreeLordPlayer,
+                                "${player.nom} is using L' Intriguant\nDiscard One Lord and draw the first of the deck",
+                                R.drawable.l_intriguant,
+                                ::createViewHolderLord)
+                            {lord->
+                                //the player discard the chosen Lord in his hands
+                                player.listLord.remove(lord)
+
+                                //and we give him the first lord from the deck
+                                player.listLord.add(game.court.drawOneLord())
+
+                                MainActivity.generatorFragment!!.popAll()
+                            }
+                        }
+                    }
+                }),
+
             Lord(FishType.SEA_HORSE,"La Bergère",true, R.drawable.la_bergere,8,1,FishType.SEA_HORSE,6,mockedActivePermanentPower),
             Lord(FishType.JELLYFISH,"La Chamanesse",true, R.drawable.la_chamanesse,6,3,FishType.JELLYFISH,5,mockedActivePermanentPower),
             Lord(FishType.SEA_HORSE,"La Gardienne",true, R.drawable.la_gardienne,6,3,FishType.SEA_HORSE,6,mockedActivePermanentPower),
