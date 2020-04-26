@@ -1,6 +1,7 @@
 package fr.emile.abyss.modelClass
 
 import fr.emile.abyss.Container
+import fr.emile.abyss.R
 import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.gameItems.FishType
 import fr.emile.abyss.modelClass.gameItems.Lord
@@ -25,7 +26,7 @@ class Game {
         //TODO interdire plusieurs joueur même nom, voir le pouvoir de l'assassin
         for(i in (65 until (PLAYER_NUMBER+65)))
         {
-            listPlayer.add(Player(i.toChar().toString()))
+            listPlayer.add(Player(i.toChar().toString(), R.drawable.couverture))
         }
 
         cheatFirstPLayer()

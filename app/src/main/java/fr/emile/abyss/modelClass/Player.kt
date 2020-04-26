@@ -1,13 +1,17 @@
 package fr.emile.abyss.modelClass
 
+import fr.emile.abyss.affichage.IShowImage
 import fr.emile.abyss.modelClass.gameItems.*
 
 private const val NBR_MAX_LORD=7
 
-class Player (var nom:String){
+class Player (var nom:String, override var imgId:Int):IShowImage{
 
     //true quand le joueur a deja achete un allie dans cette explo
     var dejaAcheteExplo=false
+
+    //contains all the monster tokens that the player won and didn't use yet
+    var listMonsterToken= mutableListOf<MonsterToken>()
 
     var listAllieFedere= mutableListOf<Ally>()
     var listLord= mutableListOf<Lord>()

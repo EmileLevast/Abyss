@@ -7,6 +7,7 @@ import fr.emile.abyss.affichage.IShowImage
 import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderAlly
 import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderImageOnly
 import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderLord
+import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderPlayer
 import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.Game
 import fr.emile.abyss.modelClass.Player
@@ -222,12 +223,71 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                     }
                 }),
 
-            Lord(FishType.SEA_HORSE,"La Bergère",true, R.drawable.la_bergere,8,1,FishType.SEA_HORSE,6,mockedActivePermanentPower),
-            Lord(FishType.JELLYFISH,"La Chamanesse",true, R.drawable.la_chamanesse,6,3,FishType.JELLYFISH,5,mockedActivePermanentPower),
-            Lord(FishType.SEA_HORSE,"La Gardienne",true, R.drawable.la_gardienne,6,3,FishType.SEA_HORSE,6,mockedActivePermanentPower),
-            Lord(FishType.SEA_SHELL,"La Negociante",false, R.drawable.la_negociante,10,3,FishType.SEA_SHELL,9,mockedActivePermanentPower),
-            Lord(FishType.SEA_SHELL,"Le Boutiquier",false, R.drawable.le_boutiquier,6,3,FishType.SEA_SHELL,9,mockedActivePermanentPower),
-            Lord(FishType.CRAB,"Le Chasseur",false, R.drawable.le_chasseur,8,2,FishType.CRAB,6,mockedActivePermanentPower),
+            Lord(FishType.SEA_HORSE,"La Bergère",true, R.drawable.la_bergere,8,1,FishType.SEA_HORSE,6, noPower),
+            Lord(FishType.JELLYFISH,"La Chamanesse",true, R.drawable.la_chamanesse,6,3,FishType.JELLYFISH,5,
+                object: MilitaryLordAttack{
+                    //we just return false, like that the power can't be done
+                    override fun isAttackAvailable(): Boolean {
+                        return false
+                    }
+                }),
+            Lord(FishType.SEA_HORSE,"La Gardienne",true, R.drawable.la_gardienne,6,3,FishType.SEA_HORSE,6, noPower),
+            Lord(FishType.SEA_SHELL,"La Negociante",false, R.drawable.la_negociante,10,3,FishType.SEA_SHELL,9,
+                object : ActivePermanentPower{
+                    override fun activate(player: Player, game: Game) {
+                        //we simply give 3 perls to the player
+                        player.perl+=3
+                    }
+                }),
+            Lord(FishType.SEA_SHELL,"Le Boutiquier",false, R.drawable.le_boutiquier,6,3,FishType.SEA_SHELL,9,
+                object : ActivePermanentPower{
+                    override fun activate(player: Player, game: Game) {
+                        player.perl+=1
+                    }
+                }),
+
+            Lord(FishType.CRAB,"Le Chasseur",false, R.drawable.le_chasseur,8,2,FishType.CRAB,6,
+                object :PassivePowerInfluenceOthers{
+                    override fun activate(player: Player, game: Game) {
+                        //firslty we build a list with all the player that can be reached by the military power (i.e. chamanesse)
+                        val listPlayerThatCanBeAttacked= mutableListOf<Player>()
+
+                        //get all the other players
+                        val listPlayerTargeted= mutableListOf<Player>().apply{addAll(game.listPlayer.listElt)}.filter{it.nom!=player.nom}
+
+                        //TODO Becareful here , because we call the function under attack also the player is not already attacked
+                        listPlayerTargeted.forEach {
+                            it.playerUnderAttackMilitaryLord{player,_->
+                                //if the player has at least one token
+                                if(!player.listMonsterToken.isEmpty())
+                                {
+                                    listPlayerThatCanBeAttacked.add(player)
+                                }
+                            }
+                        }
+
+                        //after that we show to the current player wich player can be attacked
+                        //and he has to choose one of them to steal the token from him
+                        if(!listPlayerThatCanBeAttacked.isEmpty())
+                        {
+                            //we clear the screen in order to have a full screen frag
+                            MainActivity.generatorFragment!!.popAll()
+                            controller!!.view.createPowerLordFrag(
+                                listPlayerThatCanBeAttacked,
+                                "${player.nom} is using Hunter\nSteal the monster of one of the players",
+                                R.drawable.le_chasseur,
+                                ::createViewHolderPlayer)
+                            {playerAttacked->
+                                //we stole the token and give it to the other player
+                                val stoleToken=playerAttacked.listMonsterToken.removeAt(0)
+                                player.listMonsterToken.add(stoleToken)
+
+                                //we clear the screen to delete the frag
+                                MainActivity.generatorFragment!!.popAll()
+                            }
+                        }
+                    }
+                }),
             Lord(FishType.CRAB,"le chef des armées",true, R.drawable.le_chef_des_armees,8,1,FishType.CRAB,4,mockedActivePermanentPower),
             Lord(FishType.SEA_SHELL,"Le Colporteur",false, R.drawable.le_colporteur,8,1,FishType.SEA_SHELL,9,mockedActivePermanentPower),
             Lord(FishType.OCTOPUS,"Le Corrupteur",false, R.drawable.le_corrupteur,10,1,FishType.OCTOPUS,6,mockedActivePermanentPower),

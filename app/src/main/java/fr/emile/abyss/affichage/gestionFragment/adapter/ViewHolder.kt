@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.emile.abyss.R
 import fr.emile.abyss.affichage.IShowImage
+import fr.emile.abyss.modelClass.Player
 import fr.emile.abyss.modelClass.gameItems.Ally
 import fr.emile.abyss.modelClass.gameItems.Lord
 
@@ -106,6 +107,25 @@ fun createViewHolderAlly(parent: ViewGroup, activity: Context,
         override fun initPotentialView(itemToShow: Ally) {
             textViewValueAlly.text = itemToShow.number.toString()
             checkBoxBuyWithAlly.isChecked=itemToShow.selectedToBuyLord
+        }
+    }
+}
+
+fun createViewHolderPlayer(parent: ViewGroup, activity: Context,
+                         reqHeight: Int, reqWidth: Int,
+                         listener: ImageAdapter<Player>): ViewHolder<Player> {
+
+
+    return object : ViewHolder<Player>(
+        LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_ally, parent, false)
+        , activity, reqHeight, reqWidth, listener){
+
+        //view added in the recycler view
+        //we use the same layout as for the ally card because we need a text to print the name
+        private val textViewNamePlayer: TextView =itemView.findViewById(R.id.textValueAllyRecyclerView)
+
+        override fun initPotentialView(itemToShow: Player) {
+            textViewNamePlayer.text = itemToShow.nom
         }
     }
 }

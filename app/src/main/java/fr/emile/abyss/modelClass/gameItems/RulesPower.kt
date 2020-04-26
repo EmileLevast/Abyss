@@ -64,7 +64,7 @@ class RulesPower {
     {
         //on recupere tous les pouvoirs qui se declenche lors de l'attaque d'un seigneur
         //on regarde si y en a pas un qui empeche le pouvoirde s'executer, sinon on l'execute
-        getPower(object : MilitaryLordAttack{}).find {power -> !power.isAttackAvailable() } ?:
+        getPower<MilitaryLordAttack>(object : MilitaryLordAttack{}).find {power -> !power.isAttackAvailable() } ?:
         powerEffect(playerAttacked, controller!!.game)
     }
 }
