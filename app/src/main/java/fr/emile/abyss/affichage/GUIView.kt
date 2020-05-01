@@ -20,6 +20,7 @@ import fr.emile.abyss.modelClass.Player
 import fr.emile.abyss.modelClass.Council
 import fr.emile.abyss.modelClass.Court
 import fr.emile.abyss.modelClass.gameItems.FishType
+import fr.emile.abyss.modelClass.gameItems.Lord
 
 
 var WIDTH_SCREEN:Int? = null
@@ -143,9 +144,9 @@ class GUIView( activity: MainActivity) {
     /**
      *Court
      */
-    fun createCourt(court: Court)
+    fun createCourt(court: Court,actionOnClick:(Lord)->Unit= controller!!::playerWantToBuyLord)
     {
-        val courtFrag=CourtFrag(court)
+        val courtFrag=CourtFrag(court,actionOnClick)
         MainActivity.generatorFragment!!.addFragToActivity(courtFrag)
         //we create also a frag to show player stuff
         createPlayerScreen(controller!!.game.listPlayer.getCurrent())

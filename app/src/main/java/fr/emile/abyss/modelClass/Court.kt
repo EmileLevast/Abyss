@@ -1,6 +1,7 @@
 package fr.emile.abyss.modelClass
 
 import fr.emile.abyss.controller
+import fr.emile.abyss.modelClass.gameItems.Ally
 import fr.emile.abyss.modelClass.gameItems.BuyLordPrice
 import fr.emile.abyss.modelClass.gameItems.Lord
 
@@ -56,19 +57,23 @@ class Court {
             {
                 //on enleve le seigneur et on l'ajoute a la liste des seigneurs achetés du joueur
                 player.buyLord(listProposedLord.removeAt(listProposedLord.indexOf(lordToBuy)),listCardToBuy)
-                //si le joueur tire l'entepenultieme seigneur il gagne 2 perles
-                if(drawNewLords())player.perl+=2
-
-                //the player actually buy something
-
-
-                //si le joueur a achete quelque chose il finit son tour
-                controller!!.courtFinish(player,lordToBuy)
+                lordIsActuallyBought(player,lordToBuy)
             }
 
         }
+    }
+
+    /**Implement here what happens to the court when a lord is purchased**/
+    fun lordIsActuallyBought(playerBuying:Player,lordToBuy:Lord)
+    {
+
+        //si le joueur tire l'entepenultieme seigneur il gagne 2 perles
+        if(drawNewLords())playerBuying.perl+=2
 
 
+
+        //si le joueur a achete quelque chose il finit son tour
+        controller!!.courtFinish(playerBuying,lordToBuy)
     }
 
     fun drawNewLords() :Boolean

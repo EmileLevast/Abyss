@@ -14,7 +14,7 @@ import fr.emile.abyss.modelClass.Court
 import fr.emile.abyss.modelClass.gameItems.Lord
 
 //TODO the propriety court is only used to initiate and i don't release it after that
-class CourtFrag(private val court: Court?) :CustomFragment<Court>(){
+class CourtFrag(private val court: Court?,private val actionOnClick:(Lord)->Unit) :CustomFragment<Court>(){
 
     lateinit var recyclerViewLord: HorizontalRecyclerView
     private lateinit var adapterLord: ImageAdapter<Lord>
@@ -30,7 +30,7 @@ class CourtFrag(private val court: Court?) :CustomFragment<Court>(){
         adapterLord= object : ImageAdapter<Lord>(court!!.listProposedLord,activity!!,0.5f,0.15f,recyclerViewLord,
             ::createViewHolderImageOnly){
             override fun onClickItem(position: Int) {
-                controller!!.playerWantToBuyLord(listImg[position])
+                actionOnClick(listImg[position])
             }
         }
 

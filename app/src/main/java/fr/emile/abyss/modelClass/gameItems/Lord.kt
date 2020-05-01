@@ -366,7 +366,19 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                         player.perl+=2
                     }
                 }),
-            Lord(FishType.OCTOPUS,"Le Corrupteur",false, R.drawable.le_corrupteur,10,1,FishType.OCTOPUS,6,mockedActivePermanentPower),
+            Lord(FishType.OCTOPUS,"Le Corrupteur",false, R.drawable.le_corrupteur,10,1,FishType.OCTOPUS,6,
+                object:InstantPower{
+                    override fun activate(player: Player, game: Game) {
+                        //if the player has enough perl to use the power
+                        if(player.perl>=5)
+                        {
+                            controller!!.view.createCourt(game.court) { lord->
+                                game.court.lordIsActuallyBought(player,lord)
+                            }
+                        }
+
+                    }
+                }),
             Lord(FishType.OCTOPUS,"Le Diplomate",true, R.drawable.le_diplomate,8,1,FishType.OCTOPUS,5,mockedActivePermanentPower),
             Lord(FishType.SEA_HORSE,"Le Faucheur",true, R.drawable.le_faucheur,7,2,FishType.SEA_HORSE,6,mockedActivePermanentPower),
             Lord(FishType.CRAB,"Le Geôlier",false, R.drawable.le_geolier,6,3,FishType.CRAB,7,mockedActivePermanentPower),
