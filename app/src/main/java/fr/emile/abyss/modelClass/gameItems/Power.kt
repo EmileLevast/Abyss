@@ -161,7 +161,7 @@ interface CountCardHand: PassivePowerInfluenceOthers, InstantPower
     }
 
     //implement this to design the thing immediately done after buying
-    override fun activate(player: Player, game: Game)
+    override fun activate(player: Player, game: Game)=Unit
 
     //implement this to design the action to do at each turn
     fun manageHandCards(player:Player)=Unit

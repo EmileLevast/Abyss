@@ -35,6 +35,9 @@ class RulesPower {
         return (mapCurrentActivePower[eventPowerTriggered.getKeyForMap()] as? List<T>) ?: listOf(eventPowerTriggered)
     }
 
+    /**Use this method to trigger the [PassivePermanentPower]
+     * Always define the generic type do not infer it with the parameter
+     * Otherwise you will have cast issues**/
     fun <T:PassivePermanentPower> applyToCorrespondingEvent(eventPowerTriggered:T, player: Player, action: (t:T)->Unit)
     {
         getPower(eventPowerTriggered).forEach {
@@ -50,7 +53,7 @@ class RulesPower {
                 //sinon on envoie le pouvoir a executer a cette fonction
                 //ici s'il y a une attaque c'est forcément le joueur lui même qui se fait attaquer donc c'est logique
                 //d'envoyer la variable player pour le paramètre playerAttacked
-                applyPowerReactingToMilitaryLord(it::activate,player)
+                applyPowerReactingToMilitaryLord({_,_->it.let(action)},player)
             }
         }
     }

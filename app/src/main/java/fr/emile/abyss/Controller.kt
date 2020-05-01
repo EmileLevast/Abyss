@@ -29,9 +29,10 @@ class Controller(activity:MainActivity) {
     }
 
     //Print a button to authorize next player to play
-    fun playerFinishTurn(playerName:String)
+    fun playerFinishTurn(player:Player)
     {
-        view.AuthorizeNextTurn(playerName)
+        game.endTurn(player)
+        view.AuthorizeNextTurn(player.nom)
     }
 
 
@@ -63,7 +64,7 @@ class Controller(activity:MainActivity) {
         game.explorationFinish()
 
         //we take off fragment
-        playerFinishTurn(game.listPlayer.getCurrent().nom)
+        playerFinishTurn(game.listPlayer.getCurrent())
     }
 
     /**Council**/
@@ -75,7 +76,7 @@ class Controller(activity:MainActivity) {
         //we call next turn here because we want to only call game.takeCouncilStack(fishType)
         // for the power that can take too stack
         //game.nextTurn()
-        playerFinishTurn(game.listPlayer.getCurrent().nom)
+        playerFinishTurn(game.listPlayer.getCurrent())
     }
 
     fun launchCouncil()
@@ -101,7 +102,7 @@ class Controller(activity:MainActivity) {
         /**must call [playerFinishTurn] before [courtFinish] because of the invocateur
          * The player we print the button "next turn A" before the power of the lord done in courtfinish
          * **/
-        playerFinishTurn(player.nom)
+        playerFinishTurn(player)
 
         game.courtFinish(player,lordToBuy)
     }

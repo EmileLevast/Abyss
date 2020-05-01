@@ -3,10 +3,7 @@ package fr.emile.abyss.modelClass
 import fr.emile.abyss.Container
 import fr.emile.abyss.R
 import fr.emile.abyss.controller
-import fr.emile.abyss.modelClass.gameItems.FishType
-import fr.emile.abyss.modelClass.gameItems.Lord
-import fr.emile.abyss.modelClass.gameItems.CouncilStack
-import fr.emile.abyss.modelClass.gameItems.ExplorationSendToCouncil
+import fr.emile.abyss.modelClass.gameItems.*
 
 const val PLAYER_NUMBER=3
 class Game {
@@ -110,7 +107,6 @@ class Game {
     {
         sendPlayerAllieToDiscard(player)
         lordToBuy.power.init(player,this)
-        //nextTurn()
     }
 
     /**===Rule===**/
@@ -126,6 +122,18 @@ class Game {
         }
     }
 
+    //things to do before going to the nextPlayer
+    fun endTurn(player:Player)
+    {
+        player.listRulesPower.applyToCorrespondingEvent<CountCardHand>(object :CountCardHand{
+            //this attribute is never used because the PassivePermanentPower redefine it in his init() function
+            override var nameOfAttackingPlayer=player.nom
+        },player){
+            //just activate the corresponding frag that apply effects
+            it.manageHandCards(player)
+        }
+    }
+
 
     override fun toString(): String {
         return "=====Game====="+exploration.toString()+court.toString()
@@ -137,6 +145,6 @@ class Game {
         createExploration()
         listPlayer.getCurrent().addAllie(exploration!!.deckAllie)
         //on ajoute des cartes à un autre joueur aussi
-        listPlayer.listElt[1].addAllie(exploration!!.deckAllie)
+        listPlayer.listElt[1].addAllie(exploration!!.deckAllie.toMutableList())
     }
 }
