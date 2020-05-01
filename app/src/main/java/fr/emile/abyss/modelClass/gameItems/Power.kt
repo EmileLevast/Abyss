@@ -56,7 +56,9 @@ interface PassivePermanentPower:Power
 /**use this interface to implement passive power of military Lord**/
 interface PassivePowerInfluenceOthers:PassivePermanentPower,InstantEffectPower
 {
+    var nameOfAttackingPlayer:String
     override fun init(player: Player, game: Game) {
+        nameOfAttackingPlayer=player.nom
         //because all other players have to see it in their rules
         iterateOnlyOtherPlayers(player,game.listPlayer.listElt,RulesPower::addPower)
 
@@ -137,11 +139,30 @@ interface CouncilStack:PassivePermanentPower
 
 //when a player finish an exploration, does he win something
 //(armateur give one pearl for eachcolor allie send to council)
-interface explorationSendToCouncil:PassivePermanentPower
+interface ExplorationSendToCouncil:PassivePermanentPower
 {
     //what the player can win thanks to this exploration
     //Armateur ;)
     //par defaut il se passe rien
     fun actionAccordingTo(listCardSendToCouncil:MutableList<Ally>,player:Player)=Unit
+}
 
+/**Implement this interface to define something to do with the player according to the number of cards in his hands
+ *Think about the amree chief, he has 2 power, firstly instantly every one must discard, and secondly at each turn.
+ * */
+
+interface CountCardHand: PassivePowerInfluenceOthers, InstantPower
+{
+    override fun init(player: Player, game: Game) {
+        //one side we add it to the permanent power
+        super<PassivePowerInfluenceOthers>.init(player, game)
+        //second side we execute the power for the first time
+        super<InstantPower>.init(player, game)
+    }
+
+    //implement this to design the thing immediately done after buying
+    override fun activate(player: Player, game: Game)
+
+    //implement this to design the action to do at each turn
+    fun manageHandCards(player:Player)=Unit
 }

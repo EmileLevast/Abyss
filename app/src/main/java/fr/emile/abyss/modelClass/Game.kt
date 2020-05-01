@@ -6,7 +6,7 @@ import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.gameItems.FishType
 import fr.emile.abyss.modelClass.gameItems.Lord
 import fr.emile.abyss.modelClass.gameItems.CouncilStack
-import fr.emile.abyss.modelClass.gameItems.explorationSendToCouncil
+import fr.emile.abyss.modelClass.gameItems.ExplorationSendToCouncil
 
 const val PLAYER_NUMBER=3
 class Game {
@@ -54,7 +54,7 @@ class Game {
         val listCarToSendToCouncil=exploration!!.sendToConseil()
         val currentPlayer=listPlayer.getCurrent()
         currentPlayer.listRulesPower.
-            applyToCorrespondingEvent<explorationSendToCouncil>(object :explorationSendToCouncil{},currentPlayer
+            applyToCorrespondingEvent<ExplorationSendToCouncil>(object :ExplorationSendToCouncil{},currentPlayer
             ) {it.actionAccordingTo(listCarToSendToCouncil,currentPlayer)}
 
         //we send all the allies to the council

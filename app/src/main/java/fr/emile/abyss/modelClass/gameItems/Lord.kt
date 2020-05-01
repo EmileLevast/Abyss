@@ -99,7 +99,7 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
             Lord(FishType.SEA_HORSE,"L'Aquaculteur",false, R.drawable.aquaculteur,9,3,FishType.SEA_HORSE,11, noPower),
 
             Lord(FishType.SEA_SHELL,"L'Armateur",true, R.drawable.armateur,6,3,FishType.SEA_SHELL,6,
-                object : explorationSendToCouncil{
+                object : ExplorationSendToCouncil{
                     override fun actionAccordingTo(listCardSendToCouncil: MutableList<Ally>, player: Player) {
                         //on compte le nombre de type différents dans la liste
                         //et on l'ajoute au total de perl
@@ -134,13 +134,13 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                                             listFreeLordPlayer,
                                             "${player.nom} is using Assassin\n${playerAttacked.nom} choose a lord to sacrifice",
                                             R.drawable.assassin,
-                                            ::createViewHolderImageOnly)
+                                            ::createViewHolderImageOnly,
                                         { lord ->
                                             lord.die()
                                             //on suppr le fragment assassin actuel
                                             MainActivity.generatorFragment!!.popLast()
                                             actionOnClick()
-                                        }
+                                        })
                                     }
                                 }
                             }
@@ -166,13 +166,13 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                                 player.listAlly,
                                 "${player.nom} is using Esclavagiste\nPlease choose one ally to discard and gain 2 perls",
                                 R.drawable.esclavagiste,
-                                ::createViewHolderAlly)
+                                ::createViewHolderAlly,
                             {ally->
                                 //now we define that when he chooses an ally, we destroy it and he gains 2 perls
                                 player.listAlly.remove(ally)
                                 player.perl+=2
                                 MainActivity.generatorFragment!!.popAll()
-                            }
+                            })
                         }
                     }
 
@@ -204,7 +204,7 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                                 listFreeLordPlayer,
                                 "${player.nom} is using L' Intriguant\nDiscard One Lord and draw the first of the deck",
                                 R.drawable.l_intriguant,
-                                ::createViewHolderLord)
+                                ::createViewHolderLord,
                             {lord->
                                 //the player discard the chosen Lord in his hands
                                 player.listLord.remove(lord)
@@ -218,7 +218,7 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
 
                                 //we activate the power
                                 lordDrawn.power.init(player, controller!!.game)
-                            }
+                            })
                         }
                     }
                 }),
@@ -247,7 +247,7 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                 }),
 
             Lord(FishType.CRAB,"Le Chasseur",false, R.drawable.le_chasseur,8,2,FishType.CRAB,6,
-                object :PassivePowerInfluenceOthers{
+                object :InstantPower{
                     override fun activate(player: Player, game: Game) {
                         //firslty we build a list with all the player that can be reached by the military power (i.e. chamanesse)
                         val listPlayerThatCanBeAttacked= mutableListOf<Player>()
@@ -276,7 +276,7 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                                 listPlayerThatCanBeAttacked,
                                 "${player.nom} is using Hunter\nSteal the monster of one of the players",
                                 R.drawable.le_chasseur,
-                                ::createViewHolderPlayer)
+                                ::createViewHolderPlayer,
                             {playerAttacked->
                                 //we stole the token and give it to the other player
                                 val stoleToken=playerAttacked.listMonsterToken.removeAt(0)
@@ -284,11 +284,76 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
 
                                 //we clear the screen to delete the frag
                                 MainActivity.generatorFragment!!.popAll()
-                            }
+                            })
                         }
                     }
                 }),
-            Lord(FishType.CRAB,"le chef des armées",true, R.drawable.le_chef_des_armees,8,1,FishType.CRAB,4,mockedActivePermanentPower),
+            Lord(FishType.CRAB,"le chef des armées",true, R.drawable.le_chef_des_armees,8,1,FishType.CRAB,4,
+                object: CountCardHand{
+
+                    //just need to call that, the init function initiate the field with thr right name
+                    override lateinit var nameOfAttackingPlayer: String
+
+                    override fun activate(player: Player, game: Game) {
+                        //on recupere tous les joueurs et on enleve le joueur qui assassine
+                        val listPlayerTargeted = mutableListOf<Player>().apply { addAll(game.listPlayer.listElt) }
+                            .filter { it.nom != player.nom }
+
+                        val iterListTarget = listPlayerTargeted.iterator()
+
+                        //what to do when you finish an assassin frag
+                        fun attackNextPlayer() {
+                            //tant qu'il y a des personnages
+                            if (iterListTarget.hasNext()) {
+                                val playerAttacked = iterListTarget.next()
+
+                                //we create a frag to doscard ally and at the end we launch a second frag for another player
+                                createFragToDiscardAlly(playerAttacked) {attackNextPlayer()}
+                            }
+                        }
+
+                        //we call the first chief frag
+                        attackNextPlayer()
+                    }
+
+                    //the second power of the chief of armies
+                    //each turn you have to discard allies
+                    override fun manageHandCards(player: Player) {
+                        createFragToDiscardAlly(player)
+                    }
+
+                    private fun createFragToDiscardAlly(playerAttacked:Player,actionEndFrag:()->Unit={})
+                    {
+                        playerAttacked.playerUnderAttackMilitaryLord { _, _ ->
+
+                            //on créé le frag pour discard les alliés
+                            //on verifie que le joueur a plsu de 6 alliés sinon le pouvoir est inefficace
+                            if (playerAttacked.listAlly.size>6)
+                            {
+                                controller!!.view.createPowerLordFrag(
+                                    playerAttacked.listAlly,
+                                    "$nameOfAttackingPlayer is using Chef des armees\n${playerAttacked.nom} click to delete Ally",
+                                    R.drawable.le_chef_des_armees,
+                                    ::createViewHolderAlly,
+                                    actionOnClick = { listItem,indexClicked ->
+                                        //on delete l'allié
+                                        (listItem as MutableList<Ally>).removeAt(indexClicked)
+                                        playerAttacked.listAlly.removeAt(indexClicked)
+
+                                        //si il passe en dessous de la barre des 7 alliés en main on arrete
+                                        if (playerAttacked.listAlly.size<=6) {
+                                            MainActivity.generatorFragment!!.popLast()
+
+                                            //If you want to do something special before ending the frag
+                                            actionEndFrag()
+                                        }
+                                    }
+                                )
+                            }
+
+                        }
+                    }
+                }),
             Lord(FishType.SEA_SHELL,"Le Colporteur",false, R.drawable.le_colporteur,8,1,FishType.SEA_SHELL,9,mockedActivePermanentPower),
             Lord(FishType.OCTOPUS,"Le Corrupteur",false, R.drawable.le_corrupteur,10,1,FishType.OCTOPUS,6,mockedActivePermanentPower),
             Lord(FishType.OCTOPUS,"Le Diplomate",true, R.drawable.le_diplomate,8,1,FishType.OCTOPUS,5,mockedActivePermanentPower),

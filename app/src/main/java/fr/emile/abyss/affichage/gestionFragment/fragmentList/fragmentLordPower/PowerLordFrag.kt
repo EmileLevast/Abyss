@@ -21,7 +21,7 @@ class PowerLordFrag<T:IShowImage>(
     private val factoryViewHolder:(parent: ViewGroup, activity: Context,
                                    reqHeight: Int, reqWidth: Int,
                                    onclick:ImageAdapter<T>)->ViewHolder<T>,
-    val actionAfterClick:(T)->Unit): CustomFragment<Player>(){
+    val actionOnClick:(listItem:List<T>,indexClicked:Int)->Unit): CustomFragment<Player>(){
 
     private lateinit var recyclerViewImage: HorizontalRecyclerView
     private lateinit var adapterImage: ImageAdapter<T>
@@ -42,9 +42,14 @@ class PowerLordFrag<T:IShowImage>(
         recyclerViewImage.layoutManager= LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL,false)
 
         adapterImage= object : ImageAdapter<T>(listToShow,activity!!,0.5f,0.15f,recyclerViewImage,factoryViewHolder){
-            override fun onClickItem(position: Int) {
-                actionAfterClick(listImg[position])
+
+            override fun onClick(listItem: List<T>, indexClicked: Int) {
+                actionOnClick(listItem,indexClicked)
+                notifyDataSetChanged()
             }
+
+            //useless because it isn't call as I redefined OnClick just above
+            override fun onClickItem(position: Int) =Unit
         }
 
         recyclerViewImage.adapter=adapterImage

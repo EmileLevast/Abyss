@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import fr.emile.abyss.MainActivity
 import fr.emile.abyss.R
+import fr.emile.abyss.affichage.gestionFragment.CustomFragment
 import fr.emile.abyss.affichage.gestionFragment.adapter.ImageAdapter
 import fr.emile.abyss.affichage.gestionFragment.adapter.ViewHolder
 import fr.emile.abyss.affichage.gestionFragment.fragmentList.*
@@ -82,12 +83,16 @@ class GUIView( activity: MainActivity) {
     }
 
 
+    fun <T>addFragToActivity(frag:CustomFragment<T>)
+    {
+        MainActivity.generatorFragment!!.addFragToActivity(frag)
+    }
 
     fun createPlayerScreen(player: Player) {
 
         stuffPlayerFrag= StuffPlayerFrag(player)
 
-        MainActivity.generatorFragment!!.addFragToActivity(stuffPlayerFrag!!)
+        addFragToActivity(stuffPlayerFrag!!)
     }
 
     fun updatePlayerScreen(player: Player) {
@@ -108,12 +113,12 @@ class GUIView( activity: MainActivity) {
 
         explorationFrag= ExplorationFrag(exploration)
 
-        MainActivity.generatorFragment!!.addFragToActivity(explorationFrag!!)
+        addFragToActivity(explorationFrag!!)
 
         //we create also a frag to show player stuff
         //we set false to disenabled power on Lord Click (because the xploration show player frag who it's not their turn
         stuffPlayerFrag= StuffPlayerFrag(exploration.listPlayer.getCurrent(),false)
-        MainActivity.generatorFragment!!.addFragToActivity(stuffPlayerFrag!!)
+        addFragToActivity(stuffPlayerFrag!!)
     }
 
 
@@ -132,7 +137,7 @@ class GUIView( activity: MainActivity) {
             CouncilFrag(council)
         }
 
-        MainActivity.generatorFragment!!.addFragToActivity(councilFrag!!)
+       addFragToActivity(councilFrag!!)
     }
 
     /**
@@ -156,10 +161,12 @@ class GUIView( activity: MainActivity) {
                                           factoryViewHolder:(parent: ViewGroup, activity: Context,
                                                           reqHeight: Int, reqWidth: Int,
                                                           onclick: ImageAdapter<T>)-> ViewHolder<T>,
-                                          actionAfterClick:(T)->Unit)
+                                          actionAfterOnClick:(T)->Unit={_->Unit},
+                                          actionOnClick:(listItem:List<T>,indexClicked:Int)->Unit=
+                                              {listItem,indexClicked->actionAfterOnClick(listItem[indexClicked])})
     {
-        val powerLordFrag=PowerLordFrag(listToShow,explicationPower,resourceIdBackground,factoryViewHolder,actionAfterClick)
-        MainActivity.generatorFragment!!.addFragToActivity(powerLordFrag)
+        val powerLordFrag=PowerLordFrag(listToShow,explicationPower,resourceIdBackground,factoryViewHolder,actionOnClick)
+        addFragToActivity(powerLordFrag)
         //we create also a frag to show player stuff
     }
 
@@ -169,7 +176,7 @@ class GUIView( activity: MainActivity) {
     fun createEndGameScreen(endGame: EndGame)
     {
         val endGameFrag=EndGameFrag(endGame)
-        MainActivity.generatorFragment!!.addFragToActivity(endGameFrag)
+        addFragToActivity(endGameFrag)
     }
 
 

@@ -49,10 +49,6 @@ abstract class  CustomFragment<T> : Fragment(){
 
     //nothing important
     final override fun onActivityCreated(savedInstanceState: Bundle?) {
-
-
-
-
         super.onActivityCreated(savedInstanceState)
     }
 

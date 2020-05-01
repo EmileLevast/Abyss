@@ -37,11 +37,18 @@ abstract class ImageAdapter<T:IShowImage>(
         holder.initImageView(listImg[position])
     }
 
-    override fun onClick(v: View?) {
-        onClickItem(recyclerView.getChildLayoutPosition(v!!))
+    final override fun onClick(v: View?) {
+        onClick(listImg,recyclerView.getChildLayoutPosition(v!!))
+    }
+
+    //do not call super in overriding function otherwise you will call twice onClickItem if you are not careful
+    open fun onClick(listItem:List<T>,indexClicked:Int)
+    {
+        onClickItem(indexClicked)
     }
 
     //define what to do on click
+    //TODO delete this and use [onCick(List<T>, Int)] instead. Just have to rework some adapter in frag. Nothing big
     abstract fun onClickItem(position:Int)
 }
 
