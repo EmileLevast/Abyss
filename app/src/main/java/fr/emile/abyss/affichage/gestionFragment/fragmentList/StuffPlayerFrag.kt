@@ -83,10 +83,15 @@ class StuffPlayerFrag(val player:Player, val isPowerLordEnabled:Boolean=true) : 
                 val lord=listImg[position]
                 //si le seigneur dispose d'un pouvoir actif
                 //et que le frag autorise le declenechement de ces pouvoirs
-                if(isPowerLordEnabled && lord.power is ActivePermanentPower && lord.isFree)
+                //et que le pouvoir n'a pas deja ete utilisé ce tour ci
+                if(isPowerLordEnabled && lord.power is ActivePermanentPower && lord.isFree && lord.power.isAvailable )
                 {
+
                     //alors on l'execute
                     lord.power.activate(dataGame,controller!!.game)
+
+                    //on rend le pouvoir inutilisable pour ce tour ci
+                    lord.power.isAvailable=false
                 }
             }
         }

@@ -30,8 +30,12 @@ interface InstantPower:Power,InstantEffectPower
 /**For the power that are permanent but affect the game only when the player decides to**/
 interface ActivePermanentPower:Power,InstantEffectPower
 {
+    //set to false when you use the power, so you c'ant' use it again in the turn
+    var isAvailable:Boolean
     //do nothing when bought
     override fun init(player: Player, game: Game) {
+        isAvailable=true
+
         //the power is called when the player clicks on the lord
     }
 }

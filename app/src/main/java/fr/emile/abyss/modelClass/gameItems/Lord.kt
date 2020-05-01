@@ -47,6 +47,7 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
             }
         }
         private val mockedActivePermanentPower= object : ActivePermanentPower {
+            override var isAvailable:Boolean=true
             override fun activate(player: Player, game: Game) {
                 Log.w("msg","ActivePermanentPower mocked activated")
             }
@@ -154,6 +155,10 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
             Lord(FishType.AMBASSADOR,"L'Ermite",false, R.drawable.ermite,10,5,null,5,mockedPassivePermanentPower),
             Lord(FishType.SEA_SHELL,"L'Esclavagiste",true, R.drawable.esclavagiste,8,1,FishType.SEA_SHELL,5,
                 object :ActivePermanentPower{
+
+                    //must override this although it is initialized in the init() of the activepermanent power
+                    override var isAvailable:Boolean=true
+
                     //Define what to do when you click on this Lord
                     override fun activate(player: Player, game: Game) {
                         //l'esclavagiste peut défausser 1 allie pour gagner 2 perles
@@ -233,14 +238,14 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                 }),
             Lord(FishType.SEA_HORSE,"La Gardienne",true, R.drawable.la_gardienne,6,3,FishType.SEA_HORSE,6, noPower),
             Lord(FishType.SEA_SHELL,"La Negociante",false, R.drawable.la_negociante,10,3,FishType.SEA_SHELL,9,
-                object : ActivePermanentPower{
+                object : InstantPower{
                     override fun activate(player: Player, game: Game) {
                         //we simply give 3 perls to the player
                         player.perl+=3
                     }
                 }),
             Lord(FishType.SEA_SHELL,"Le Boutiquier",false, R.drawable.le_boutiquier,6,3,FishType.SEA_SHELL,9,
-                object : ActivePermanentPower{
+                object : InstantPower{
                     override fun activate(player: Player, game: Game) {
                         player.perl+=1
                     }
@@ -354,7 +359,13 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                         }
                     }
                 }),
-            Lord(FishType.SEA_SHELL,"Le Colporteur",false, R.drawable.le_colporteur,8,1,FishType.SEA_SHELL,9,mockedActivePermanentPower),
+            Lord(FishType.SEA_SHELL,"Le Colporteur",false, R.drawable.le_colporteur,8,1,FishType.SEA_SHELL,9,
+                object : InstantPower{
+                    override fun activate(player: Player, game: Game) {
+                        //we simply give 3 perls to the player
+                        player.perl+=2
+                    }
+                }),
             Lord(FishType.OCTOPUS,"Le Corrupteur",false, R.drawable.le_corrupteur,10,1,FishType.OCTOPUS,6,mockedActivePermanentPower),
             Lord(FishType.OCTOPUS,"Le Diplomate",true, R.drawable.le_diplomate,8,1,FishType.OCTOPUS,5,mockedActivePermanentPower),
             Lord(FishType.SEA_HORSE,"Le Faucheur",true, R.drawable.le_faucheur,7,2,FishType.SEA_HORSE,6,mockedActivePermanentPower),

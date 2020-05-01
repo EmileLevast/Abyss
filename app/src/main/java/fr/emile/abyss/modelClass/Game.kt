@@ -115,6 +115,9 @@ class Game {
         //on pointe le joueur suivant
         listPlayer.next()
 
+        //on reinitialise les pouvoirs qui sont faisable une fois par tour
+        listPlayer.getCurrent().listLord.forEach { if(it.power is ActivePermanentPower){it.power.isAvailable=true} }
+
         //on regarde si le jeu est fini
         if(endGame.isGameFinished())
         {
