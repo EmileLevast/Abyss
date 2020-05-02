@@ -26,6 +26,23 @@ interface InstantPower:Power,InstantEffectPower
     }
 }
 
+/**Implement this to describe a lord that has an instant power which affects only and all the other players**/
+interface InfluenceAllOthers:InstantPower
+{
+    //do not override this use activateOnOtherInstead
+    //otherWise don't use this is not the right interface to use
+    override fun activate(player: Player, game: Game) {
+        val listPlayerTargeted = mutableListOf<Player>().apply { addAll(game.listPlayer.listElt) }
+            .filter { it.nom != player.nom }
+
+        val iterListTarget = listPlayerTargeted.iterator()
+
+        activateOnOther(iterListTarget,player)
+    }
+
+    fun activateOnOther(iterListTarget:Iterator<Player>,playerAttacking:Player)
+}
+
 
 /**For the power that are permanent but affect the game only when the player decides to**/
 interface ActivePermanentPower:Power,InstantEffectPower
@@ -154,17 +171,21 @@ interface ExplorationSendToCouncil:PassivePermanentPower
  *Think about the amree chief, he has 2 power, firstly instantly every one must discard, and secondly at each turn.
  * */
 
-interface CountCardHand: PassivePowerInfluenceOthers, InstantPower
+interface CountCardHand: InfluenceAllOthers,PassivePowerInfluenceOthers
 {
     override fun init(player: Player, game: Game) {
         //one side we add it to the permanent power
         super<PassivePowerInfluenceOthers>.init(player, game)
         //second side we execute the power for the first time
-        super<InstantPower>.init(player, game)
+        super<InfluenceAllOthers>.init(player, game)
     }
 
     //implement this to design the thing immediately done after buying
-    override fun activate(player: Player, game: Game)=Unit
+    override fun activate(player: Player, game: Game) {
+        super<InfluenceAllOthers>.activate(player, game)
+    }
+
+    override fun activateOnOther(iterListTarget: Iterator<Player>, playerAttacking: Player)
 
     //implement this to design the action to do at each turn
     fun manageHandCards(player:Player)=Unit

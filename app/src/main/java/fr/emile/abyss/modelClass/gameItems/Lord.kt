@@ -109,12 +109,8 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                 }),
 
             Lord(FishType.CRAB,"L'Assassin",false, R.drawable.assassin,10,1,FishType.CRAB,6,
-                object : InstantPower{
-                    override fun activate(player: Player, game: Game) {
-                        //on recupere tous les joueurs et on enleve le joueur qui assassine
-                        val listPlayerTargeted= mutableListOf<Player>().apply{addAll(game.listPlayer.listElt)}.filter{it.nom!=player.nom}
-
-                        val iterListTarget=listPlayerTargeted.iterator()
+                object : InfluenceAllOthers{
+                    override fun activateOnOther(iterListTarget:Iterator<Player>,playerAttacking:Player) {
 
                         //what to do when you finish an assassin frag
                         fun actionOnClick()
@@ -133,7 +129,7 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                                         //on créé le frag pour assassiner
                                         controller!!.view.createPowerLordFrag(
                                             listFreeLordPlayer,
-                                            "${player.nom} is using Assassin\n${playerAttacked.nom} choose a lord to sacrifice",
+                                            "${playerAttacking.nom} is using Assassin\n${playerAttacked.nom} choose a lord to sacrifice",
                                             R.drawable.assassin,
                                             ::createViewHolderImageOnly,
                                         { lord ->
@@ -299,12 +295,7 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                     //just need to call that, the init function initiate the field with thr right name
                     override lateinit var nameOfAttackingPlayer: String
 
-                    override fun activate(player: Player, game: Game) {
-                        //on recupere tous les joueurs et on enleve le joueur qui assassine
-                        val listPlayerTargeted = mutableListOf<Player>().apply { addAll(game.listPlayer.listElt) }
-                            .filter { it.nom != player.nom }
-
-                        val iterListTarget = listPlayerTargeted.iterator()
+                    override fun activateOnOther(iterListTarget: Iterator<Player>, playerAttacking: Player) {
 
                         //what to do when you finish an assassin frag
                         fun attackNextPlayer() {
@@ -393,7 +384,9 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                         return true
                     }
                 }),
-            Lord(FishType.SEA_HORSE,"Le Faucheur",true, R.drawable.le_faucheur,7,2,FishType.SEA_HORSE,6,mockedActivePermanentPower),
+
+            Lord(FishType.SEA_HORSE,"Le Faucheur",true, R.drawable.le_faucheur,7,2,FishType.SEA_HORSE,6, noPower),
+
             Lord(FishType.CRAB,"Le Geôlier",false, R.drawable.le_geolier,6,3,FishType.CRAB,7,mockedActivePermanentPower),
             Lord(FishType.JELLYFISH,"Le Maître de magie",true, R.drawable.le_maitre_de_magie,10,3,FishType.JELLYFISH,6,mockedActivePermanentPower),
             Lord(FishType.SEA_HORSE,"Le Meunier",false, R.drawable.le_meunier,8,2,FishType.SEA_HORSE,10,mockedActivePermanentPower),
