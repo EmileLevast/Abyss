@@ -113,7 +113,7 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                     override fun activateOnOther(iterListTarget:Iterator<Player>,playerAttacking:Player) {
 
                         //what to do when you finish an assassin frag
-                        fun actionOnClick()
+                        fun attackNextPlayer()
                         {
                             //tant qu'il y a des personnages
                             if (iterListTarget.hasNext()) {
@@ -121,7 +121,7 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
 
                                 //on lance l'evenement attackmilitarylord
                                 //comme ça le joueur n'est pas attaque s'il a la chamanesse
-                                playerAttacked.playerUnderAttackMilitaryLord {_,_->
+                                playerAttacked.playerUnderAttackMilitaryLord ({_,_->
 
                                     //on verifie qu'il y a des seigneurs a tuer
                                     val listFreeLordPlayer=playerAttacked.listLord.filter { it.isFree && it.isAlive }
@@ -136,15 +136,15 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                                             lord.die()
                                             //on suppr le fragment assassin actuel
                                             MainActivity.generatorFragment!!.popLast()
-                                            actionOnClick()
+                                            attackNextPlayer()
                                         })
                                     }
-                                }
+                                },::attackNextPlayer)
                             }
                         }
 
                         //we call the first assassin frag
-                        actionOnClick()
+                        attackNextPlayer()
 
                     }
                 }),
@@ -258,13 +258,13 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
 
                         //TODO Becareful here , because we call the function under attack also the player is not already attacked
                         listPlayerTargeted.forEach {
-                            it.playerUnderAttackMilitaryLord{player,_->
+                            it.playerUnderAttackMilitaryLord({player,_->
                                 //if the player has at least one token
                                 if(!player.listMonsterToken.isEmpty())
                                 {
                                     listPlayerThatCanBeAttacked.add(player)
                                 }
-                            }
+                            })
                         }
 
                         //after that we show to the current player wich player can be attacked
@@ -320,7 +320,7 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
 
                     private fun createFragToDiscardAlly(playerAttacked:Player,actionEndFrag:()->Unit={})
                     {
-                        playerAttacked.playerUnderAttackMilitaryLord { _, _ ->
+                        playerAttacked.playerUnderAttackMilitaryLord ({ _, _ ->
 
                             //on créé le frag pour discard les alliés
                             //on verifie que le joueur a plsu de 6 alliés sinon le pouvoir est inefficace
@@ -347,7 +347,7 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                                 )
                             }
 
-                        }
+                        },actionEndFrag)
                     }
                 }),
             Lord(FishType.SEA_SHELL,"Le Colporteur",false, R.drawable.le_colporteur,8,1,FishType.SEA_SHELL,9,
@@ -387,7 +387,53 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
 
             Lord(FishType.SEA_HORSE,"Le Faucheur",true, R.drawable.le_faucheur,7,2,FishType.SEA_HORSE,6, noPower),
 
-            Lord(FishType.CRAB,"Le Geôlier",false, R.drawable.le_geolier,6,3,FishType.CRAB,7,mockedActivePermanentPower),
+            Lord(FishType.CRAB,"Le Geôlier",false, R.drawable.le_geolier,6,3,FishType.CRAB,7,
+                object: InfluenceAllOthers{
+                    override fun activateOnOther(iterListTarget: Iterator<Player>, playerAttacking: Player) {
+                        fun attackNextPlayer() {
+                            //tant qu'il y a des personnages
+                            if (iterListTarget.hasNext()) {
+                                val playerAttacked = iterListTarget.next()
+
+                                //we create a frag to doscard ally and at the end we launch a second frag for another player
+                                createFragToDiscardAlly(playerAttacking.nom,playerAttacked,::attackNextPlayer)
+                            }
+                        }
+
+                        //we call the first chief frag
+                        attackNextPlayer()
+                    }
+
+                    private fun createFragToDiscardAlly(nameOfAttackingPlayer:String,playerAttacked:Player,actionEndFrag:()->Unit)
+                    {
+                        playerAttacked.playerUnderAttackMilitaryLord ({ _, _ ->
+
+                            //on créé le frag pour discard les alliés
+                            //on verifie que le joueur a 1 allié sinon le pouvoir est inefficace
+                            if (playerAttacked.listAlly.size>0)
+                            {
+                                controller!!.view.createPowerLordFrag(
+                                    playerAttacked.listAlly,
+                                    "$nameOfAttackingPlayer is using Le geôlier\n${playerAttacked.nom} click to delete 1 Ally",
+                                    R.drawable.le_geolier,
+                                    ::createViewHolderAlly,
+                                    { allyToDelete ->
+
+                                        playerAttacked.listAlly.remove(allyToDelete)
+
+
+                                        MainActivity.generatorFragment!!.popLast()
+
+                                        //If you want to do something special before ending the frag
+                                        actionEndFrag()
+
+                                    }
+                                )
+                            }
+
+                        },actionEndFrag)
+                    }
+                }),
             Lord(FishType.JELLYFISH,"Le Maître de magie",true, R.drawable.le_maitre_de_magie,10,3,FishType.JELLYFISH,6,mockedActivePermanentPower),
             Lord(FishType.SEA_HORSE,"Le Meunier",false, R.drawable.le_meunier,8,2,FishType.SEA_HORSE,10,mockedActivePermanentPower),
             Lord(FishType.CRAB,"Le Questeur",false, R.drawable.le_questeur,7,2,FishType.CRAB,7,mockedActivePermanentPower),

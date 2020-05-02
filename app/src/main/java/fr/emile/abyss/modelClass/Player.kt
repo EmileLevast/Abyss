@@ -66,7 +66,7 @@ class Player (var nom:String, override var imgId:Int):IShowImage{
 
 
     /**call this function to execute a non-passive miltary power**/
-    fun playerUnderAttackMilitaryLord(powerEffect:(playerAttacking:Player,Game)->Unit)
+    fun playerUnderAttackMilitaryLord(powerEffect:(playerAttacking:Player,Game)->Unit,actionOnUnvalidAttack:()->Unit={})
     {
         listRulesPower.applyPowerReactingToMilitaryLord(powerEffect,this)
     }

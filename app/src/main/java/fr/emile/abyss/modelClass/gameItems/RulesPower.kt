@@ -63,11 +63,12 @@ class RulesPower {
      * And if the military power is Authorized (i.e. Chamanesse)
      * I use a lambda and not an InstantEffectPower because I didn't find the way to deal deal otherwise
      * with the assassin power**/
-    fun applyPowerReactingToMilitaryLord(powerEffect:(playerAttacking:Player, Game)->Unit,playerAttacked: Player)
+    fun applyPowerReactingToMilitaryLord(powerEffect:(playerAttacking:Player, Game)->Unit,playerAttacked: Player,actionOnUnvalidAttack:()->Unit={})
     {
         //on recupere tous les pouvoirs qui se declenche lors de l'attaque d'un seigneur
         //on regarde si y en a pas un qui empeche le pouvoirde s'executer, sinon on l'execute
-        getPower<MilitaryLordAttack>(object : MilitaryLordAttack{}).find {power -> !power.isAttackAvailable() } ?:
+        //si un pouvoir empechantl'attaque est trouve on execute la fonction: actionOnUnvalidAttack
+        getPower<MilitaryLordAttack>(object : MilitaryLordAttack{}).find {power -> !power.isAttackAvailable() }?.let{actionOnUnvalidAttack()} ?:
         powerEffect(playerAttacked, controller!!.game)
     }
 }
