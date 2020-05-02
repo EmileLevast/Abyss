@@ -32,8 +32,7 @@ class Player (var nom:String, override var imgId:Int):IShowImage{
     /**Take the [lordToBuy] and add it to the purchased Lords [listLord] , and federate the allie**/
     fun buyLord(lordToBuy:Lord, listAllyUsedToBuy:List<Ally>)
     {
-        listLord.add(lordToBuy)
-
+        addLord(lordToBuy)
         /**!!Surtout ne pas supprimer les allies qui ont servi a l'achat car il faut encore les envoyer à la defausse!!**/
 
         //federate allies
@@ -42,6 +41,12 @@ class Player (var nom:String, override var imgId:Int):IShowImage{
         //on ajoute l'allie a la liste d'allie federe
         listAllieFedere.add(federatedAllie!!)
 
+    }
+
+    /**Use this to add a lord the hand of player**/
+    fun addLord(lordToBuy:Lord)
+    {
+        listLord.add(lordToBuy)
     }
 
     fun addAllie(cardToAdd:Ally)

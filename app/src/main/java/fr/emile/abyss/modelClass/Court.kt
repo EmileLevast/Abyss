@@ -2,6 +2,7 @@ package fr.emile.abyss.modelClass
 
 import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.gameItems.Ally
+import fr.emile.abyss.modelClass.gameItems.BuyLordColorAllie
 import fr.emile.abyss.modelClass.gameItems.BuyLordPrice
 import fr.emile.abyss.modelClass.gameItems.Lord
 
@@ -44,10 +45,16 @@ class Court {
         player.listRulesPower.applyToCorrespondingEvent<BuyLordPrice>(object : BuyLordPrice {},player)
         { purchasePrice=it.computePrice(purchasePrice) }
 
+        //This parameter is used to determine whether the player has the obliged type to buy the lord
+        //or of he has the power to change thi rule
+        //i.e. Le Diplomate's function always return true
+        var isTypeAllieValidForBuying=false
+        player.listRulesPower.applyToCorrespondingEvent<BuyLordColorAllie>(object : BuyLordColorAllie{},player)
+        {isTypeAllieValidForBuying=isTypeAllieValidForBuying||(it.isAuthorizedToBuy(listDifferentType,lordToBuy))}
 
         //si il ya le numbre de type d'allie et si il y a un allie obligatoire demande est-il la, alors on peut acheter
         if(listDifferentType.size>=lordToBuy.numberAllieType
-            && lordToBuy.obligedType!= null && listDifferentType.contains(lordToBuy.obligedType!!))
+            && lordToBuy.obligedType!= null && isTypeAllieValidForBuying)
         {
 
             //we calculate the sum that the chosen allies give

@@ -123,8 +123,7 @@ interface BuyLordColorAllie:PassivePermanentPower
 {
     fun isAuthorizedToBuy(listDifferentTypeUseForBuy: List<FishType>,lordToBuy:Lord):Boolean
     {
-        return listDifferentTypeUseForBuy.size>=lordToBuy.numberAllieType &&
-                listDifferentTypeUseForBuy.contains(lordToBuy.obligedType)
+        return listDifferentTypeUseForBuy.contains(lordToBuy.obligedType)
     }
 }
 

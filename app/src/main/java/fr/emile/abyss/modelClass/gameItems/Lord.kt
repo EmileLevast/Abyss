@@ -373,13 +373,26 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                         if(player.perl>=5)
                         {
                             controller!!.view.createCourt(game.court) { lord->
+                                //we take the perl necessary for buying
+                                player.perl-=5
+                                //we add the lord to the player without pay
+                                player.addLord(lord)
+                                //and we check if something happen to the court
                                 game.court.lordIsActuallyBought(player,lord)
                             }
                         }
 
                     }
                 }),
-            Lord(FishType.OCTOPUS,"Le Diplomate",true, R.drawable.le_diplomate,8,1,FishType.OCTOPUS,5,mockedActivePermanentPower),
+            Lord(FishType.OCTOPUS,"Le Diplomate",true, R.drawable.le_diplomate,8,1,FishType.OCTOPUS,5,
+                object : BuyLordColorAllie{
+                    override fun isAuthorizedToBuy(listDifferentTypeUseForBuy: List<FishType>, lordToBuy: Lord): Boolean
+                    {
+                        //Le Diplomate doesn't need to check if the player possess the right type, so we return
+                        //always true
+                        return true
+                    }
+                }),
             Lord(FishType.SEA_HORSE,"Le Faucheur",true, R.drawable.le_faucheur,7,2,FishType.SEA_HORSE,6,mockedActivePermanentPower),
             Lord(FishType.CRAB,"Le Geôlier",false, R.drawable.le_geolier,6,3,FishType.CRAB,7,mockedActivePermanentPower),
             Lord(FishType.JELLYFISH,"Le Maître de magie",true, R.drawable.le_maitre_de_magie,10,3,FishType.JELLYFISH,6,mockedActivePermanentPower),
