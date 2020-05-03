@@ -1,7 +1,6 @@
 package fr.emile.abyss.modelClass
 
 import fr.emile.abyss.controller
-import fr.emile.abyss.modelClass.gameItems.Ally
 import fr.emile.abyss.modelClass.gameItems.BuyLordColorAllie
 import fr.emile.abyss.modelClass.gameItems.BuyLordPrice
 import fr.emile.abyss.modelClass.gameItems.Lord
@@ -63,24 +62,24 @@ class Court {
             if(sumValueAllie>=purchasePrice)
             {
                 //on enleve le seigneur et on l'ajoute a la liste des seigneurs achetés du joueur
-                player.buyLord(listProposedLord.removeAt(listProposedLord.indexOf(lordToBuy)),listCardToBuy)
-                lordIsActuallyBought(player,lordToBuy)
+                player.buyLord(getLordAndRemoveItFromProposed(lordToBuy),listCardToBuy)
+                lordIsActuallyBought(player)
+                //si le joueur a achete quelque chose il finit son tour
+                controller!!.courtFinish(player,lordToBuy)
             }
 
         }
     }
 
     /**Implement here what happens to the court when a lord is purchased**/
-    fun lordIsActuallyBought(playerBuying:Player,lordToBuy:Lord)
+    fun lordIsActuallyBought(playerBuying:Player)
     {
 
         //si le joueur tire l'entepenultieme seigneur il gagne 2 perles
-        if(drawNewLords())playerBuying.perl+=2
-
-
-
-        //si le joueur a achete quelque chose il finit son tour
-        controller!!.courtFinish(playerBuying,lordToBuy)
+        if(drawNewLords())
+        {
+            playerBuying.perl+=2
+        }
     }
 
     fun drawNewLords() :Boolean
@@ -90,7 +89,7 @@ class Court {
             //on remplit avec des nouveaux seigneurs
             while(listProposedLord.size< NUMBER_VISIBLE_LORD)
             {
-                listProposedLord.add(deckLord.removeAt(0))
+                drawAndAddLordToCourt()
             }
             return true
         }
@@ -98,10 +97,20 @@ class Court {
         return false
     }
 
+    fun getLordAndRemoveItFromProposed(lordToRetrieve:Lord):Lord
+    {
+        return listProposedLord.removeAt(listProposedLord.indexOf(lordToRetrieve))
+    }
+
     /**Draw Lord, and return it. It is not added to the proposed lords list**/
     fun drawOneLord():Lord
     {
         return deckLord.removeAt(0)
+    }
+
+    fun drawAndAddLordToCourt()
+    {
+        listProposedLord.add(drawOneLord())
     }
 
     override fun toString(): String {

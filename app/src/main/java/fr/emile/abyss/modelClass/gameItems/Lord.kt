@@ -215,7 +215,7 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                                 //we give the lord to the player
                                 player.listLord.add(lordDrawn)
 
-                                MainActivity.generatorFragment!!.popAll()
+                                MainActivity.generatorFragment!!.popLast()
 
                                 //we activate the power
                                 lordDrawn.power.init(player, controller!!.game)
@@ -363,13 +363,17 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                         //if the player has enough perl to use the power
                         if(player.perl>=5)
                         {
+                            //TODO here the function create court doesn't call yet the system of poolFrags to add the frag
+                            //so there may be conflicts with other frags
                             controller!!.view.createCourt(game.court) { lord->
                                 //we take the perl necessary for buying
                                 player.perl-=5
                                 //we add the lord to the player without pay
                                 player.addLord(lord)
                                 //and we check if something happen to the court
-                                game.court.lordIsActuallyBought(player,lord)
+                                game.court.lordIsActuallyBought(player)
+
+                                MainActivity.generatorFragment!!.popLast()
                             }
                         }
 
@@ -496,9 +500,72 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                     }
                 }),
             Lord(FishType.AMBASSADOR,"Le Sage",false, R.drawable.le_sage,10,5,null,4,mockedActivePermanentPower),
-            Lord(FishType.OCTOPUS,"Le Traitre",false, R.drawable.le_traitre,12,3,FishType.OCTOPUS,6,mockedActivePermanentPower),
-            Lord(FishType.OCTOPUS,"Le Trésorier",true, R.drawable.le_tresorier,10,2,FishType.OCTOPUS,5,mockedActivePermanentPower),
-            Lord(FishType.OCTOPUS,"L' Opportuniste",true, R.drawable.opportuniste,6,3,FishType.OCTOPUS,5,mockedActivePermanentPower),
+            Lord(FishType.OCTOPUS,"Le Traitre",false, R.drawable.le_traitre,12,3,FishType.OCTOPUS,6,
+                object : InstantPower{
+                    override fun activate(player: Player, game: Game) {
+
+                        //if the player has at least one lord to discard, and we can't discard the intriguant himself
+                        val listFreeLordPlayer=player.listLord.filter { it.isFree && it.name!="L'Intriguant"}
+                        if(!listFreeLordPlayer.isEmpty())
+                        {
+                            //we clear the screen in order to have a full screen frag
+                            MainActivity.generatorFragment!!.popAll()
+
+                            //we create a frag to show all the free lord of the player
+                            controller!!.view.createPowerLordFrag(
+                                listFreeLordPlayer,
+                                "${player.nom} is using Le Traitre\nDiscard One Lord and take one from the court",
+                                R.drawable.le_traitre,
+                                ::createViewHolderLord,
+                                {lord->
+                                    //the player discard the chosen Lord in his hands
+                                    player.listLord.remove(lord)
+
+                                    MainActivity.generatorFragment!!.popLast()
+
+                                    //and then we create a court frag to take one of the lord
+                                    controller!!.view.createCourt(game.court) { lordChosen->
+
+                                        //we add the lord to the player without pay
+                                        player.addLord(lordChosen)
+
+                                        //and we check if something happen to the court
+                                        game.court.lordIsActuallyBought(player)
+
+                                        MainActivity.generatorFragment!!.popLast()
+
+                                        lordChosen.power.init(player, controller!!.game)
+                                    }
+                                })
+                        }
+                    }
+                }),
+            Lord(FishType.OCTOPUS,"Le Trésorier",true, R.drawable.le_tresorier,10,2,FishType.OCTOPUS,5,
+                object: BuyLordPrice{
+                    override fun computePrice(originPrice: Int): Int {
+                        return originPrice-2
+                    }
+                }),
+            Lord(FishType.OCTOPUS,"L' Opportuniste",true, R.drawable.opportuniste,6,3,FishType.OCTOPUS,5,
+                object : InstantPower{
+                    override fun activate(player: Player, game: Game) {
+
+                        //we clear the screen in order to have a full screen frag
+                        MainActivity.generatorFragment!!.popAll()
+
+                        controller!!.view.createCourt(game.court) { lordChosen->
+
+
+                            game.court.getLordAndRemoveItFromProposed(lordChosen)
+
+                            //add New Lord to the court
+                            game.court.drawAndAddLordToCourt()
+
+                            MainActivity.generatorFragment!!.popLast()
+
+                        }
+                    }
+                }),
             Lord(FishType.JELLYFISH,"L'Oracle",true, R.drawable.oracle,8,2,FishType.JELLYFISH,5,mockedActivePermanentPower)
         )
     }
