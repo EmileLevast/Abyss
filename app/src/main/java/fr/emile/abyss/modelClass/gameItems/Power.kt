@@ -180,12 +180,14 @@ interface CountCardHand: InfluenceAllOthers,PassivePowerInfluenceOthers
         super<InfluenceAllOthers>.init(player, game)
     }
 
-    //implement this to design the thing immediately done after buying
+    //do not override this in inherited objects
+    //we must define it because it has many parent function
     override fun activate(player: Player, game: Game) {
         super<InfluenceAllOthers>.activate(player, game)
     }
 
-    override fun activateOnOther(iterListTarget: Iterator<Player>, playerAttacking: Player)
+    //implement this to design the thing immediately done after buying
+    override fun activateOnOther(iterListTarget: Iterator<Player>, playerAttacking: Player)=Unit
 
     //implement this to design the action to do at each turn
     fun manageHandCards(player:Player)=Unit

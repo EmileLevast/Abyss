@@ -331,9 +331,9 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                                     "$nameOfAttackingPlayer is using Chef des armees\n${playerAttacked.nom} click to delete Ally",
                                     R.drawable.le_chef_des_armees,
                                     ::createViewHolderAlly,
-                                    actionOnClick = { listItem,indexClicked ->
+                                    actionOnClick = { _,indexClicked ->
                                         //on delete l'allié
-                                        (listItem as MutableList<Ally>).removeAt(indexClicked)
+                                        //(listItem as MutableList<Ally>).removeAt(indexClicked)
                                         playerAttacked.listAlly.removeAt(indexClicked)
 
                                         //si il passe en dessous de la barre des 7 alliés en main on arrete
