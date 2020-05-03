@@ -33,14 +33,27 @@ class Player (var nom:String, override var imgId:Int):IShowImage{
     fun buyLord(lordToBuy:Lord, listAllyUsedToBuy:List<Ally>)
     {
         addLord(lordToBuy)
-        /**!!Surtout ne pas supprimer les allies qui ont servi a l'achat car il faut encore les envoyer à la defausse!!**/
+        /**!!Surtout ne pas supprimer les allies qui ont servi a l'achat car il faut encore les envoyer à la defausse
+         * C'est fait dans [Game::sendPlayerToDiscard]!!
+         * Par contre il faut quand même supprimé l'allié qui a ete federe mais c'est fait dans [addFederatedAlly]**/
 
         //federate allies
-        val federatedAllie=listAllyUsedToBuy.minBy { allieBuying->allieBuying.number}
+        //we search the rule for federating ally
+        listRulesPower.applyToCorrespondingEvent<BoughtLordFederateAllie>(object : BoughtLordFederateAllie{},this)
+        {
+            //and we apply each power for federation, becareful if there are many powers , the ally may be added several time
+            //as it is done in the power for now
+            it.federateAllie(this,listAllyUsedToBuy)
+        }
+    }
 
+    fun addFederatedAlly(newFederatedAlly:Ally)
+    {
         //on ajoute l'allie a la liste d'allie federe
-        listAllieFedere.add(federatedAllie!!)
+        listAllieFedere.add(newFederatedAlly)
 
+        //et on le supprime des alliés en mains (car ensuite le reste est envoyé dans la défausse dans [game]
+        listAlly.remove(newFederatedAlly)
     }
 
     /**Use this to add a lord the hand of player**/

@@ -4,6 +4,8 @@ import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.Game
 import fr.emile.abyss.modelClass.Player
 
+
+
 /**All the [Power] implements this interface**/
 interface Power
 {
@@ -58,7 +60,8 @@ interface ActivePermanentPower:Power,InstantEffectPower
 }
 
 
-/**these powers runs always in background and changes continuously the rules of the game**/
+/**these powers runs always in background and changes continuously the rules of the game
+ * The original rules of the games are described as default implementation of these interfaces**/
 interface PassivePermanentPower:Power
 {
     fun getKeyForMap():String=this::class.java.interfaces.first().simpleName
@@ -127,10 +130,8 @@ interface BoughtLordFederateAllie:PassivePermanentPower
     fun federateAllie(player: Player, listAllyUsedToBuy:List<Ally>)
     {
         //federate allies
-        val federatedAllie=listAllyUsedToBuy.minBy { allieBuying->allieBuying.number}
-
-        //on ajoute l'allie a la liste d'allie federe
-        player.listAllieFedere.add(federatedAllie!!)
+        //first we retrieve the minest ally and then if we found one (if it's not null) we federate it to the player
+        listAllyUsedToBuy.minBy { allieBuying->allieBuying.number}?.let{player.addFederatedAlly(it)}
     }
 }
 

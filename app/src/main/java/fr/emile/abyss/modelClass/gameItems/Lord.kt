@@ -434,7 +434,24 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                         },actionEndFrag)
                     }
                 }),
-            Lord(FishType.JELLYFISH,"Le Maître de magie",true, R.drawable.le_maitre_de_magie,10,3,FishType.JELLYFISH,6,mockedActivePermanentPower),
+            Lord(FishType.JELLYFISH,"Le Maître de magie",true, R.drawable.le_maitre_de_magie,10,3,FishType.JELLYFISH,6,
+                object : BoughtLordFederateAllie{
+                    override fun federateAllie(player: Player, listAllyUsedToBuy: List<Ally>) {
+                        //If the player has actually at least one ally to federate
+                        if(!listAllyUsedToBuy.isEmpty())
+                        {
+                            controller!!.view.createPowerLordFrag(
+                                listAllyUsedToBuy,
+                                "${player.nom} is Using Le maitre de magie\nPlease choose an ally to federate",
+                                R.drawable.le_maitre_de_magie,
+                                ::createViewHolderAlly,
+                                {ally->
+                                    //we federate this ally to the player
+                                    player.addFederatedAlly(ally)
+                                })
+                        }
+                    }
+                }),
             Lord(FishType.SEA_HORSE,"Le Meunier",false, R.drawable.le_meunier,8,2,FishType.SEA_HORSE,10,mockedActivePermanentPower),
             Lord(FishType.CRAB,"Le Questeur",false, R.drawable.le_questeur,7,2,FishType.CRAB,7,mockedActivePermanentPower),
             Lord(FishType.CRAB,"Le Recruteur",true, R.drawable.le_recruteur,10,2,FishType.CRAB,4,mockedActivePermanentPower),
