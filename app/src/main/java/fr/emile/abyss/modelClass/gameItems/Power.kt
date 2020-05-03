@@ -78,7 +78,7 @@ interface PassivePermanentPower:Power
 
 
 /**use this interface to implement passive power of military Lord**/
-interface PassivePowerInfluenceOthers:PassivePermanentPower,InstantEffectPower
+interface PassivePowerInfluenceOthers:PassivePermanentPower
 {
     var nameOfAttackingPlayer:String
     override fun init(player: Player, game: Game) {
@@ -101,9 +101,6 @@ interface PassivePowerInfluenceOthers:PassivePermanentPower,InstantEffectPower
             }
         }
     }
-
-    //override this to do describe the power of the military Lord
-    override fun activate(player: Player, game: Game)
 }
 
 /**All interface that represents [PassivePermanentPower]*/
@@ -179,12 +176,6 @@ interface CountCardHand: InfluenceAllOthers,PassivePowerInfluenceOthers
         super<PassivePowerInfluenceOthers>.init(player, game)
         //second side we execute the power for the first time
         super<InfluenceAllOthers>.init(player, game)
-    }
-
-    //do not override this in inherited objects
-    //we must define it because it has many parent function
-    override fun activate(player: Player, game: Game) {
-        super<InfluenceAllOthers>.activate(player, game)
     }
 
     //implement this to design the thing immediately done after buying

@@ -453,9 +453,42 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                         }
                     }
                 }),
-            Lord(FishType.SEA_HORSE,"Le Meunier",false, R.drawable.le_meunier,8,2,FishType.SEA_HORSE,10,mockedActivePermanentPower),
-            Lord(FishType.CRAB,"Le Questeur",false, R.drawable.le_questeur,7,2,FishType.CRAB,7,mockedActivePermanentPower),
-            Lord(FishType.CRAB,"Le Recruteur",true, R.drawable.le_recruteur,10,2,FishType.CRAB,4,mockedActivePermanentPower),
+            Lord(FishType.SEA_HORSE,"Le Meunier",false, R.drawable.le_meunier,8,2,FishType.SEA_HORSE,10, noPower),
+            Lord(FishType.CRAB,"Le Questeur",false, R.drawable.le_questeur,7,2,FishType.CRAB,7,
+                object :InfluenceAllOthers{
+                    override fun activateOnOther(iterListTarget: Iterator<Player>, playerAttacking: Player) {
+                        iterListTarget.forEach {
+                            //we check if the player has at least 2 perls otherwise we don't want him to have
+                            //a negative number of pearls
+                            if(it.perl>=2)
+                            {
+                                it.perl-=2
+                            }
+                            else
+                            {
+                                it.perl=0
+                            }
+                        }
+                    }
+                }
+                ),
+            Lord(FishType.CRAB,"Le Recruteur",true, R.drawable.le_recruteur,10,2,FishType.CRAB,4,
+                //the interface order is very important because we use for the name of the first interface
+                //for the key in the hashmap rulesPower
+                object : BuyLordPrice,PassivePowerInfluenceOthers{
+                    //just need to call that, the init function initiate the field with thr right name
+                    override lateinit var nameOfAttackingPlayer: String
+
+                    //we need to override this to precise
+                    //that we init this as a military power
+                    override fun init(player: Player, game: Game) {
+                        super<PassivePowerInfluenceOthers>.init(player, game)
+                    }
+
+                    override fun computePrice(originPrice: Int): Int {
+                        return originPrice+2
+                    }
+                }),
             Lord(FishType.SEA_SHELL,"Le Rentier",true, R.drawable.le_rentier,10,2,FishType.SEA_SHELL,5,mockedActivePermanentPower),
             Lord(FishType.AMBASSADOR,"Le Sage",false, R.drawable.le_sage,10,5,null,4,mockedActivePermanentPower),
             Lord(FishType.OCTOPUS,"Le Traitre",false, R.drawable.le_traitre,12,3,FishType.OCTOPUS,6,mockedActivePermanentPower),
