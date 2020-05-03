@@ -128,6 +128,13 @@ class Game {
     //things to do before going to the nextPlayer
     fun endTurn(player:Player)
     {
+        //power according bonuses to player each turn
+        player.listRulesPower.applyToCorrespondingEvent<EndTurnPower>(object : EndTurnPower{},player)
+        {
+            it.bonusToThePlayer(player)
+        }
+
+        //Power linked to the cards in hands
         player.listRulesPower.applyToCorrespondingEvent<CountCardHand>(object :CountCardHand{
             //this attribute is never used because the PassivePermanentPower redefine it in his init() function
             override var nameOfAttackingPlayer=player.nom

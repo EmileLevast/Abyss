@@ -165,10 +165,15 @@ interface ExplorationSendToCouncil:PassivePermanentPower
     fun actionAccordingTo(listCardSendToCouncil:MutableList<Ally>,player:Player)=Unit
 }
 
+/**Bonus accorded to the player each turn, such as "Le Rentier" gain one perl each turn**/
+interface EndTurnPower:PassivePermanentPower
+{
+    fun bonusToThePlayer(player: Player)=Unit
+}
+
 /**Implement this interface to define something to do with the player according to the number of cards in his hands
  *Think about the amree chief, he has 2 power, firstly instantly every one must discard, and secondly at each turn.
  * */
-
 interface CountCardHand: InfluenceAllOthers,PassivePowerInfluenceOthers
 {
     override fun init(player: Player, game: Game) {

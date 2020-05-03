@@ -489,7 +489,12 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                         return originPrice+2
                     }
                 }),
-            Lord(FishType.SEA_SHELL,"Le Rentier",true, R.drawable.le_rentier,10,2,FishType.SEA_SHELL,5,mockedActivePermanentPower),
+            Lord(FishType.SEA_SHELL,"Le Rentier",true, R.drawable.le_rentier,10,2,FishType.SEA_SHELL,5,
+                object:EndTurnPower{
+                    override fun bonusToThePlayer(player: Player) {
+                        player.perl+=1
+                    }
+                }),
             Lord(FishType.AMBASSADOR,"Le Sage",false, R.drawable.le_sage,10,5,null,4,mockedActivePermanentPower),
             Lord(FishType.OCTOPUS,"Le Traitre",false, R.drawable.le_traitre,12,3,FishType.OCTOPUS,6,mockedActivePermanentPower),
             Lord(FishType.OCTOPUS,"Le Trésorier",true, R.drawable.le_tresorier,10,2,FishType.OCTOPUS,5,mockedActivePermanentPower),
