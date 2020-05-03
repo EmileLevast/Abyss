@@ -448,6 +448,7 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                                 {ally->
                                     //we federate this ally to the player
                                     player.addFederatedAlly(ally)
+                                    MainActivity.generatorFragment!!.popLast()
                                 })
                         }
                     }

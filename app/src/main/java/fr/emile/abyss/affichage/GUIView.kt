@@ -32,6 +32,10 @@ class GUIView( activity: MainActivity) {
     var explorationFrag:ExplorationFrag?=null
     var councilFrag:CouncilFrag?=null
 
+    //this is an identifier of the current main frag (i.e. explorationFrag, CouncilFrag, CourtFrag) running
+    //easy to remove this frag thanks to this tag
+    private var tagCurrentMainFrag:String?=null
+
     var nextTurnLayout:FrameLayout=activity.findViewById(R.id.nextTurnLayout)
     var nextTurnButton:Button=activity.findViewById(R.id.nextTurnButton)
 
@@ -84,9 +88,10 @@ class GUIView( activity: MainActivity) {
     }
 
 
-    fun <T>addFragToActivity(frag:CustomFragment<T>)
+    fun <T>addFragToActivity(frag:CustomFragment<T>):String
     {
-        MainActivity.generatorFragment!!.addFragToActivity(frag)
+        //return the tag of the added Frag, if you want to save it
+        return MainActivity.generatorFragment!!.addFragToActivity(frag)
     }
 
     fun createPlayerScreen(player: Player) {
@@ -114,7 +119,7 @@ class GUIView( activity: MainActivity) {
 
         explorationFrag= ExplorationFrag(exploration)
 
-        addFragToActivity(explorationFrag!!)
+        tagCurrentMainFrag=addFragToActivity(explorationFrag!!)
 
         //we create also a frag to show player stuff
         //we set false to disenabled power on Lord Click (because the xploration show player frag who it's not their turn
@@ -138,7 +143,7 @@ class GUIView( activity: MainActivity) {
             CouncilFrag(council)
         }
 
-       addFragToActivity(councilFrag!!)
+       tagCurrentMainFrag=addFragToActivity(councilFrag!!)
     }
 
     /**
@@ -147,7 +152,7 @@ class GUIView( activity: MainActivity) {
     fun createCourt(court: Court,actionOnClick:(Lord)->Unit= controller!!::playerWantToBuyLord)
     {
         val courtFrag=CourtFrag(court,actionOnClick)
-        MainActivity.generatorFragment!!.addFragToActivity(courtFrag)
+        tagCurrentMainFrag=addFragToActivity(courtFrag)
         //we create also a frag to show player stuff
         createPlayerScreen(controller!!.game.listPlayer.getCurrent())
     }
@@ -167,8 +172,10 @@ class GUIView( activity: MainActivity) {
                                               {listItem,indexClicked->actionAfterOnClick(listItem[indexClicked])})
     {
         val powerLordFrag=PowerLordFrag(listToShow,explicationPower,resourceIdBackground,factoryViewHolder,actionOnClick)
-        addFragToActivity(powerLordFrag)
-        //we create also a frag to show player stuff
+
+        //use a special method to add a PowerLordFrag because we don't want to stack them at the screen
+        //and there are some issues, for example they can be deleted with other frags if they are added too early in the backstack
+        MainActivity.generatorFragment!!.addPowerLordFragTOActivity(powerLordFrag)
     }
 
     /**
