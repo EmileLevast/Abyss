@@ -579,7 +579,22 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                         })
                     }
                 }),
-            Lord(FishType.JELLYFISH,"L'Oracle",true, R.drawable.oracle,8,2,FishType.JELLYFISH,5,mockedActivePermanentPower)
+            Lord(FishType.JELLYFISH,"L'Oracle",true, R.drawable.oracle,8,2,FishType.JELLYFISH,5,
+                object : ActivePermanentPower
+                {
+                    override var isAvailable: Boolean=true
+
+                    override fun activate(player: Player, game: Game) {
+                        controller!!.view.createPowerLordFrag(
+                            game.council.getAllCurrentAvailableStack(),
+                            "${player.nom} is using L'Oracle\nDiscard one council stack",
+                            R.drawable.oracle,
+                            ::createViewHolderImageOnly,{ fishType->
+                                game.council.removeStack(fishType)
+                                MainActivity.generatorFragment!!.popLast()
+                            })
+                    }
+                })
         )
     }
 }

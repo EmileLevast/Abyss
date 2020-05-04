@@ -34,7 +34,7 @@ class CouncilFrag(val council: Council,val actionOnClick:(fish:FishType)->Unit= 
 
         //becareful,here .filtervalues make a copy of the list
         //so you must redefine your adapter each time you update
-        val listStackAlly:List<FishType> = dataGame.decksAllie.filterValues{!it.isEmpty()}.keys.toList()
+        val listStackAlly:List<FishType> = dataGame.getAllCurrentAvailableStack()
 
         adapterFishType= object : ImageAdapter<FishType>(listStackAlly,activity!!,0.6f,0.2f,recyclerViewStackAlly,
             ::createViewHolderImageOnly){

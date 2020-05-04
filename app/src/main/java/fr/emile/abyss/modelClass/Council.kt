@@ -22,7 +22,17 @@ class Council {
     fun takeStack(fishTypeOfChosenStack: FishType):MutableList<Ally>
     {
         val cardsToRetrieve=decksAllie[fishTypeOfChosenStack]?.toMutableList()
-        decksAllie[fishTypeOfChosenStack]?.clear()
+        removeStack(fishTypeOfChosenStack)
         return cardsToRetrieve!!
+    }
+
+    fun getAllCurrentAvailableStack():MutableList<FishType>
+    {
+        return decksAllie.filterValues{!it.isEmpty()}.keys.toMutableList()
+    }
+
+    fun removeStack(stackToRemove:FishType)
+    {
+        decksAllie[stackToRemove]?.clear()
     }
 }
