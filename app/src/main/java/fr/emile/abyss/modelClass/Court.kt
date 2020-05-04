@@ -6,7 +6,7 @@ import fr.emile.abyss.modelClass.gameItems.BuyLordPrice
 import fr.emile.abyss.modelClass.gameItems.Lord
 
 //nombre des seigneurs disponible a la court
-const val NUMBER_VISIBLE_LORD=33
+const val NUMBER_VISIBLE_LORD=30
 //court des seigneurs avec tous les seigneurs dispos
 class Court {
 
@@ -52,7 +52,7 @@ class Court {
         {isTypeAllieValidForBuying=isTypeAllieValidForBuying||(it.isAuthorizedToBuy(listDifferentType,lordToBuy))}
 
         //si il ya le numbre de type d'allie et si il y a un allie obligatoire demande est-il la, alors on peut acheter
-        if(listDifferentType.size>=lordToBuy.numberAllieType
+        if(listDifferentType.size==lordToBuy.numberAllieType
             && lordToBuy.obligedType!= null && isTypeAllieValidForBuying)
         {
 

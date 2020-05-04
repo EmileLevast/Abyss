@@ -68,7 +68,6 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
 
 
 
-        //Lord armateur with his power
         val listLord= mutableListOf(
             Lord(FishType.JELLYFISH,"l'Alchimiste",true, R.drawable.alchimiste,7,1,FishType.JELLYFISH,5,
             object : CouncilStack{
@@ -530,7 +529,6 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                                         "${player.nom} is using Le Traitre\nChoose one new Lord",
                                         R.drawable.le_traitre,
                                         ::createViewHolderLord,
-                                    //controller!!.view.createCourt(game.court)
                                     { lordChosen->
 
                                         //we add the lord to the player without pay
