@@ -133,7 +133,7 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                                             R.drawable.assassin,
                                             ::createViewHolderImageOnly,
                                         { lord ->
-                                            lord.die()
+                                            playerAttacked.lordIsKilled(lord)
                                             //on suppr le fragment assassin actuel
                                             MainActivity.generatorFragment!!.popLast()
                                             attackNextPlayer()
@@ -208,17 +208,18 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                                 ::createViewHolderLord,
                             {lord->
                                 //the player discard the chosen Lord in his hands
-                                player.listLord.remove(lord)
+                                player.removeLord(lord)
 
                                 //and we give him the first lord from the deck
                                 val lordDrawn=game.court.drawOneLord()
                                 //we give the lord to the player
-                                player.listLord.add(lordDrawn)
+                                //this can be null if there are no more Lords to be drawn
+                                lordDrawn?.let{player.addLord(it)}
 
                                 MainActivity.generatorFragment!!.popLast()
 
                                 //we activate the power
-                                lordDrawn.power.init(player, controller!!.game)
+                                lordDrawn?.power?.init(player, controller!!.game)
                             })
                         }
                     }
@@ -504,8 +505,8 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                 object : InstantPower{
                     override fun activate(player: Player, game: Game) {
 
-                        //if the player has at least one lord to discard, and we can't discard the intriguant himself
-                        val listFreeLordPlayer=player.listLord.filter { it.isFree && it.name!="L'Intriguant"}
+                        //if the player has at least one lord to discard, and we can't discard the traitre himself
+                        val listFreeLordPlayer=player.listLord.filter { it.isFree && it.name!="Le Traitre"}
                         if(!listFreeLordPlayer.isEmpty())
                         {
                             //we clear the screen in order to have a full screen frag
@@ -514,29 +515,39 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                             //we create a frag to show all the free lord of the player
                             controller!!.view.createPowerLordFrag(
                                 listFreeLordPlayer,
-                                "${player.nom} is using Le Traitre\nDiscard One Lord and take one from the court",
+                                "${player.nom} is using Le Traitre\nDiscard One Lord",
                                 R.drawable.le_traitre,
                                 ::createViewHolderLord,
                                 {lord->
                                     //the player discard the chosen Lord in his hands
-                                    player.listLord.remove(lord)
+                                    player.removeLord(lord)
 
                                     MainActivity.generatorFragment!!.popLast()
 
                                     //and then we create a court frag to take one of the lord
-                                    controller!!.view.createCourt(game.court) { lordChosen->
+                                    controller!!.view.createPowerLordFrag(
+                                        game.court.listProposedLord,
+                                        "${player.nom} is using Le Traitre\nChoose one new Lord",
+                                        R.drawable.le_traitre,
+                                        ::createViewHolderLord,
+                                    //controller!!.view.createCourt(game.court)
+                                    { lordChosen->
 
                                         //we add the lord to the player without pay
                                         player.addLord(lordChosen)
 
                                         //and we check if something happen to the court
+                                        game.court.getLordAndRemoveItFromProposed(lordChosen)
+
+                                        //don't forget to check if the court si almost empty
                                         game.court.lordIsActuallyBought(player)
 
                                         MainActivity.generatorFragment!!.popLast()
 
                                         lordChosen.power.init(player, controller!!.game)
-                                    }
-                                })
+                                    })
+                                }
+                            )
                         }
                     }
                 }),
@@ -553,8 +564,12 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                         //we clear the screen in order to have a full screen frag
                         MainActivity.generatorFragment!!.popAll()
 
-                        controller!!.view.createCourt(game.court) { lordChosen->
-
+                        //and then we create a court frag to take one of the lord
+                        controller!!.view.createPowerLordFrag(
+                            game.court.listProposedLord,
+                            "${player.nom} is using L'Opportuniste\nDiscard One Lord From Court",
+                            R.drawable.opportuniste,
+                            ::createViewHolderLord,{ lordChosen->
 
                             game.court.getLordAndRemoveItFromProposed(lordChosen)
 
@@ -563,7 +578,7 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
 
                             MainActivity.generatorFragment!!.popLast()
 
-                        }
+                        })
                     }
                 }),
             Lord(FishType.JELLYFISH,"L'Oracle",true, R.drawable.oracle,8,2,FishType.JELLYFISH,5,mockedActivePermanentPower)

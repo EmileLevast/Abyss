@@ -103,14 +103,20 @@ class Court {
     }
 
     /**Draw Lord, and return it. It is not added to the proposed lords list**/
-    fun drawOneLord():Lord
+    fun drawOneLord():Lord?
     {
-        return deckLord.removeAt(0)
+        return if(!deckLord.isEmpty()) {
+            deckLord.removeAt(0)
+        }else {
+            controller!!.gameFinished()
+            null
+        }
     }
 
     fun drawAndAddLordToCourt()
     {
-        listProposedLord.add(drawOneLord())
+        //if there is still Lords in the court
+        drawOneLord()?.let {listProposedLord.add(it)}
     }
 
     override fun toString(): String {

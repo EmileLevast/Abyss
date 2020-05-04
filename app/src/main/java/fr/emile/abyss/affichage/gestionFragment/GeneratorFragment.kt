@@ -37,7 +37,7 @@ class GeneratorFragment(val mainActivity: MainActivity):FragmentManager.OnBackSt
         return tagLastFrag.toString()
     }
 
-    fun addPowerLordFragTOActivity(frag:PowerLordFrag<*>)
+    fun addFragWaitingToBeShown(frag:CustomFragment<*>)
     {
         //s'il y a la place d'afficher les frags
         if(mainActivity.supportFragmentManager.fragments.size<=0)

@@ -1,6 +1,7 @@
 package fr.emile.abyss.modelClass
 
 import fr.emile.abyss.affichage.IShowImage
+import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.gameItems.*
 
 private const val NBR_MAX_LORD=7
@@ -70,6 +71,30 @@ class Player (var nom:String, override var imgId:Int):IShowImage{
     fun addAllie(listCardToAdd:MutableList<Ally>)
     {
         listAlly.addAll(listCardToAdd)
+    }
+
+    /**use this to remove a lord, because if you do'nt the power (passivePermamnentPower) may be still enabled for the player**/
+    fun removeLord(lordToRemove:Lord)
+    {
+        //we delete his passive power
+        if(lordToRemove.power is PassivePermanentPower)
+        {
+            lordToRemove.power.remove(this, controller!!.game)
+        }
+        //we delete the lord
+        listLord.remove(lordToRemove)
+    }
+
+    /**Implement this with the assassin**/
+    fun lordIsKilled(killedLord:Lord)
+    {
+        //we delete his passive power
+        if(killedLord.power is PassivePermanentPower)
+        {
+            killedLord.power.remove(this, controller!!.game)
+        }
+
+        killedLord.die()
     }
 
     fun hasMaxNbrLord():Boolean

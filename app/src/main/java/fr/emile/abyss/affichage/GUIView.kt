@@ -175,7 +175,7 @@ class GUIView( activity: MainActivity) {
 
         //use a special method to add a PowerLordFrag because we don't want to stack them at the screen
         //and there are some issues, for example they can be deleted with other frags if they are added too early in the backstack
-        MainActivity.generatorFragment!!.addPowerLordFragTOActivity(powerLordFrag)
+        MainActivity.generatorFragment!!.addFragWaitingToBeShown(powerLordFrag)
     }
 
     /**
@@ -184,7 +184,7 @@ class GUIView( activity: MainActivity) {
     fun createEndGameScreen(endGame: EndGame)
     {
         val endGameFrag=EndGameFrag(endGame)
-        addFragToActivity(endGameFrag)
+        MainActivity.generatorFragment!!.addFragWaitingToBeShown(endGameFrag)
     }
 
 
