@@ -2,6 +2,7 @@ package fr.emile.abyss.affichage.gestionFragment.fragmentList
 
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.emile.abyss.R
 import fr.emile.abyss.affichage.gestionFragment.CustomFragment
@@ -16,6 +17,8 @@ import fr.emile.abyss.modelClass.gameItems.Lord
 //TODO the propriety court is only used to initiate and i don't release it after that
 class CourtFrag(private val court: Court?,private val actionOnClick:(Lord)->Unit) :CustomFragment<Court>(){
 
+    private lateinit var buttonPayDrawNewLord: Button
+
     lateinit var recyclerViewLord: HorizontalRecyclerView
     private lateinit var adapterLord: ImageAdapter<Lord>
 
@@ -23,7 +26,13 @@ class CourtFrag(private val court: Court?,private val actionOnClick:(Lord)->Unit
 
 
     override fun createView(viewInflated: View) {
+        buttonPayDrawNewLord=viewInflated.findViewById(R.id.buttonPayForANewLordCourt)
         recyclerViewLord=viewInflated.findViewById(R.id.recyclerViewLordCourt)
+
+        buttonPayDrawNewLord.setOnClickListener {
+            controller!!.playerPayToDrawNewLord()
+            adapterLord.notifyDataSetChanged()
+        }
 
         recyclerViewLord.layoutManager= LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL,false)
 

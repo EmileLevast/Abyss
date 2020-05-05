@@ -363,18 +363,28 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                         //if the player has enough perl to use the power
                         if(player.perl>=5)
                         {
-                            //TODO here the function create court doesn't call yet the system of poolFrags to add the frag
                             //so there may be conflicts with other frags
-                            controller!!.view.createCourt(game.court) { lord->
-                                //we take the perl necessary for buying
-                                player.perl-=5
-                                //we add the lord to the player without pay
-                                player.addLord(lord)
-                                //and we check if something happen to the court
-                                game.court.lordIsActuallyBought(player)
+                            controller!!.view.createPowerLordFrag(
+                                game.court.listProposedLord,
+                                "${player.nom} is using Corrupteur\nPay 5 Perls for a Lord",
+                                R.drawable.le_corrupteur,
+                                ::createViewHolderLord,
+                                { lordBought->
+                                    //we take the perl necessary for buying
+                                    player.perl-=5
+                                    //we add the lord to the player without pay
+                                    player.addLord(lordBought)
 
-                                MainActivity.generatorFragment!!.popLast()
-                            }
+                                    game.court.getLordAndRemoveItFromProposed(lordBought)
+
+                                    //and we check if something happen to the court
+                                    game.court.lordIsActuallyBought(player)
+
+                                    MainActivity.generatorFragment!!.popLast()
+
+                                    lordBought.power.init(player, controller!!.game)
+                                }
+                            )
                         }
 
                     }

@@ -85,6 +85,11 @@ class Game {
 
 
     /**[Court]**/
+    fun playerPayToDrawNewLord()
+    {
+        court.playerPayToDrawOneLord(listPlayer.getCurrent())
+    }
+
     fun playerWantToBuyLord(lordToBuy: Lord)
     {
         court.playerWantToBuy(listPlayer.getCurrent(),lordToBuy)
@@ -156,6 +161,6 @@ class Game {
         listPlayer.getCurrent().addAllie(exploration!!.deckAllie)
         listPlayer.getCurrent().perl+=5
         //on ajoute des cartes à un autre joueur aussi
-        listPlayer.listElt[1].addAllie(exploration!!.deckAllie.toMutableList())
+        //listPlayer.listElt[1].addAllie(exploration!!.deckAllie.toMutableList())
     }
 }

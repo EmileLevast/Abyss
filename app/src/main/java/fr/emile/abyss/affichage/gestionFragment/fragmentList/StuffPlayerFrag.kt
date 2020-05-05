@@ -86,8 +86,11 @@ class StuffPlayerFrag(val player:Player, val isPowerLordEnabled:Boolean=true) : 
                 //et que le pouvoir n'a pas deja ete utilisé ce tour ci
                 if(isPowerLordEnabled && lord.power is ActivePermanentPower && lord.isFree && lord.power.isAvailable )
                 {
+                    controller!!.view.clearScreen()
+
                     //alors on l'execute
                     lord.power.activate(dataGame,controller!!.game)
+
 
                     //on rend le pouvoir inutilisable pour ce tour ci
                     lord.power.isAvailable=false

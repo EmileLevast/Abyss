@@ -6,7 +6,7 @@ import fr.emile.abyss.modelClass.gameItems.BuyLordPrice
 import fr.emile.abyss.modelClass.gameItems.Lord
 
 //nombre des seigneurs disponible a la court
-const val NUMBER_VISIBLE_LORD=30
+const val NUMBER_VISIBLE_LORD=10
 //court des seigneurs avec tous les seigneurs dispos
 class Court {
 
@@ -53,11 +53,20 @@ class Court {
 
         //si il ya le numbre de type d'allie et si il y a un allie obligatoire demande est-il la, alors on peut acheter
         if(listDifferentType.size==lordToBuy.numberAllieType
-            && lordToBuy.obligedType!= null && isTypeAllieValidForBuying)
+            && ((lordToBuy.obligedType!= null && isTypeAllieValidForBuying)||lordToBuy.obligedType==null))
         {
 
             //we calculate the sum that the chosen allies give
-            val sumValueAllie:Int=listCardToBuy.fold(0) { sum, allie->sum+allie.number}
+            var sumValueAllie:Int=listCardToBuy.fold(0) { sum, allie->sum+allie.number}
+
+            //si le prix est inferieur au prix d'achats et qu'en ajoutant des perles on peut l'acheter
+            if(sumValueAllie<purchasePrice && (sumValueAllie+player.perl) >= purchasePrice)
+            {
+                //on enleve la difference entre le prix et la valeur des alliés aux perles du joueur
+                player.perl-=(purchasePrice-sumValueAllie)
+                sumValueAllie=purchasePrice
+            }
+
             //s'il y a le prix
             if(sumValueAllie>=purchasePrice)
             {
@@ -113,10 +122,28 @@ class Court {
         }
     }
 
-    fun drawAndAddLordToCourt()
+    /**Draw Lord, and add it to the proposed lords list, return true if there was still lord**/
+    fun drawAndAddLordToCourt():Boolean
     {
         //if there is still Lords in the court
-        drawOneLord()?.let {listProposedLord.add(it)}
+        //return drawOneLord()?.let {listProposedLord.add(it)}
+        val drawnLord=drawOneLord()
+
+        return if(drawnLord!=null) {
+            listProposedLord.add(drawnLord)
+            true
+        }else {
+            false
+        }
+    }
+
+    /**If the player has enough perl, and court is not full, so we draw a lord and add it to the proposed Lords**/
+    fun playerPayToDrawOneLord(player: Player)
+    {
+        if(player.perl>0 && listProposedLord.size< NUMBER_VISIBLE_LORD && drawAndAddLordToCourt())
+        {
+            player.perl-=1
+        }
     }
 
     override fun toString(): String {

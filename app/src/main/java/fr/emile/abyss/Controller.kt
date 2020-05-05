@@ -85,6 +85,14 @@ class Controller(activity:MainActivity) {
     }
 
     /**Court**/
+    fun playerPayToDrawNewLord()
+    {
+        game.playerPayToDrawNewLord()
+
+        //the player view may be shown on the screen too and we need to see the difference of perls
+        view.updatePlayerScreen(game.listPlayer.getCurrent())
+    }
+
     fun LaunchCourt()
     {
         view.createCourt(game.court)
