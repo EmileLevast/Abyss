@@ -1,15 +1,9 @@
 package fr.emile.abyss.affichage.gestionFragment.fragmentList
 
-import android.util.Log
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import fr.emile.abyss.R
-import fr.emile.abyss.affichage.HEIGHT_SCREEN
-import fr.emile.abyss.affichage.IShowImage
-import fr.emile.abyss.affichage.WIDTH_SCREEN
 import fr.emile.abyss.affichage.gestionFragment.CustomFragment
 import fr.emile.abyss.affichage.gestionFragment.adapter.*
 import fr.emile.abyss.affichage.gestionFragment.recyclerView.HorizontalRecyclerView
@@ -17,7 +11,6 @@ import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.Player
 import fr.emile.abyss.modelClass.gameItems.ActivePermanentPower
 import fr.emile.abyss.modelClass.gameItems.Ally
-import fr.emile.abyss.modelClass.gameItems.Deck
 import fr.emile.abyss.modelClass.gameItems.Lord
 
 const val RATIO_X_ALLY=0.4f
@@ -66,14 +59,14 @@ class StuffPlayerFrag(val player:Player, val isPowerLordEnabled:Boolean=true) : 
         textPerl.text=("Perl:"+dataGame.perl.toString())
         textFederated.visibility=if(dataGame.listAllieFedere.isEmpty()){View.GONE} else {View.VISIBLE}
 
-        adapterAlly= object : ImageAdapter<Ally>(dataGame.listAlly,activity!!,0.4f,0.1f,recyclerViewAlly, ::createViewHolderAlly){
+        adapterAlly= object : ImageAdapter<Ally>(dataGame.listAlly,activity!!,0.4f,0.1f,recyclerViewAlly, ::createViewHolderAllyCheckBox){
             override fun onClickItem(position: Int) {
                 listImg[position].selectedToBuyLord=!listImg[position].selectedToBuyLord
                 notifyDataSetChanged()
             }
         }
 
-        adapterFederatedAlly= object : ImageAdapter<Ally>(dataGame.listAllieFedere,activity!!,0.4f,0.1f,recyclerViewFederatedAlly, ::createViewHolderAlly){
+        adapterFederatedAlly= object : ImageAdapter<Ally>(dataGame.listAllieFedere,activity!!,0.4f,0.1f,recyclerViewFederatedAlly, ::createViewHolderAllyCheckBox){
             override fun onClickItem(position: Int) {}
         }
 

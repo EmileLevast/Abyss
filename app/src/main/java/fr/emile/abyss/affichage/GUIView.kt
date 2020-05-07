@@ -1,11 +1,13 @@
 package fr.emile.abyss.affichage
 
+import android.app.Notification
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
+import androidx.appcompat.app.ActionBar
 import fr.emile.abyss.MainActivity
 import fr.emile.abyss.R
 import fr.emile.abyss.affichage.gestionFragment.CustomFragment
@@ -39,6 +41,8 @@ class GUIView( activity: MainActivity) {
     var nextTurnLayout:FrameLayout=activity.findViewById(R.id.nextTurnLayout)
     var nextTurnButton:Button=activity.findViewById(R.id.nextTurnButton)
 
+    private var actionBar:ActionBar?=null
+
     init {
 
 
@@ -62,11 +66,9 @@ class GUIView( activity: MainActivity) {
             controller!!.LaunchCourt()
         }
 
-        //init action when click on next turn button
-        nextTurnButton.setOnClickListener {
-            newTurnBegan()
-            controller!!.playerClickToBeginNewTurn(activity)
-        }
+        //get the action bar
+        actionBar=activity.supportActionBar!!
+
         
         nextTurnLayout.setOnTouchListener{_,_->true}
 
@@ -75,16 +77,51 @@ class GUIView( activity: MainActivity) {
 
     }
 
+    /**Game Configuration**/
+    fun redirectMainMenuToConfigGameFrag()
+    {
+        printCentralButtonWithtext("Click Here \nto Create a Game")
+        nextTurnButton.setOnClickListener {
+            controller!!.resetConfigGame()
+            addFragToActivity(ConfigGameFrag())
+        }
+    }
+
+    fun newGameBegin()
+    {
+        nextTurnLayout.visibility=View.GONE
+        initActionOnClickNexTurnButton()
+    }
+
+    /**Game organisation**/
+    fun initActionOnClickNexTurnButton()
+    {
+        nextTurnButton.setOnClickListener {
+            newTurnBegan()
+            controller!!.playerClickToBeginNewTurn()
+        }
+    }
+
+    fun printCentralButtonWithtext(textToPrint:String)
+    {
+        nextTurnButton.text=textToPrint
+        nextTurnLayout.visibility=View.VISIBLE
+    }
+
     //change visibility of the button to go to next turn
     fun AuthorizeNextTurn(nameNextPlayer: String)
     {
-        nextTurnButton.text="Finish turn : $nameNextPlayer"
-        nextTurnLayout.visibility=View.VISIBLE
+        printCentralButtonWithtext("Finish turn : $nameNextPlayer")
     }
 
     fun newTurnBegan()
     {
         nextTurnLayout.visibility=View.GONE
+    }
+
+    fun updateTitleActionBar(title:String)
+    {
+        actionBar!!.title=title
     }
 
 
@@ -94,6 +131,8 @@ class GUIView( activity: MainActivity) {
         return MainActivity.generatorFragment!!.addFragToActivity(frag)
     }
 
+
+    /**Exploration**/
     fun createPlayerScreen(player: Player) {
 
         stuffPlayerFrag= StuffPlayerFrag(player)

@@ -4,7 +4,7 @@ import android.util.Log
 import fr.emile.abyss.MainActivity
 import fr.emile.abyss.R
 import fr.emile.abyss.affichage.IShowImage
-import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderAlly
+import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderAllyCheckBox
 import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderImageOnly
 import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderLord
 import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderPlayer
@@ -166,7 +166,7 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                                 player.listAlly,
                                 "${player.nom} is using Esclavagiste\nPlease choose one ally to discard and gain 2 perls",
                                 R.drawable.esclavagiste,
-                                ::createViewHolderAlly,
+                                ::createViewHolderAllyCheckBox,
                             {ally->
                                 //now we define that when he chooses an ally, we destroy it and he gains 2 perls
                                 player.listAlly.remove(ally)
@@ -330,7 +330,7 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                                     playerAttacked.listAlly,
                                     "$nameOfAttackingPlayer is using Chef des armees\n${playerAttacked.nom} click to delete Ally",
                                     R.drawable.le_chef_des_armees,
-                                    ::createViewHolderAlly,
+                                    ::createViewHolderAllyCheckBox,
                                     actionOnClick = { _,indexClicked ->
                                         //on delete l'allié
                                         //(listItem as MutableList<Ally>).removeAt(indexClicked)
@@ -430,7 +430,7 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                                     playerAttacked.listAlly,
                                     "$nameOfAttackingPlayer is using Le geôlier\n${playerAttacked.nom} click to delete 1 Ally",
                                     R.drawable.le_geolier,
-                                    ::createViewHolderAlly,
+                                    ::createViewHolderAllyCheckBox,
                                     { allyToDelete ->
 
                                         playerAttacked.listAlly.remove(allyToDelete)
@@ -458,7 +458,7 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                                 listAllyUsedToBuy,
                                 "${player.nom} is Using Le maitre de magie\nPlease choose an ally to federate",
                                 R.drawable.le_maitre_de_magie,
-                                ::createViewHolderAlly,
+                                ::createViewHolderAllyCheckBox,
                                 {ally->
                                     //we federate this ally to the player
                                     player.addFederatedAlly(ally)

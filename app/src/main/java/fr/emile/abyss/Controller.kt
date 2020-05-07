@@ -1,6 +1,7 @@
 package fr.emile.abyss
 
 import fr.emile.abyss.affichage.GUIView
+import fr.emile.abyss.modelClass.ConfigGame
 import fr.emile.abyss.modelClass.Exploration
 import fr.emile.abyss.modelClass.Game
 import fr.emile.abyss.modelClass.Player
@@ -9,23 +10,54 @@ import fr.emile.abyss.modelClass.gameItems.Lord
 
 class Controller(activity:MainActivity) {
 
+    //the config for the game
+    var configGame=ConfigGame()
+
     //we create the game
-    var game =Game()
+    lateinit var game:Game
     //must be an IView in order to call its methods
     var view:GUIView= GUIView(activity)
 
     init {
-        updateNameOfCurrentPlayer(activity)
+        redirectToConfigGame()
+    }
+
+    /**Configuration Of the game**/
+    fun redirectToConfigGame()
+    {
+        view.redirectMainMenuToConfigGameFrag()
+    }
+
+    fun createAPlayer(name:String,idImage:Int)
+    {
+        configGame.addAPlayer(name,idImage)
+    }
+
+    fun deleteAPlayer(nameOfPlayerToBeRemoved:String)
+    {
+        configGame.removePlayer(nameOfPlayerToBeRemoved)
+    }
+
+    fun resetConfigGame()
+    {
+        configGame.reset()
+    }
+
+    fun createTheGame()
+    {
+        game= Game(configGame)
+        view.clearScreen()
+        updateNameOfCurrentPlayer()
+        view.newGameBegin()
     }
 
     /**Déroulement du jeu**/
-
     //le joueur clic sur le bouton pour passer au tour suivant
-    fun playerClickToBeginNewTurn(activity: MainActivity)
+    fun playerClickToBeginNewTurn()
     {
         game.nextTurn()
 
-        updateNameOfCurrentPlayer(activity)
+        updateNameOfCurrentPlayer()
     }
 
     //Print a button to authorize next player to play
@@ -33,6 +65,12 @@ class Controller(activity:MainActivity) {
     {
         game.endTurn(player)
         view.AuthorizeNextTurn(player.nom)
+    }
+
+    fun updateNameOfCurrentPlayer()
+    {
+        //we change the title to print the name of the current's turn player
+        view.updateTitleActionBar( game.listPlayer.getCurrent().nom)
     }
 
 
@@ -123,9 +161,5 @@ class Controller(activity:MainActivity) {
         view.createEndGameScreen(game.endGame)
     }
 
-    fun updateNameOfCurrentPlayer(activity: MainActivity)
-    {
-        //we change the title to print the name of the current's turn player
-        activity.supportActionBar!!.title = game.listPlayer.getCurrent().nom
-    }
+
 }

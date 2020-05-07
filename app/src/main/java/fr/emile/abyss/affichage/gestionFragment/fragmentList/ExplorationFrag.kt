@@ -43,7 +43,6 @@ class ExplorationFrag(private val exploration: Exploration):CustomFragment<Explo
 
         adapterAlly= object : ImageAdapter<Ally>(exploration.listProposedCard,activity!!,0.4f,0.1f,recyclerViewAlly, ::createViewHolderAlly){
             override fun onClickItem(position: Int) {
-                Log.w("msg", "pos:$position")
             }
         }
 

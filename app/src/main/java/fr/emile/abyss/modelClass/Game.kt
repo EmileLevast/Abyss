@@ -1,12 +1,10 @@
 package fr.emile.abyss.modelClass
 
 import fr.emile.abyss.Container
-import fr.emile.abyss.R
 import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.gameItems.*
 
-const val PLAYER_NUMBER=3
-class Game {
+class Game(configGame: ConfigGame) {
 
     var listPlayer= Container<Player>()
 
@@ -19,14 +17,10 @@ class Game {
 
     init {
 
-        //TODO let the user choose his name
-        //TODO interdire plusieurs joueur même nom, voir le pouvoir de l'assassin
-        for(i in (65 until (PLAYER_NUMBER+65)))
-        {
-            listPlayer.add(Player(i.toChar().toString(), R.drawable.couverture))
-        }
+        //on ajoute tous les joueurs prepares
+        configGame.listPlayersToAddToGame.forEach { listPlayer.add(it) }
 
-        cheatFirstPLayer()
+        cheatFirstPlayer()
     }
 
     /**[Exploration]**/
@@ -155,7 +149,7 @@ class Game {
     }
 
     //TODO remove this cheat
-    private fun cheatFirstPLayer()
+    private fun cheatFirstPlayer()
     {
         createExploration()
         listPlayer.getCurrent().addAllie(exploration!!.deckAllie)

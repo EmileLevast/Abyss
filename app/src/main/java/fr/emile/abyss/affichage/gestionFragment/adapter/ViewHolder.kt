@@ -91,9 +91,9 @@ fun createViewHolderLord(parent: ViewGroup, activity: Context,
 }
 
 
-fun createViewHolderAlly(parent: ViewGroup, activity: Context,
-                         reqHeight: Int, reqWidth: Int,
-                         listener: ImageAdapter<Ally>): ViewHolder<Ally> {
+fun createViewHolderAllyCheckBox(parent: ViewGroup, activity: Context,
+                                 reqHeight: Int, reqWidth: Int,
+                                 listener: ImageAdapter<Ally>): ViewHolder<Ally> {
 
 
     return object : ViewHolder<Ally>(
@@ -112,20 +112,39 @@ fun createViewHolderAlly(parent: ViewGroup, activity: Context,
 }
 
 fun createViewHolderPlayer(parent: ViewGroup, activity: Context,
-                         reqHeight: Int, reqWidth: Int,
-                         listener: ImageAdapter<Player>): ViewHolder<Player> {
+                           reqHeight: Int, reqWidth: Int,
+                           listener: ImageAdapter<Player>): ViewHolder<Player> {
 
 
     return object : ViewHolder<Player>(
-        LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_ally, parent, false)
+        LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_image_legend, parent, false)
         , activity, reqHeight, reqWidth, listener){
 
         //view added in the recycler view
         //we use the same layout as for the ally card because we need a text to print the name
-        private val textViewNamePlayer: TextView =itemView.findViewById(R.id.textValueAllyRecyclerView)
+        private val textViewLegendForImage: TextView =itemView.findViewById(R.id.textLegendImageRecyclerView)
 
         override fun initPotentialView(itemToShow: Player) {
-            textViewNamePlayer.text = itemToShow.nom
+            textViewLegendForImage.text = itemToShow.nom
+        }
+    }
+}
+
+fun createViewHolderAlly(parent: ViewGroup, activity: Context,
+                           reqHeight: Int, reqWidth: Int,
+                           listener: ImageAdapter<Ally>): ViewHolder<Ally> {
+
+
+    return object : ViewHolder<Ally>(
+        LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_image_legend, parent, false)
+        , activity, reqHeight, reqWidth, listener){
+
+        //view added in the recycler view
+        //we use the same layout as for the ally card because we need a text to print the name
+        private val textViewLegendForImage: TextView =itemView.findViewById(R.id.textLegendImageRecyclerView)
+
+        override fun initPotentialView(itemToShow: Ally) {
+            textViewLegendForImage.text = itemToShow.number.toString()
         }
     }
 }

@@ -6,17 +6,54 @@
 
 >
 
-    <Button
-            style="@style/viewFragmentRelativeLayout"
-            android:id="@+id/buttonPayForANewLordCourt"
-            android:text="1 perl for a Lord"
-    />
+    <!--style="@style/viewFragmentRelativeLayout"-->
+
+    <LinearLayout
+        android:id="@+id/linearLayoutConfigGameFrag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+    >
+
+        <EditText
+                android:id="@+id/editTextConfigLayoutNewPlayerName"
+                android:textColor="@color/plateauAbyssTresSombre"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:hint="New Player Name"
+                android:inputType="text"
+                android:layout_weight="1"
+        />
+
+        <fr.emile.abyss.affichage.gestionFragment.recyclerView.HorizontalRecyclerView
+                android:id="@+id/recyclerViewConfigLayoutChooseImagePlayer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_weight="4"
+        />
+    </LinearLayout>
 
     <fr.emile.abyss.affichage.gestionFragment.recyclerView.HorizontalRecyclerView
-            android:id="@+id/recyclerViewLordCourt"
+            android:id="@+id/recyclerViewConfigLayoutAllPlayers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/linearLayoutConfigGameFrag"
     />
+
+    <TextView
+            style="@style/textAboveAlly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textStyle="italic"
+            android:layout_alignTop="@+id/recyclerViewConfigLayoutAllPlayers"
+            android:layout_alignStart="@id/recyclerViewConfigLayoutAllPlayers"
+            android:layout_alignEnd="@id/recyclerViewConfigLayoutAllPlayers"
+            android:text="Players created appears below. Click on one of them to begin the game"
+    />
+
 
 </RelativeLayout>
