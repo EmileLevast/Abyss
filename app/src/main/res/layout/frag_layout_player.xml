@@ -7,6 +7,14 @@
         android:id="@+id/rootView"
         android:layout_height="match_parent">
 
+    <ImageView
+            android:id="@+id/imageViewFragPlayerBackground"
+            android:scaleType="centerInside"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.6"
+    />
+
 <!--we wrap the scroll view because the root view can't be onTouchListener and the scroll view need to be touch -->
 <ScrollView
         android:layout_width="match_parent"

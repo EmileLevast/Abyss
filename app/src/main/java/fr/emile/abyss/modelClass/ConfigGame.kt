@@ -31,10 +31,16 @@ class ConfigGame {
                 override var imgId: Int=R.drawable.couverture
             },
             object :IShowImage{
-                override var imgId: Int=R.drawable.couverture
+                override var imgId: Int=R.drawable.conspiracy_meduse
             },
             object :IShowImage{
-                override var imgId: Int=R.drawable.couverture
+                override var imgId: Int=R.drawable.couverture_ancien
+            },
+            object :IShowImage{
+                override var imgId: Int=R.drawable.couverture_agriculteur
+            },
+            object :IShowImage{
+                override var imgId: Int=R.drawable.couverture_militaire
             }
         )
     }

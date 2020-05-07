@@ -1,6 +1,7 @@
 package fr.emile.abyss.affichage.gestionFragment.fragmentList
 
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.emile.abyss.R
@@ -32,6 +33,8 @@ class StuffPlayerFrag(val player:Player, val isPowerLordEnabled:Boolean=true) : 
     private lateinit var adapterLord:ImageAdapter<Lord>
     private lateinit var adapterFederatedAlly:ImageAdapter<Ally>
 
+    private lateinit var imageViewBackground:ImageView
+
 
 
     override fun createView(viewInflated: View) {
@@ -41,6 +44,7 @@ class StuffPlayerFrag(val player:Player, val isPowerLordEnabled:Boolean=true) : 
         recyclerViewAlly=viewInflated.findViewById(R.id.recyclerViewAlliePlayer)
         recyclerViewLord=viewInflated.findViewById(R.id.recyclerViewLordPlayer)
         recyclerViewFederatedAlly=viewInflated.findViewById(R.id.recyclerViewFederatedAllyPlayer)
+        imageViewBackground=viewInflated.findViewById(R.id.imageViewFragPlayerBackground)
 
         recyclerViewAlly.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
         recyclerViewLord.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
@@ -54,6 +58,8 @@ class StuffPlayerFrag(val player:Player, val isPowerLordEnabled:Boolean=true) : 
      * so a new adapter must be created each time for this new player
      */
     override fun updateView(dataGame: Player) {
+
+        imageViewBackground.setBackgroundResource(dataGame.imgId)
 
         textviewName.text = dataGame.nom
         textPerl.text=("Perl:"+dataGame.perl.toString())

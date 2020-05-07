@@ -16,8 +16,8 @@ import fr.emile.abyss.modelClass.Player
 
 class PowerLordFrag<T:IShowImage>(
     val listToShow: List<T>,
-    val explicationPower:String,
-    val resourceIdBackground:Int,
+    private val explicationPower:String,
+    private val resourceIdBackground:Int,
     private val factoryViewHolder:(parent: ViewGroup, activity: Context,
                                    reqHeight: Int, reqWidth: Int,
                                    onclick:ImageAdapter<T>)->ViewHolder<T>,
