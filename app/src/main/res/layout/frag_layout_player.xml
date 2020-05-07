@@ -27,13 +27,14 @@
     >
 
     <TextView
-            style="@style/buttonFragment"
+            style="@style/textAboveAlly"
             android:id="@+id/namePlayer"
+            android:layout_marginBottom="5dp"
             android:text="Nom"
     />
 
     <TextView
-            style="@style/buttonFragment"
+            style="@style/textAboveAlly"
             android:id="@+id/textPerlPlayer"
             android:text="Perles"
     />

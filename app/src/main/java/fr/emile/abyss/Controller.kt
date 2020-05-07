@@ -47,7 +47,7 @@ class Controller(activity:MainActivity) {
     {
         game= Game(configGame)
         view.clearScreen()
-        updateNameOfCurrentPlayer()
+        updateToolBar()
         view.newGameBegin()
     }
 
@@ -57,7 +57,7 @@ class Controller(activity:MainActivity) {
     {
         game.nextTurn()
 
-        updateNameOfCurrentPlayer()
+        updateToolBar()
     }
 
     //Print a button to authorize next player to play
@@ -67,10 +67,10 @@ class Controller(activity:MainActivity) {
         view.AuthorizeNextTurn(player.nom)
     }
 
-    fun updateNameOfCurrentPlayer()
+    fun updateToolBar()
     {
         //we change the title to print the name of the current's turn player
-        view.updateTitleActionBar( game.listPlayer.getCurrent().nom)
+        view.updateActionBar( game.listPlayer.getCurrent())
     }
 
 

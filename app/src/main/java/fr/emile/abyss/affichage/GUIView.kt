@@ -1,6 +1,5 @@
 package fr.emile.abyss.affichage
 
-import android.app.Notification
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
@@ -119,9 +118,10 @@ class GUIView( activity: MainActivity) {
         nextTurnLayout.visibility=View.GONE
     }
 
-    fun updateTitleActionBar(title:String)
+    fun updateActionBar(player: Player)
     {
-        actionBar!!.title=title
+        actionBar!!.title=player.nom
+        actionBar!!.setIcon(player.imgId)
     }
 
 
