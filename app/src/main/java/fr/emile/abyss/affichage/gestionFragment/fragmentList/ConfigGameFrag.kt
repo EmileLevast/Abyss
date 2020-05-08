@@ -17,7 +17,7 @@ import fr.emile.abyss.modelClass.Player
 
 //I put Int because we need nothing for an update
 //TODO here the generic type Int is useless
-class ConfigGameFrag() :CustomFragment<Int>(){
+class ConfigGameFrag :CustomFragment<Int>(){
 
     private lateinit var editTextNamePlayer:EditText
 

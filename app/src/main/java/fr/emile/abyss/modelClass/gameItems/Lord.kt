@@ -24,13 +24,24 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
     var isFree:Boolean=true
     private set
 
-    fun die(){
+    fun die(playerOwner:Player){
         isAlive=false
+        removePower(playerOwner)
     }
 
-    fun useToBuyLocation()
+    fun useToBuyLocation(playerOwner:Player)
     {
         isFree=false
+        removePower(playerOwner)
+    }
+
+    /**Only if it's a pemranent power we have to remove it from the [playerOwner].listRulespower**/
+    fun removePower(playerOwner:Player)
+    {
+        if(power is PassivePermanentPower)
+        {
+            power.remove(playerOwner, controller!!.game)
+        }
     }
 
     override fun toString(): String {

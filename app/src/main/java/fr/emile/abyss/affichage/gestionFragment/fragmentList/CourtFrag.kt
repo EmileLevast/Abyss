@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import fr.emile.abyss.R
 import fr.emile.abyss.affichage.gestionFragment.CustomFragment
 import fr.emile.abyss.affichage.gestionFragment.adapter.ImageAdapter
@@ -34,7 +35,7 @@ class CourtFrag(private val court: Court?,private val actionOnClick:(Lord)->Unit
             adapterLord.notifyDataSetChanged()
         }
 
-        recyclerViewLord.layoutManager= LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL,false)
+        recyclerViewLord.layoutManager= LinearLayoutManager(activity, RecyclerView.HORIZONTAL,false)
 
         adapterLord= object : ImageAdapter<Lord>(court!!.listProposedLord,activity!!,0.5f,0.15f,recyclerViewLord,
             ::createViewHolderImageOnly){

@@ -6,6 +6,7 @@ import fr.emile.abyss.modelClass.Exploration
 import fr.emile.abyss.modelClass.Game
 import fr.emile.abyss.modelClass.Player
 import fr.emile.abyss.modelClass.gameItems.FishType
+import fr.emile.abyss.modelClass.gameItems.Location
 import fr.emile.abyss.modelClass.gameItems.Lord
 
 class Controller(activity:MainActivity) {
@@ -151,6 +152,17 @@ class Controller(activity:MainActivity) {
         playerFinishTurn(player)
 
         game.courtFinish(player,lordToBuy)
+    }
+
+    /**Location Stack**/
+    fun playerLaunchLocationDraw()
+    {
+
+    }
+
+    fun playerBuyLocation(locationToBuy:Location)
+    {
+        game.playerBuyLocation(locationToBuy)
     }
 
     /**

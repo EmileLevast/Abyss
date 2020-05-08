@@ -49,7 +49,8 @@ interface InfluenceAllOthers:InstantPower
 /**For the power that are permanent but affect the game only when the player decides to**/
 interface ActivePermanentPower:Power,InstantEffectPower
 {
-    //set to false when you use the power, so you c'ant' use it again in the turn
+    //set to false when you use the power, so you c'ant' use it again in the same turn
+    //use only for that, there are other variables for Die of not free lord
     var isAvailable:Boolean
     //do nothing when bought
     override fun init(player: Player, game: Game) {

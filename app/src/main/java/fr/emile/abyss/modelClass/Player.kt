@@ -1,7 +1,6 @@
 package fr.emile.abyss.modelClass
 
 import fr.emile.abyss.affichage.IShowImage
-import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.gameItems.*
 
 private const val NBR_MAX_LORD=7
@@ -13,6 +12,9 @@ class Player (var nom:String, override var imgId:Int):IShowImage{
 
     //contains all the monster tokens that the player won and didn't use yet
     var listMonsterToken= mutableListOf<MonsterToken>()
+    //count the number of key that you get with monster token
+    var nbrKeyToken:Int=0
+    var listLocation= mutableListOf<Location>()
 
     var listAllieFedere= mutableListOf<Ally>()
     var listLord= mutableListOf<Lord>()
@@ -77,10 +79,8 @@ class Player (var nom:String, override var imgId:Int):IShowImage{
     fun removeLord(lordToRemove:Lord)
     {
         //we delete his passive power
-        if(lordToRemove.power is PassivePermanentPower)
-        {
-            lordToRemove.power.remove(this, controller!!.game)
-        }
+        lordToRemove.removePower(this)
+
         //we delete the lord
         listLord.remove(lordToRemove)
     }
@@ -88,18 +88,56 @@ class Player (var nom:String, override var imgId:Int):IShowImage{
     /**Implement this with the assassin**/
     fun lordIsKilled(killedLord:Lord)
     {
-        //we delete his passive power
-        if(killedLord.power is PassivePermanentPower)
-        {
-            killedLord.power.remove(this, controller!!.game)
-        }
-
-        killedLord.die()
+        killedLord.die(this)
     }
 
     fun hasMaxNbrLord():Boolean
     {
         return listLord.size>= NBR_MAX_LORD
+    }
+
+    /**Location**/
+    fun watchForBuyLocation()
+    {
+        //first we retrieve all the available keys from the lords
+        val listLordAvailableKey=listLord.filter { it.hasKey && it.isFree && it.isAlive }
+
+        //we check if the player has enough key
+        if(nbrKeyToken+listLordAvailableKey.size >= 3)
+        {
+            canBuyANewLocation(listLordAvailableKey)
+        }
+    }
+
+    private fun canBuyANewLocation(listLordAvailableKey:List<Lord>)
+    {
+        var keyNeeded=3
+        //If I have less than 3 key token
+        if(keyNeeded>nbrKeyToken)
+        {
+            //I can min the number of key needed
+            keyNeeded-=nbrKeyToken
+            //and I have no more key token
+            nbrKeyToken=0
+
+            //Because we still need key for buying lord
+            //we get the sufficient number of lord for buy a location
+            val listLordUseForBuyLocation=listLordAvailableKey.take(keyNeeded)
+            //and then we make them "unFree" and remove their power
+            listLordUseForBuyLocation.forEach { it.useToBuyLocation(this) }
+
+
+        }else
+        {
+            nbrKeyToken-=keyNeeded
+        }
+
+        //TODO now we can launch a frag for buying the location
+    }
+
+    fun buyLocation(locationToBuy:Location)
+    {
+        listLocation.add(locationToBuy)
     }
 
 

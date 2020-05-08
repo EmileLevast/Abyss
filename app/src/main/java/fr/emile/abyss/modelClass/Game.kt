@@ -108,6 +108,12 @@ class Game(configGame: ConfigGame) {
         lordToBuy.power.init(player,this)
     }
 
+    /**Location**/
+    fun playerBuyLocation(locationToBuy:Location)
+    {
+        listPlayer.getCurrent().buyLocation(locationToBuy)
+    }
+
     /**===Rule===**/
     fun nextTurn()
     {
@@ -127,6 +133,14 @@ class Game(configGame: ConfigGame) {
     //things to do before going to the nextPlayer
     fun endTurn(player:Player)
     {
+        //at the end of the turn we search to buy a place
+        //becareful when the player the game.courtfinish() is called after this function
+        //and inside it the power of the lord just bought is init()
+        //so maybe if you have a lord with a key that launch a instantPower ,you may have to buy a place with this lord
+        //and then execute his power (not very logical)
+        player.watchForBuyLocation()
+
+
         //power according bonuses to player each turn
         player.listRulesPower.applyToCorrespondingEvent<EndTurnPower>(object : EndTurnPower{},player)
         {
@@ -141,6 +155,7 @@ class Game(configGame: ConfigGame) {
             //just activate the corresponding frag that apply effects
             it.manageHandCards(player)
         }
+
     }
 
 

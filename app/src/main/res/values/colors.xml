@@ -7,10 +7,10 @@
     <color name="plateauAbyssSombre">#122843</color>
     <color name="plateauAbyssSombreAlpha">#99162C47</color>
     <color name="plateauAbyssTresSombre">#0A2030</color>
-    <color name="writeColorHomeButton">#245697</color>
-    <color name="backgroundFragment">#44C0C0FF</color>
+    <color name="writeColorHomeButton">#24A6B7</color>
+    <color name="backgroundFragment">#99C0C0FF</color>
     <color name="backgroundButtonFragment">#C0C0FF</color>
     <color name="backgroundValueAllyText">#AAC0C0FF</color>
-    <color name="writeButtonFragment">#4060D0</color>
+    <color name="writeButtonFragment">#4090D0</color>
     <color name="transparent">#00000000</color>
 </resources>
