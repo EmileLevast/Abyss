@@ -13,6 +13,7 @@ class Game(configGame: ConfigGame) {
     var exploration:Exploration? = null
     var court= Court()
     var council= Council()
+    var locationStack=LocationStack()
     var endGame=EndGame(listPlayer)
 
     init {
@@ -112,6 +113,12 @@ class Game(configGame: ConfigGame) {
     fun playerBuyLocation(locationToBuy:Location)
     {
         listPlayer.getCurrent().buyLocation(locationToBuy)
+        locationStack.locationBought(locationToBuy)
+    }
+
+    fun playerDrawNewLocations(nbrNewLocationsWanted:Int)
+    {
+        locationStack.drawNewLocation(nbrNewLocationsWanted)
     }
 
     /**===Rule===**/

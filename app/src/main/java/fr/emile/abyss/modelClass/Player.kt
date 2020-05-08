@@ -1,6 +1,7 @@
 package fr.emile.abyss.modelClass
 
 import fr.emile.abyss.affichage.IShowImage
+import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.gameItems.*
 
 private const val NBR_MAX_LORD=7
@@ -132,7 +133,7 @@ class Player (var nom:String, override var imgId:Int):IShowImage{
             nbrKeyToken-=keyNeeded
         }
 
-        //TODO now we can launch a frag for buying the location
+        controller!!.playerLaunchLocationDraw()
     }
 
     fun buyLocation(locationToBuy:Location)

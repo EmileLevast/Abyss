@@ -13,7 +13,6 @@ import fr.emile.abyss.controller
 
 import fr.emile.abyss.modelClass.LocationStack
 import fr.emile.abyss.modelClass.gameItems.Location
-import fr.emile.abyss.modelClass.gameItems.Lord
 
 //TODO the propriety court is only used to initiate and i don't release it after that
 class LocationFrag(private val locationStack: LocationStack) :CustomFragment<LocationStack>(){
@@ -36,6 +35,13 @@ class LocationFrag(private val locationStack: LocationStack) :CustomFragment<Loc
         buttonDrawLocation3=viewInflated.findViewById(R.id.buttonfragLocationDraw3)
         buttonDrawLocation4=viewInflated.findViewById(R.id.buttonfragLocationDraw4)
 
+        setButtonVisibility(View.VISIBLE)
+
+        setButtonListener(buttonDrawLocation1,1)
+        setButtonListener(buttonDrawLocation2,2)
+        setButtonListener(buttonDrawLocation3,3)
+        setButtonListener(buttonDrawLocation4,4)
+
         recyclerViewAvailableLocation=viewInflated.findViewById(R.id.recyclerViewFragLocation)
 
 
@@ -45,7 +51,19 @@ class LocationFrag(private val locationStack: LocationStack) :CustomFragment<Loc
         adapterLocation= object : ImageAdapter<Location>(locationStack.listAvailableLocation,activity!!,0.25f,1f,recyclerViewAvailableLocation,
             ::createViewHolderImageOnly){
             override fun onClickItem(position: Int) {
+                controller!!.playerBuyLocation(listImg[position])
+            }
+        }
 
+        recyclerViewAvailableLocation.adapter=adapterLocation
+    }
+
+    fun showTheseLocationOnly(specificLocationToShow: MutableList<Location>)
+    {
+        adapterLocation= object : ImageAdapter<Location>(specificLocationToShow,activity!!,0.25f,1f,recyclerViewAvailableLocation,
+            ::createViewHolderImageOnly){
+            override fun onClickItem(position: Int) {
+                controller!!.playerBuyLocation(listImg[position])
             }
         }
 
@@ -55,4 +73,18 @@ class LocationFrag(private val locationStack: LocationStack) :CustomFragment<Loc
     override fun updateView(dataGame: LocationStack) {
         adapterLocation.notifyDataSetChanged()
     }
+
+    fun setButtonListener(button:Button,drawNbr:Int)
+    {
+        button.setOnClickListener {
+            controller!!.playerDrawOtherLocations(drawNbr)
+            setButtonVisibility(View.GONE)
+        }
+    }
+
+    fun setButtonVisibility(visibility:Int)
+    {
+        buttonDrawLocation1.visibility=visibility
+    }
+
 }

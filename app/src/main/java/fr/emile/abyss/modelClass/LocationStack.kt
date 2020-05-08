@@ -1,5 +1,6 @@
 package fr.emile.abyss.modelClass
 
+import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.gameItems.Location
 
 class LocationStack {
@@ -24,5 +25,30 @@ class LocationStack {
         deckLocation.shuffle()
 
         listAvailableLocation.add(deckLocation.removeAt(0))
+    }
+
+    fun drawNewLocation(nbrDraw:Int)
+    {
+        //we add the drawn Location to the available location
+        listJustDrawnLocation.addAll(deckLocation.take(nbrDraw))
+
+        //we remove them from the deck
+        deckLocation.drop(nbrDraw)
+
+        if(deckLocation.isEmpty())
+        {
+            controller!!.gameFinished()
+        }
+    }
+
+    fun locationBought(location: Location) {
+
+        //we give the drawn location to the available location
+        listAvailableLocation.addAll(listJustDrawnLocation)
+        listJustDrawnLocation.clear()
+
+        //and only then we remove in the result list of available location
+        //the location bought by the player
+        listAvailableLocation.remove(location)
     }
 }

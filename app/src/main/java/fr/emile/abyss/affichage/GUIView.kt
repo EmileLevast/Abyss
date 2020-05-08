@@ -15,11 +15,7 @@ import fr.emile.abyss.affichage.gestionFragment.adapter.ViewHolder
 import fr.emile.abyss.affichage.gestionFragment.fragmentList.*
 import fr.emile.abyss.affichage.gestionFragment.fragmentList.fragmentLordPower.PowerLordFrag
 import fr.emile.abyss.controller
-import fr.emile.abyss.modelClass.EndGame
-import fr.emile.abyss.modelClass.Exploration
-import fr.emile.abyss.modelClass.Player
-import fr.emile.abyss.modelClass.Council
-import fr.emile.abyss.modelClass.Court
+import fr.emile.abyss.modelClass.*
 import fr.emile.abyss.modelClass.gameItems.FishType
 import fr.emile.abyss.modelClass.gameItems.Lord
 
@@ -32,10 +28,8 @@ class GUIView( activity: MainActivity) {
     var stuffPlayerFrag:StuffPlayerFrag?=null
     var explorationFrag:ExplorationFrag?=null
     var councilFrag:CouncilFrag?=null
+    var locationFrag:LocationFrag?=null
 
-    //this is an identifier of the current main frag (i.e. explorationFrag, CouncilFrag, CourtFrag) running
-    //easy to remove this frag thanks to this tag
-    private var tagCurrentMainFrag:String?=null
 
     var nextTurnLayout:FrameLayout=activity.findViewById(R.id.nextTurnLayout)
     var nextTurnButton:Button=activity.findViewById(R.id.nextTurnButton)
@@ -43,9 +37,6 @@ class GUIView( activity: MainActivity) {
     private var actionBar:ActionBar?=null
 
     init {
-
-
-
         //button
         //Exploration
         val explorationButton:Button=activity.findViewById(R.id.explorationButton)
@@ -158,7 +149,7 @@ class GUIView( activity: MainActivity) {
 
         explorationFrag= ExplorationFrag(exploration)
 
-        tagCurrentMainFrag=addFragToActivity(explorationFrag!!)
+        addFragToActivity(explorationFrag!!)
 
         //we create also a frag to show player stuff
         //we set false to disenabled power on Lord Click (because the xploration show player frag who it's not their turn
@@ -182,7 +173,7 @@ class GUIView( activity: MainActivity) {
             CouncilFrag(council)
         }
 
-       tagCurrentMainFrag=addFragToActivity(councilFrag!!)
+       addFragToActivity(councilFrag!!)
     }
 
     /**
@@ -191,9 +182,23 @@ class GUIView( activity: MainActivity) {
     fun createCourt(court: Court,actionOnClick:(Lord)->Unit= controller!!::playerWantToBuyLord)
     {
         val courtFrag=CourtFrag(court,actionOnClick)
-        tagCurrentMainFrag=addFragToActivity(courtFrag)
+        addFragToActivity(courtFrag)
         //we create also a frag to show player stuff
         createPlayerScreen(controller!!.game.listPlayer.getCurrent())
+    }
+
+    /**
+     *Location
+     */
+    fun createLocationStackFrag(locationStack: LocationStack)
+    {
+        locationFrag=LocationFrag(locationStack)
+        MainActivity.generatorFragment!!.addFragWaitingToBeShown(locationFrag!!)
+    }
+
+    fun showNewAvailableLocation(locationStack: LocationStack)
+    {
+        locationFrag!!.showTheseLocationOnly(locationStack.listJustDrawnLocation)
     }
 
 

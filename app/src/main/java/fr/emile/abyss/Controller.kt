@@ -157,12 +157,19 @@ class Controller(activity:MainActivity) {
     /**Location Stack**/
     fun playerLaunchLocationDraw()
     {
-
+        view.createLocationStackFrag(game.locationStack)
     }
 
     fun playerBuyLocation(locationToBuy:Location)
     {
+        MainActivity.generatorFragment!!.popLast()
         game.playerBuyLocation(locationToBuy)
+    }
+
+    fun playerDrawOtherLocations(nbrNewLocations:Int)
+    {
+        game.playerDrawNewLocations(nbrNewLocations)
+        view.showNewAvailableLocation(game.locationStack)
     }
 
     /**
