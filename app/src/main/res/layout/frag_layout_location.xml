@@ -6,12 +6,22 @@
         android:id="@+id/rootView"
 >
 
+
+
+    <ImageView android:layout_width="match_parent" android:layout_height="wrap_content"
+               android:scaleType="centerCrop"
+               android:src="@drawable/verso_lieu"
+               android:layout_alignParentTop="true"
+               android:layout_alignBottom="@+id/linearLayoutFragLocation"
+    />
+
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@drawable/verso_lieu"
+            android:id="@+id/linearLayoutFragLocation"
     >
+
         <Button
                 style="@style/buttonDrawLocation"
                 android:id="@+id/buttonfragLocationDraw1"
@@ -45,11 +55,14 @@
         />
     </LinearLayout>
 
+
     <fr.emile.abyss.affichage.gestionFragment.recyclerView.HorizontalRecyclerView
-            android:id="@+id/recyclerViewFragLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+    android:id="@+id/recyclerViewFragLocation"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/linearLayoutFragLocation"
     />
+
+
 
 </RelativeLayout>

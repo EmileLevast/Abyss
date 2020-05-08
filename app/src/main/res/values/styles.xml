@@ -20,9 +20,9 @@
 
     <!-- I don't use aprent because I don't know wht's the other StateListAnimator-->
     <style name="buttonDrawLocation">
-        <item name="android:layout_margin">10dp</item>
+        <item name="android:layout_margin">15dp</item>
         <item name="android:textSize">22sp</item>
-        <item name="android:padding">10dp</item>
+        <item name="android:padding">8dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:textColor">@color/writeColorHomeButton</item>

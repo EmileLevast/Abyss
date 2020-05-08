@@ -176,6 +176,7 @@ class Game(configGame: ConfigGame) {
         createExploration()
         listPlayer.getCurrent().addAllie(exploration!!.deckAllie)
         listPlayer.getCurrent().perl+=5
+        listPlayer.getCurrent().nbrKeyToken+=3
         //on ajoute des cartes à un autre joueur aussi
         //listPlayer.listElt[1].addAllie(exploration!!.deckAllie.toMutableList())
     }

@@ -77,14 +77,17 @@ class LocationFrag(private val locationStack: LocationStack) :CustomFragment<Loc
     fun setButtonListener(button:Button,drawNbr:Int)
     {
         button.setOnClickListener {
+            setButtonVisibility(View.INVISIBLE)
             controller!!.playerDrawOtherLocations(drawNbr)
-            setButtonVisibility(View.GONE)
         }
     }
 
     fun setButtonVisibility(visibility:Int)
     {
         buttonDrawLocation1.visibility=visibility
+        buttonDrawLocation2.visibility=visibility
+        buttonDrawLocation3.visibility=visibility
+        buttonDrawLocation4.visibility=visibility
     }
 
 }
