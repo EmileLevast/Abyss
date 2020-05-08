@@ -9,6 +9,13 @@
         tools:context=".MainActivity"
         android:background="@color/plateauAbyss" >
 
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:src="@drawable/plateau"
+    />
+
     <androidx.appcompat.widget.Toolbar
             android:id="@+id/app_toolbar"
             android:layout_width="match_parent"
@@ -35,6 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/explorationButton"
             android:text="take council"
+            android:layout_centerVertical="true"
     />
 
     <Button
@@ -44,6 +52,7 @@
             android:layout_height="wrap_content"
             android:text="Buy a Lord"
             android:layout_below="@+id/councilButton"
+            android:layout_alignParentBottom="true"
     />
 
     <FrameLayout

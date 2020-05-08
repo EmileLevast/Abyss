@@ -5,6 +5,7 @@
     <color name="colorAccent">#D81B60</color>
     <color name="plateauAbyss">#1C3E66</color>
     <color name="plateauAbyssSombre">#122843</color>
+    <color name="plateauAbyssSombreAlpha">#99162C47</color>
     <color name="plateauAbyssTresSombre">#0A2030</color>
     <color name="writeColorHomeButton">#245697</color>
     <color name="backgroundFragment">#44C0C0FF</color>
