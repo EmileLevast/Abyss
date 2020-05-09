@@ -131,7 +131,7 @@ class Game(configGame: ConfigGame) {
         resetActivePermanentPowerPlayer()
 
         //on regarde si le jeu est fini
-        if(endGame.isGameFinished())
+        if(listPlayer.getCurrent().hasMaxNbrLord())
         {
             controller!!.gameFinished()
         }
@@ -162,7 +162,11 @@ class Game(configGame: ConfigGame) {
             //just activate the corresponding frag that apply effects
             it.manageHandCards(player)
         }
+    }
 
+    fun finished()
+    {
+        endGame.computeAllPlayerInfluencePoint()
     }
 
 
@@ -176,7 +180,7 @@ class Game(configGame: ConfigGame) {
         createExploration()
         listPlayer.getCurrent().addAllie(exploration!!.deckAllie)
         listPlayer.getCurrent().perl+=5
-        listPlayer.getCurrent().nbrKeyToken+=3
+        listPlayer.getCurrent().nbrKeyToken+=9
         //on ajoute des cartes à un autre joueur aussi
         //listPlayer.listElt[1].addAllie(exploration!!.deckAllie.toMutableList())
     }

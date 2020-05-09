@@ -59,6 +59,9 @@ class StuffPlayerFrag(val player:Player, val isPowerLordEnabled:Boolean=true) : 
      */
     override fun updateView(dataGame: Player) {
 
+        //we init the selected ally
+        dataGame.listAlly.forEach { it.selectedToBuyLord=false }
+
         imageViewBackground.setBackgroundResource(dataGame.imgId)
 
         textviewName.text = dataGame.nom
@@ -72,7 +75,7 @@ class StuffPlayerFrag(val player:Player, val isPowerLordEnabled:Boolean=true) : 
             }
         }
 
-        adapterFederatedAlly= object : ImageAdapter<Ally>(dataGame.listAllieFedere,activity!!,0.4f,0.1f,recyclerViewFederatedAlly, ::createViewHolderAllyCheckBox){
+        adapterFederatedAlly= object : ImageAdapter<Ally>(dataGame.listAllieFedere,activity!!,0.4f,0.1f,recyclerViewFederatedAlly, ::createViewHolderAlly){
             override fun onClickItem(position: Int) {}
         }
 

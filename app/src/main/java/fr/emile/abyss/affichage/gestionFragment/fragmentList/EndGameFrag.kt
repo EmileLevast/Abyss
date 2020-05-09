@@ -10,14 +10,24 @@ class EndGameFrag(var endGame: EndGame):CustomFragment<EndGame>() {
     override val idLayoutToInflate: Int
         get() = R.layout.frag_layout_end_game //To change initializer of created properties use File | Settings | File Templates.
 
-    lateinit var textViewVictory:TextView
+    private lateinit var textViewWinnerName:TextView
+    private lateinit var textViewAllyInfluence:TextView
+    lateinit var textViewLordInfluence:TextView
+    lateinit var textViewLocationInfluence:TextView
 
     override fun createView(viewInflated: View) {
-        textViewVictory=viewInflated.findViewById(R.id.textVictoryScreen)
+        textViewWinnerName=viewInflated.findViewById(R.id.textViewEndGameNameWinner)
+        textViewAllyInfluence=viewInflated.findViewById(R.id.textViewEndGameAllyPoint)
+        textViewLocationInfluence=viewInflated.findViewById(R.id.textViewEndGameLocationPoint)
+        textViewLordInfluence=viewInflated.findViewById(R.id.textViewEndGameLordPoint)
         updateView(endGame)
     }
 
     override fun updateView(dataGame: EndGame) {
-        textViewVictory.text="Victoire: \n"+dataGame.getBestPlayer().toString()
+        textViewWinnerName.text="${dataGame.getBestPlayer().player.nom} win with ${dataGame.getBestPlayer().influencePointTotal} IP"
+
+        textViewAllyInfluence.text="Ally :${dataGame.getBestPlayer().influencePointAllie} IP"
+        textViewLordInfluence.text="Lord :${dataGame.getBestPlayer().influencePointLord} IP"
+        textViewLocationInfluence.text="Location :${dataGame.getBestPlayer().influencePointLocation} IP"
     }
 }

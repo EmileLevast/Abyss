@@ -1,16 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:id="@+id/rootView"
-             android:layout_weight="1"   >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/rootView"
 
-    <TextView
-            android:id="@+id/textVictoryScreen"
+>
+    <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Victoire"
+            android:scaleType="centerInside"
+            android:src="@drawable/final_screen"
+            android:layout_centerInParent="true"
     />
 
-</FrameLayout>
+    <TextView
+            style="@style/textAboveAlly"
+            android:id="@+id/textViewEndGameNameWinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:text="Name winner"
+    />
+
+    <TextView
+            style="@style/AccueilBouton"
+            android:id="@+id/textViewEndGameAllyPoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Influence"
+            android:layout_below="@+id/textViewEndGameNameWinner"
+    />
+
+    <TextView
+            style="@style/AccueilBouton"
+            android:id="@+id/textViewEndGameLordPoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewEndGameAllyPoint"
+            android:text="Influence"
+            android:layout_centerVertical="true"
+    />
+
+    <TextView
+            style="@style/AccueilBouton"
+            android:id="@+id/textViewEndGameLocationPoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewEndGameLordPoint"
+            android:text="Influence"
+    />
+
+
+
+
+
+
+
+
+</RelativeLayout>

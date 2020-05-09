@@ -33,7 +33,7 @@ class LocationStack {
         listJustDrawnLocation.addAll(deckLocation.take(nbrDraw))
 
         //we remove them from the deck
-        deckLocation.drop(nbrDraw)
+        deckLocation=deckLocation.drop(nbrDraw).toMutableList()
 
         if(deckLocation.isEmpty())
         {

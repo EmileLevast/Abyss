@@ -181,6 +181,7 @@ class Controller(activity:MainActivity) {
      */
     fun gameFinished()
     {
+        game.finished()
         view.createEndGameScreen(game.endGame)
     }
 
