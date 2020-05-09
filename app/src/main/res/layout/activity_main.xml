@@ -67,7 +67,7 @@
     >
 
         <Button
-            style="@style/buttonFragment"
+            style="@style/buttonExploration"
             android:id="@+id/nextTurnButton"
             android:layout_gravity="center"
             android:layout_width="wrap_content"

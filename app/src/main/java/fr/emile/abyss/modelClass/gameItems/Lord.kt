@@ -50,31 +50,12 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
 
     companion object {
 
-        //TODO delete all mocked power
-        private val mockedInstantPower=object : InstantPower
-        {
-            override fun activate(player: Player, game: Game) {
-                Log.w("msg","InstantPower mocked activated")
-            }
-        }
-        private val mockedActivePermanentPower= object : ActivePermanentPower {
-            override var isAvailable:Boolean=true
-            override fun activate(player: Player, game: Game) {
-                Log.w("msg","ActivePermanentPower mocked activated")
-            }
-        }
         //use this noPower to implement Farmer Lord
         private val noPower= object : InstantPower {
             override fun activate(player: Player, game: Game) {
             }
         }
-        private val mockedPassivePermanentPower=object : MilitaryLordAttack{
-            override fun isAttackAvailable():Boolean
-            {
-                Log.w("msg","MilitaryLordAttack mocked activated")
-                return false
-            }
-        }
+
 
 
 

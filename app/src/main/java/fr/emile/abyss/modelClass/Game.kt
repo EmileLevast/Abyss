@@ -21,7 +21,7 @@ class Game(configGame: ConfigGame) {
         //on ajoute tous les joueurs prepares
         configGame.listPlayersToAddToGame.forEach { listPlayer.add(it) }
 
-        cheatFirstPlayer()
+        //cheatFirstPlayer()
     }
 
     /**[Exploration]**/
