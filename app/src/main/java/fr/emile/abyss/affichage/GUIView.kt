@@ -14,9 +14,11 @@ import fr.emile.abyss.affichage.gestionFragment.adapter.ImageAdapter
 import fr.emile.abyss.affichage.gestionFragment.adapter.ViewHolder
 import fr.emile.abyss.affichage.gestionFragment.fragmentList.*
 import fr.emile.abyss.affichage.gestionFragment.fragmentList.fragmentLordPower.PowerLordFrag
+import fr.emile.abyss.affichage.gestionFragment.fragmentList.fragmentLordPower.PowerLordFragLocation
 import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.*
 import fr.emile.abyss.modelClass.gameItems.FishType
+import fr.emile.abyss.modelClass.gameItems.Location
 import fr.emile.abyss.modelClass.gameItems.Lord
 
 
@@ -230,6 +232,18 @@ class GUIView( activity: MainActivity) {
         //use a special method to add a PowerLordFrag because we don't want to stack them at the screen
         //and there are some issues, for example they can be deleted with other frags if they are added too early in the backstack
         MainActivity.generatorFragment!!.addFragWaitingToBeShown(powerLordFrag)
+    }
+
+    fun createPowerLordFragLocation(listToShow: List<Location>,
+                                    explicationPower:String,
+                                    resourceIdBackground:Int,
+                                    actionOnClick:(listItem:List<Location>,indexClicked:Int)->Unit)
+    {
+        val powerLordFragLocation=PowerLordFragLocation(listToShow,explicationPower,resourceIdBackground,actionOnClick)
+
+        //use a special method to add a PowerLordFrag because we don't want to stack them at the screen
+        //and there are some issues, for example they can be deleted with other frags if they are added too early in the backstack
+        MainActivity.generatorFragment!!.addFragWaitingToBeShown(powerLordFragLocation)
     }
 
     /**

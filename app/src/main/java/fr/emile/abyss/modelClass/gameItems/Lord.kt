@@ -94,7 +94,20 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                 }
             }),
 
-            Lord(FishType.AMBASSADOR,"L'Ancien",false, R.drawable.ancien,10,5,null,3, mockedInstantPower),
+            Lord(FishType.AMBASSADOR,"L'Ancien",false, R.drawable.ancien,10,5,null,3,
+                object :InstantPower{
+                    override fun activate(player: Player, game: Game) {
+                        game.playerDrawNewLocations(3)
+                        controller!!.view.createPowerLordFragLocation(
+                            game.locationStack.listJustDrawnLocation,
+                            "${player.nom} is using l'Ancien\n Choose a new Location",
+                            R.drawable.ancien
+                        ) {listLocation,indexClicked->
+                            game.playerBuyLocation(listLocation[indexClicked])
+                            MainActivity.generatorFragment!!.popLast()
+                        }
+                    }
+                }),
 
             Lord(FishType.JELLYFISH,"L'Apprenti",false, R.drawable.apprenti,6,3,FishType.JELLYFISH,9,
                 object:InstantPower{
@@ -158,7 +171,20 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
 
                     }
                 }),
-            Lord(FishType.AMBASSADOR,"L'Ermite",false, R.drawable.ermite,10,5,null,5,mockedPassivePermanentPower),
+            Lord(FishType.AMBASSADOR,"L'Ermite",false, R.drawable.ermite,10,5,null,5,
+                object :InstantPower{
+                    override fun activate(player: Player, game: Game) {
+                        game.playerDrawNewLocations(1)
+                        controller!!.view.createPowerLordFragLocation(
+                            game.locationStack.listJustDrawnLocation,
+                            "${player.nom} is using l'Ermite\n Choose a new Location",
+                            R.drawable.ermite
+                        ) {listLocation,indexClicked->
+                            game.playerBuyLocation(listLocation[indexClicked])
+                            MainActivity.generatorFragment!!.popLast()
+                        }
+                    }
+                }),
             Lord(FishType.SEA_SHELL,"L'Esclavagiste",true, R.drawable.esclavagiste,8,1,FishType.SEA_SHELL,5,
                 object :ActivePermanentPower{
 
@@ -189,7 +215,28 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
 
                 }),
             Lord(FishType.SEA_HORSE,"L'Exploitant",false, R.drawable.exploitant,10,1,FishType.SEA_HORSE,12, noPower),
-            Lord(FishType.JELLYFISH,"L'Illusionniste",false, R.drawable.illusionniste,10,1,FishType.JELLYFISH,9,mockedActivePermanentPower),
+            Lord(FishType.JELLYFISH,"L'Illusionniste",false, R.drawable.illusionniste,10,1,FishType.JELLYFISH,9,
+                object :InstantPower{
+                    override fun activate(player: Player, game: Game) {
+                        controller!!.view.createPowerLordFragLocation(
+                            player.listLocation,
+                            "${player.nom} is using l'Illusionniste\n Delete a Location",
+                            R.drawable.illusionniste
+                        ) {listLocation,indexClicked->
+                           player.listLocation.remove(listLocation[indexClicked])
+                            MainActivity.generatorFragment!!.popLast()
+
+                            controller!!.view.createPowerLordFragLocation(
+                                game.locationStack.listAvailableLocation,
+                                "${player.nom} is using l'illusonniste\n Choose a new Location",
+                                R.drawable.illusionniste
+                            ) {listLocationAvailable,indexClickedNewLocation->
+                                game.playerBuyLocation(listLocationAvailable[indexClickedNewLocation])
+                                MainActivity.generatorFragment!!.popLast()
+                            }
+                        }
+                    }
+                }),
 
             Lord(FishType.JELLYFISH,"L'Invocateur",false, R.drawable.invocateur,8,1,FishType.JELLYFISH,8,
                 object : InstantPower{
@@ -520,7 +567,20 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                         player.perl+=1
                     }
                 }),
-            Lord(FishType.AMBASSADOR,"Le Sage",false, R.drawable.le_sage,10,5,null,4,mockedActivePermanentPower),
+            Lord(FishType.AMBASSADOR,"Le Sage",false, R.drawable.le_sage,10,5,null,4,
+                object :InstantPower{
+                    override fun activate(player: Player, game: Game) {
+                        game.playerDrawNewLocations(2)
+                        controller!!.view.createPowerLordFragLocation(
+                            game.locationStack.listJustDrawnLocation,
+                            "${player.nom} is using le Sage\n Choose a new Location",
+                            R.drawable.le_sage
+                        ) {listLocation,indexClicked->
+                            game.playerBuyLocation(listLocation[indexClicked])
+                            MainActivity.generatorFragment!!.popLast()
+                        }
+                    }
+                }),
             Lord(FishType.OCTOPUS,"Le Traitre",false, R.drawable.le_traitre,12,3,FishType.OCTOPUS,6,
                 object : InstantPower{
                     override fun activate(player: Player, game: Game) {
