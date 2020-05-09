@@ -8,6 +8,7 @@
     <color name="plateauAbyssSombreAlpha">#99162C47</color>
     <color name="plateauAbyssTresSombre">#0A2030</color>
     <color name="writeColorHomeButton">#24A6B7</color>
+    <color name="stroke_color_active_permanent_power">#FFD700</color>
     <color name="backgroundFragment">#99C0C0FF</color>
     <color name="backgroundButtonFragment">#C0C0FF</color>
     <color name="backgroundValueAllyText">#AAC0C0FF</color>

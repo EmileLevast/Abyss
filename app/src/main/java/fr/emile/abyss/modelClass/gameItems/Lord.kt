@@ -577,7 +577,9 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                     }
                 }),
             Lord(FishType.OCTOPUS,"L' Opportuniste",true, R.drawable.opportuniste,6,3,FishType.OCTOPUS,5,
-                object : InstantPower{
+                object : ActivePermanentPower{
+                    override var isAvailable: Boolean=true
+
                     override fun activate(player: Player, game: Game) {
 
                         //we clear the screen in order to have a full screen frag

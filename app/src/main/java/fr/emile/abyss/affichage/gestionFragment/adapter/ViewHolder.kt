@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import fr.emile.abyss.R
 import fr.emile.abyss.affichage.IShowImage
 import fr.emile.abyss.modelClass.Player
+import fr.emile.abyss.modelClass.gameItems.ActivePermanentPower
 import fr.emile.abyss.modelClass.gameItems.Ally
 import fr.emile.abyss.modelClass.gameItems.Lord
 
@@ -82,10 +83,26 @@ fun createViewHolderLord(parent: ViewGroup, activity: Context,
         LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_lord, parent, false)
         , activity, reqHeight, reqWidth, listener){
 
-        private val imageDeadLord:ImageView=itemView.findViewById(R.id.imageview_dead_lord)
+        private val imageStatusLord:ImageView=itemView.findViewById(R.id.imageview_status_lord)
 
         override fun initPotentialView(itemToShow: Lord) {
-            imageDeadLord.visibility=if(itemToShow.isAlive){View.GONE}else{View.VISIBLE}
+            if(!itemToShow.isAlive)
+            {
+                imageStatusLord.setImageResource(R.drawable.skull_sea)
+            }
+            else if(!itemToShow.isFree)
+            {
+                imageStatusLord.setImageResource(R.drawable.symbole_cle)
+            }
+            else if(itemToShow.power is ActivePermanentPower && itemToShow.power.isAvailable)
+            {
+                imageStatusLord.setImageResource(0)
+                imageStatusLord.setBackgroundResource(R.drawable.background_active_permanent_power)
+            }
+            else
+            {
+                imageStatusLord.visibility=View.GONE
+            }
         }
     }
 }
