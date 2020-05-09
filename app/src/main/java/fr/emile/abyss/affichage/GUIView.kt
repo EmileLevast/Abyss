@@ -92,6 +92,16 @@ class GUIView( activity: MainActivity) {
         }
     }
 
+    //Invocator Power
+    fun initActionOnClickAdditionnalTurn()
+    {
+        nextTurnButton.setOnClickListener {
+            newTurnBegan()
+            controller!!.playerClickToDoAdditionnalTurn()
+            initActionOnClickNexTurnButton()
+        }
+    }
+
     fun printCentralButtonWithtext(textToPrint:String)
     {
         nextTurnButton.text=textToPrint

@@ -74,6 +74,12 @@ class Controller(activity:MainActivity) {
         view.updateActionBar( game.listPlayer.getCurrent())
     }
 
+    /**Invocator Power**/
+    fun playerClickToDoAdditionnalTurn()
+    {
+        game.resetActivePermanentPowerPlayer()
+    }
+
 
     /**Exploration**/
 
@@ -146,12 +152,10 @@ class Controller(activity:MainActivity) {
     {
         view.clearScreen()
 
-        /**must call [playerFinishTurn] before [courtFinish] because of the invocateur
-         * The player we print the button "next turn A" before the power of the lord done in courtfinish
-         * **/
+        game.courtFinish(player,lordToBuy)
+
         playerFinishTurn(player)
 
-        game.courtFinish(player,lordToBuy)
     }
 
     /**Location Stack**/

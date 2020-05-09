@@ -194,8 +194,8 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
             Lord(FishType.JELLYFISH,"L'Invocateur",false, R.drawable.invocateur,8,1,FishType.JELLYFISH,8,
                 object : InstantPower{
                     override fun activate(player: Player, game: Game) {
-                        //we just hide the button that let go to the next player
-                        controller!!.view.newTurnBegan()
+                        //when the player will click on the next Turn button it will just let an additionnal turn
+                        controller!!.view.initActionOnClickAdditionnalTurn()
                     }
                 }),
 

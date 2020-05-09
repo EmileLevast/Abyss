@@ -128,7 +128,7 @@ class Game(configGame: ConfigGame) {
         listPlayer.next()
 
         //on reinitialise les pouvoirs qui sont faisable une fois par tour
-        listPlayer.getCurrent().listLord.forEach { if(it.power is ActivePermanentPower){it.power.isAvailable=true} }
+        resetActivePermanentPowerPlayer()
 
         //on regarde si le jeu est fini
         if(endGame.isGameFinished())
@@ -137,14 +137,14 @@ class Game(configGame: ConfigGame) {
         }
     }
 
+    fun resetActivePermanentPowerPlayer()
+    {
+        listPlayer.getCurrent().listLord.forEach { if(it.power is ActivePermanentPower){it.power.isAvailable=true} }
+    }
+
     //things to do before going to the nextPlayer
     fun endTurn(player:Player)
     {
-        //at the end of the turn we search to buy a place
-        //becareful when the player the game.courtfinish() is called after this function
-        //and inside it the power of the lord just bought is init()
-        //so maybe if you have a lord with a key that launch a instantPower ,you may have to buy a place with this lord
-        //and then execute his power (not very logical)
         player.watchForBuyLocation()
 
 
