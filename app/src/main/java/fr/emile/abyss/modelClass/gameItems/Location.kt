@@ -13,7 +13,7 @@ class Location(override var imgId: Int,var name:String, val effectLocation:(play
 
     companion object {
         val listLocation= listOf(
-            Location(R.drawable.la_caserne,"La Caserne") { player->(player.listLord.filter { it.FishType==FishType.CRAB}.size*7 +2)},
+            Location(R.drawable.la_caserne,"La Caserne") { player->(player.listLord.filter { it.FishType==FishType.CRAB}.size*2 +7)},
             Location(R.drawable.les_bas_fond,"Les Bas-Fond") { player->(player.listLord.filter { it.FishType==FishType.CRAB}.size*7 +2)},
             Location(R.drawable.les_champs_de_sargasse,"Les Champs de Sargasse") { player->(player.listLord.filter { it.FishType==FishType.CRAB}.size*7 +2)},
             Location(R.drawable.les_abysses,"Les Abysses") { player->(player.listLord.filter { it.FishType==FishType.CRAB}.size*7 +2)},

@@ -83,6 +83,22 @@ fun createViewHolderLord(parent: ViewGroup, activity: Context,
         LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_lord, parent, false)
         , activity, reqHeight, reqWidth, listener){
 
+        override fun initPotentialView(itemToShow: Lord) {
+        }
+
+
+    }
+}
+
+fun createViewHolderLordWithStatus(parent: ViewGroup, activity: Context,
+                         reqHeight: Int, reqWidth: Int,
+                         listener:ImageAdapter<Lord>): ViewHolder<Lord> {
+
+
+    return object : ViewHolder<Lord>(
+        LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_lord, parent, false)
+        , activity, reqHeight, reqWidth, listener){
+
         private val imageStatusLord:ImageView=itemView.findViewById(R.id.imageview_status_lord)
 
         override fun initPotentialView(itemToShow: Lord) {

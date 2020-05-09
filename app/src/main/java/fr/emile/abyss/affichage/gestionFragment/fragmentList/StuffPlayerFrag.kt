@@ -12,6 +12,7 @@ import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.Player
 import fr.emile.abyss.modelClass.gameItems.ActivePermanentPower
 import fr.emile.abyss.modelClass.gameItems.Ally
+import fr.emile.abyss.modelClass.gameItems.Location
 import fr.emile.abyss.modelClass.gameItems.Lord
 
 const val RATIO_X_ALLY=0.4f
@@ -29,9 +30,11 @@ class StuffPlayerFrag(val player:Player, val isPowerLordEnabled:Boolean=true) : 
     lateinit var recyclerViewAlly:HorizontalRecyclerView
     lateinit var recyclerViewLord:HorizontalRecyclerView
     lateinit var recyclerViewFederatedAlly:HorizontalRecyclerView
+    lateinit var recyclerViewLocation:HorizontalRecyclerView
     private lateinit var adapterAlly:ImageAdapter<Ally>
     private lateinit var adapterLord:ImageAdapter<Lord>
     private lateinit var adapterFederatedAlly:ImageAdapter<Ally>
+    private lateinit var adapterLocation:ImageAdapter<Location>
 
     private lateinit var imageViewBackground:ImageView
 
@@ -44,11 +47,13 @@ class StuffPlayerFrag(val player:Player, val isPowerLordEnabled:Boolean=true) : 
         recyclerViewAlly=viewInflated.findViewById(R.id.recyclerViewAlliePlayer)
         recyclerViewLord=viewInflated.findViewById(R.id.recyclerViewLordPlayer)
         recyclerViewFederatedAlly=viewInflated.findViewById(R.id.recyclerViewFederatedAllyPlayer)
+        recyclerViewLocation=viewInflated.findViewById(R.id.recyclerViewLocationPlayer)
         imageViewBackground=viewInflated.findViewById(R.id.imageViewFragPlayerBackground)
 
         recyclerViewAlly.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
         recyclerViewLord.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
         recyclerViewFederatedAlly.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
+        recyclerViewLocation.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
 
         updateView(player)
     }
@@ -80,7 +85,7 @@ class StuffPlayerFrag(val player:Player, val isPowerLordEnabled:Boolean=true) : 
         }
 
         adapterLord= object : ImageAdapter<Lord>(dataGame.listLord,activity!!,0.4f,0.1f,recyclerViewLord,
-            ::createViewHolderLord){
+            ::createViewHolderLordWithStatus){
             override fun onClickItem(position: Int) {
                 val lord=listImg[position]
                 //si le seigneur dispose d'un pouvoir actif
@@ -100,9 +105,14 @@ class StuffPlayerFrag(val player:Player, val isPowerLordEnabled:Boolean=true) : 
             }
         }
 
+        adapterLocation= object : ImageAdapter<Location>(dataGame.listLocation,activity!!,0.4f,0.45f,recyclerViewLocation, ::createViewHolderImageOnly){
+            override fun onClickItem(position: Int) {}
+        }
+
         recyclerViewAlly.adapter=adapterAlly
         recyclerViewLord.adapter=adapterLord
         recyclerViewFederatedAlly.adapter=adapterFederatedAlly
+        recyclerViewLocation.adapter=adapterLocation
 
     }
 
