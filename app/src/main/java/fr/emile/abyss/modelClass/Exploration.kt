@@ -24,6 +24,7 @@ class Exploration (listPlayer:Container<Player>){
 
     init {
         initializeExplo(listPlayer)
+
     }
 
     //Always called when generate a new exploration
@@ -40,12 +41,7 @@ class Exploration (listPlayer:Container<Player>){
 
     fun explore()
     {
-        if(!deckAllie.isEmpty())//si il reste encore des cartes a tirer
-        {
-            //we take card from the deck and add it to the visible card
-            listProposedCard.add(deckAllie.removeAt(0))
-        }
-        else//soi la pioche est vide on melange la discard et on redonne des cartes
+        if(deckAllie.isEmpty())//si il reste encore des cartes a tirer
         {
             deckAllie.addAll(listDiscard.shuffled())
 
@@ -53,6 +49,7 @@ class Exploration (listPlayer:Container<Player>){
             listDiscard.clear()
         }
 
+        listProposedCard.add(deckAllie.removeAt(0))
         listPlayer.reset()
     }
 
