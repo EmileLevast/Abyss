@@ -21,7 +21,7 @@ class Game(configGame: ConfigGame) {
         //on ajoute tous les joueurs prepares
         configGame.listPlayersToAddToGame.forEach { listPlayer.add(it) }
 
-        //cheatFirstPlayer()
+        cheatFirstPlayer()
     }
 
     /**[Exploration]**/
@@ -58,25 +58,26 @@ class Game(configGame: ConfigGame) {
     /**[Council]**/
     fun takeCouncilStack(fishType: FishType)
     {
-        listPlayer.getCurrent().addAllie(council.takeStack(fishType))
+        addStackToPlayerAndHandleCouncil(fishType)
 
         //next turn si called in the controller , see there for mor information
 
-    }
-
-    /**watch within the power of the player to see what to do with the council**/
-    fun whatToDoWithCouncil(): (FishType) -> Unit {
-
-        //we intialize with no action but normally if there  is no power corresponding
-        //to a stack draw, the default action define in the interface CouncilStack is taken
-        var actionOnStackClick:(fishtype:FishType)->Unit={}
         val player=listPlayer.getCurrent()
-        player.listRulesPower.applyToCorrespondingEvent<CouncilStack>(object : CouncilStack {},player)
-        { actionOnStackClick=it.getActionOnStack() }
-
-        return actionOnStackClick
+        player.listRulesPower.applyToCorrespondingEvent<OnCouncilStackTaken>(object : OnCouncilStackTaken {},player)
+        { it.actionOnCouncilStackTaken(this,player) }
     }
 
+    /**Special use for the ALchimiste, otherwise his power will be called each time in [takeCouncilStack]**/
+    fun addStackToPlayerAndHandleCouncil(fishType: FishType)
+    {
+        listPlayer.getCurrent().addAllie(council.takeStack(fishType))
+    }
+
+    /**Oracle Power**/
+    fun sendStackToDiscard(fishType: FishType)
+    {
+        exploration!!.sendToDiscardList(council.takeStack(fishType))
+    }
 
 
     /**[Court]**/
@@ -182,6 +183,6 @@ class Game(configGame: ConfigGame) {
         listPlayer.getCurrent().perl+=5
         listPlayer.getCurrent().nbrKeyToken+=9
         //on ajoute des cartes à un autre joueur aussi
-        //listPlayer.listElt[1].addAllie(exploration!!.deckAllie.toMutableList())
+        listPlayer.listElt[1].addAllie(exploration!!.deckAllie.toMutableList())
     }
 }

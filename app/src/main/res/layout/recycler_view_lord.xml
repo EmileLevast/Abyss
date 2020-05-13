@@ -15,7 +15,6 @@
     <ImageView
             android:id="@+id/imageview_status_lord"
             android:scaleType="centerInside"
-            android:src="@drawable/skull_sea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignEnd="@id/image_recycler_view"

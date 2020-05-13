@@ -1,6 +1,11 @@
 package fr.emile.abyss.modelClass.gameItems
 
+import fr.emile.abyss.MainActivity
+import fr.emile.abyss.R
+import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderAlly
+import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderAllyCheckBox
 import fr.emile.abyss.controller
+import fr.emile.abyss.modelClass.Council
 import fr.emile.abyss.modelClass.Game
 import fr.emile.abyss.modelClass.Player
 
@@ -129,7 +134,22 @@ interface BoughtLordFederateAllie:PassivePermanentPower
     {
         //federate allies
         //first we retrieve the minest ally and then if we found one (if it's not null) we federate it to the player
-        listAllyUsedToBuy.minBy { allieBuying->allieBuying.number}?.let{player.addFederatedAlly(it)}
+        val min=listAllyUsedToBuy.minBy { it.number }!!.number
+        val listMinimumAlly:List<Ally> = listAllyUsedToBuy.filter{min==it.number}
+
+        if(!listMinimumAlly.isEmpty())
+        {
+            controller!!.view.createPowerLordFrag(
+                listMinimumAlly,
+                "${player.nom} ,\nplease federate an ally",
+                R.drawable.verso_allie,
+                ::createViewHolderAlly,
+                {ally->
+                    //we federate this ally to the player
+                    player.addFederatedAlly(ally)
+                    MainActivity.generatorFragment!!.popLast()
+                })
+        }
     }
 }
 
@@ -147,12 +167,17 @@ interface BuyLordColorAllie:PassivePermanentPower
 //What to do when you launch a council
 //can you take too stack or something else
 //which color is used to buy the lord and is it the right color.
-interface CouncilStack:PassivePermanentPower
+/*interface CouncilStack:PassivePermanentPower
 {
     fun getActionOnStack():(fishtype:FishType)->Unit
     {
         return {fishtype: FishType ->  controller!!.takeCouncilStack(fishtype)}
     }
+}*/
+
+interface OnCouncilStackTaken:PassivePermanentPower
+{
+    fun actionOnCouncilStackTaken(game: Game, player:Player)=Unit
 }
 
 

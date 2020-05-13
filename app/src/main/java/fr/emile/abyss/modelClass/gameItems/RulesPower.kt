@@ -28,6 +28,15 @@ class RulesPower {
 
         //we delete for referencial equality so keep same object in Lord and in Rules
         mapCurrentActivePower[key]?.removeIf { it===power }
+
+        //si la liste contenant ces pouvoirs est vide il faut supprimer la liste (elle se recréérera avec l'arrivée d'un nouveau pouvoir
+        //sinon sur getPower on recupere une liste vide
+        mapCurrentActivePower[key]?.let{
+            if(it.isEmpty())
+            {
+             mapCurrentActivePower.remove(key)
+            }
+        }
     }
 
     private fun <T:PassivePermanentPower> getPower(eventPowerTriggered:T):List<T>

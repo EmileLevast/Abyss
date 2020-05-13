@@ -185,7 +185,7 @@ class GUIView( activity: MainActivity) {
             CouncilFrag(council)
         }
 
-       addFragToActivity(councilFrag!!)
+       MainActivity.generatorFragment!!.addFragWaitingToBeShown(councilFrag!!)
     }
 
     /**
@@ -225,13 +225,23 @@ class GUIView( activity: MainActivity) {
                                                           onclick: ImageAdapter<T>)-> ViewHolder<T>,
                                           actionAfterOnClick:(T)->Unit={_->Unit},
                                           actionOnClick:(listItem:List<T>,indexClicked:Int)->Unit=
-                                              {listItem,indexClicked->actionAfterOnClick(listItem[indexClicked])})
+                                              {listItem,indexClicked->actionAfterOnClick(listItem[indexClicked])},
+                                          pushFragFirst:Boolean=false)
     {
         val powerLordFrag=PowerLordFrag(listToShow,explicationPower,resourceIdBackground,factoryViewHolder,actionOnClick)
 
         //use a special method to add a PowerLordFrag because we don't want to stack them at the screen
         //and there are some issues, for example they can be deleted with other frags if they are added too early in the backstack
-        MainActivity.generatorFragment!!.addFragWaitingToBeShown(powerLordFrag)
+
+        //if the frag must be the exact next thing to show (2-frags power)
+        if(pushFragFirst)
+        {
+            MainActivity.generatorFragment!!.pushFragmentToBeNextShownFragment(powerLordFrag)
+        }
+        else
+        {
+            MainActivity.generatorFragment!!.addFragWaitingToBeShown(powerLordFrag)
+        }
     }
 
     fun createPowerLordFragLocation(listToShow: List<Location>,

@@ -53,6 +53,23 @@ class GeneratorFragment(val mainActivity: MainActivity):FragmentManager.OnBackSt
         }
     }
 
+    /**Utilisé dans le cas des pouvoirs nécessitant 2 frags, être sûr que le second frag du pouvoir est bien montré**/
+    fun pushFragmentToBeNextShownFragment(frag:CustomFragment<*>)
+    {
+        //s'il y a la place d'afficher les frags
+        if(mainActivity.supportFragmentManager.fragments.size<=0)
+        {
+            //alors on ajoute le frag tout de suite à l'écran
+            //il n'y a pas de risques qu'il se fasse delete par un futur clear screen
+            addFragToActivity(frag)
+        }
+        else
+        {
+            //sinon on l'ajoute comme le prochain fragment à montrer
+            poolWaitingFrag.add(0,frag)
+        }
+    }
+
     fun popAll()
     {
         mainActivity.supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)

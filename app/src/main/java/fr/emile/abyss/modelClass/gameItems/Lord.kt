@@ -1,13 +1,9 @@
 package fr.emile.abyss.modelClass.gameItems
 
-import android.util.Log
 import fr.emile.abyss.MainActivity
 import fr.emile.abyss.R
 import fr.emile.abyss.affichage.IShowImage
-import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderAllyCheckBox
-import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderImageOnly
-import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderLord
-import fr.emile.abyss.affichage.gestionFragment.adapter.createViewHolderPlayer
+import fr.emile.abyss.affichage.gestionFragment.adapter.*
 import fr.emile.abyss.controller
 import fr.emile.abyss.modelClass.Game
 import fr.emile.abyss.modelClass.Player
@@ -62,16 +58,17 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
 
         val listLord= mutableListOf(
             Lord(FishType.JELLYFISH,"l'Alchimiste",true, R.drawable.alchimiste,7,1,FishType.JELLYFISH,5,
-            object : CouncilStack{
-                override fun getActionOnStack(): (fishtype: FishType) -> Unit {
-                    return {
-                        //we just add the stack to the player hand
-                        controller!!.game.takeCouncilStack(it)
-                        //we detroy the frag
-                        controller!!.view.clearScreen()
-                        //and we create again the council to take the second stack
-                        controller!!.view.createCouncil(controller!!.game.council)
-                    }
+            object : OnCouncilStackTaken{
+                override fun actionOnCouncilStackTaken(game: Game, player:Player) {
+                    controller!!.view.createPowerLordFrag(
+                        game.council.getAllCurrentAvailableStack(),
+                        "${player.nom} is using L'Alchimiste\ntake additionnal council stack",
+                        R.drawable.alchimiste,
+                        ::createViewHolderImageOnly,{ fishType->
+                            game.addStackToPlayerAndHandleCouncil(fishType)
+                            MainActivity.generatorFragment!!.popLast()
+                        }
+                    )
                 }
             }),
 
@@ -114,43 +111,36 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
 
             Lord(FishType.CRAB,"L'Assassin",false, R.drawable.assassin,10,1,FishType.CRAB,6,
                 object : InfluenceAllOthers{
-                    override fun activateOnOther(iterListTarget:Iterator<Player>,playerAttacking:Player) {
+                    override fun activateOnOther(iterListTarget:Iterator<Player>,playerAttacking:Player)
+                    {
+                        //tant qu'il y a des personnages
+                        while (iterListTarget.hasNext()) {
+                            val playerAttacked=iterListTarget.next()
 
-                        //what to do when you finish an assassin frag
-                        fun attackNextPlayer()
-                        {
-                            //tant qu'il y a des personnages
-                            if (iterListTarget.hasNext()) {
-                                val playerAttacked=iterListTarget.next()
+                            //on lance l'evenement attackmilitarylord
+                            //comme ça le joueur n'est pas attaque s'il a la chamanesse
+                            playerAttacked.playerUnderAttackMilitaryLord { _, _->
 
-                                //on lance l'evenement attackmilitarylord
-                                //comme ça le joueur n'est pas attaque s'il a la chamanesse
-                                playerAttacked.playerUnderAttackMilitaryLord ({_,_->
-
-                                    //on verifie qu'il y a des seigneurs a tuer
-                                    val listFreeLordPlayer=playerAttacked.listLord.filter { it.isFree && it.isAlive }
-                                    if (!listFreeLordPlayer.isEmpty()) {
-                                        //on créé le frag pour assassiner
-                                        controller!!.view.createPowerLordFrag(
-                                            listFreeLordPlayer,
-                                            "${playerAttacking.nom} is using Assassin\n${playerAttacked.nom} choose a lord to sacrifice",
-                                            R.drawable.assassin,
-                                            ::createViewHolderImageOnly,
+                                //on verifie qu'il y a des seigneurs a tuer
+                                val listFreeLordPlayer=playerAttacked.listLord.filter { it.isFree && it.isAlive }
+                                if (!listFreeLordPlayer.isEmpty()) {
+                                    //on créé le frag pour assassiner
+                                    controller!!.view.createPowerLordFrag(
+                                        listFreeLordPlayer,
+                                        "${playerAttacking.nom} is using Assassin\n${playerAttacked.nom} choose a lord to sacrifice",
+                                        R.drawable.assassin,
+                                        ::createViewHolderImageOnly,
                                         { lord ->
                                             playerAttacked.lordIsKilled(lord)
                                             //on suppr le fragment assassin actuel
                                             MainActivity.generatorFragment!!.popLast()
-                                            attackNextPlayer()
                                         })
-                                    }
-                                },::attackNextPlayer)
+                                }
                             }
                         }
-
-                        //we call the first assassin frag
-                        attackNextPlayer()
-
                     }
+
+
                 }),
             Lord(FishType.AMBASSADOR,"L'Ermite",false, R.drawable.ermite,10,5,null,5,
                 object :InstantPower{
@@ -199,21 +189,25 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
             Lord(FishType.JELLYFISH,"L'Illusionniste",false, R.drawable.illusionniste,10,1,FishType.JELLYFISH,9,
                 object :InstantPower{
                     override fun activate(player: Player, game: Game) {
-                        controller!!.view.createPowerLordFragLocation(
-                            player.listLocation,
-                            "${player.nom} is using l'Illusionniste\n Delete a Location",
-                            R.drawable.illusionniste
-                        ) {listLocation,indexClicked->
-                           player.listLocation.remove(listLocation[indexClicked])
-                            MainActivity.generatorFragment!!.popLast()
 
+                        if(player.listLocation.isNotEmpty())
+                        {
                             controller!!.view.createPowerLordFragLocation(
-                                game.locationStack.listAvailableLocation,
-                                "${player.nom} is using l'illusonniste\n Choose a new Location",
+                                player.listLocation,
+                                "${player.nom} is using l'Illusionniste\n Delete a Location",
                                 R.drawable.illusionniste
-                            ) {listLocationAvailable,indexClickedNewLocation->
-                                game.playerBuyLocation(listLocationAvailable[indexClickedNewLocation])
+                            ) {listLocation,indexClicked->
+                                player.listLocation.remove(listLocation[indexClicked])
                                 MainActivity.generatorFragment!!.popLast()
+
+                                controller!!.view.createPowerLordFragLocation(
+                                    game.locationStack.listAvailableLocation,
+                                    "${player.nom} is using l'illusonniste\n Choose a new Location",
+                                    R.drawable.illusionniste
+                                ) {listLocationAvailable,indexClickedNewLocation->
+                                    game.playerBuyLocation(listLocationAvailable[indexClickedNewLocation])
+                                    MainActivity.generatorFragment!!.popLast()
+                                }
                             }
                         }
                     }
@@ -258,6 +252,9 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
 
                                 //we activate the power
                                 lordDrawn?.power?.init(player, controller!!.game)
+
+                                //if the player has bought a lord, can he buy a location
+                                lordDrawn?.let{player.watchForBuyLocation()}
                             })
                         }
                     }
@@ -297,13 +294,12 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
 
                         //TODO Becareful here , because we call the function under attack also the player is not already attacked
                         listPlayerTargeted.forEach {
-                            it.playerUnderAttackMilitaryLord({player,_->
+                            it.playerUnderAttackMilitaryLord { player, _->
                                 //if the player has at least one token
-                                if(!player.listMonsterToken.isEmpty())
-                                {
+                                if(!player.listMonsterToken.isEmpty()) {
                                     listPlayerThatCanBeAttacked.add(player)
                                 }
-                            })
+                            }
                         }
 
                         //after that we show to the current player wich player can be attacked
@@ -336,19 +332,14 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
 
                     override fun activateOnOther(iterListTarget: Iterator<Player>, playerAttacking: Player) {
 
-                        //what to do when you finish an assassin frag
-                        fun attackNextPlayer() {
-                            //tant qu'il y a des personnages
-                            if (iterListTarget.hasNext()) {
-                                val playerAttacked = iterListTarget.next()
 
-                                //we create a frag to doscard ally and at the end we launch a second frag for another player
-                                createFragToDiscardAlly(playerAttacked) {attackNextPlayer()}
-                            }
+                        while (iterListTarget.hasNext()) {
+                            val playerAttacked = iterListTarget.next()
+
+                            //we create a frag to doscard ally and at the end we launch a second frag for another player
+                            createFragToDiscardAlly(playerAttacked)
                         }
 
-                        //we call the first chief frag
-                        attackNextPlayer()
                     }
 
                     //the second power of the chief of armies
@@ -357,19 +348,18 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                         createFragToDiscardAlly(player)
                     }
 
-                    private fun createFragToDiscardAlly(playerAttacked:Player,actionEndFrag:()->Unit={})
+                    private fun createFragToDiscardAlly(playerAttacked:Player)
                     {
-                        playerAttacked.playerUnderAttackMilitaryLord ({ _, _ ->
+                        playerAttacked.playerUnderAttackMilitaryLord { _, _ ->
 
                             //on créé le frag pour discard les alliés
                             //on verifie que le joueur a plsu de 6 alliés sinon le pouvoir est inefficace
-                            if (playerAttacked.listAlly.size>6)
-                            {
+                            if (playerAttacked.listAlly.size>6) {
                                 controller!!.view.createPowerLordFrag(
                                     playerAttacked.listAlly,
                                     "$nameOfAttackingPlayer is using Chef des armees\n${playerAttacked.nom} click to delete Ally",
                                     R.drawable.le_chef_des_armees,
-                                    ::createViewHolderAllyCheckBox,
+                                    ::createViewHolderAlly,
                                     actionOnClick = { _,indexClicked ->
                                         //on delete l'allié
                                         //(listItem as MutableList<Ally>).removeAt(indexClicked)
@@ -378,15 +368,12 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                                         //si il passe en dessous de la barre des 7 alliés en main on arrete
                                         if (playerAttacked.listAlly.size<=6) {
                                             MainActivity.generatorFragment!!.popLast()
-
-                                            //If you want to do something special before ending the frag
-                                            actionEndFrag()
                                         }
                                     }
                                 )
                             }
 
-                        },actionEndFrag)
+                        }
                     }
                 }),
             Lord(FishType.SEA_SHELL,"Le Colporteur",false, R.drawable.le_colporteur,8,1,FishType.SEA_SHELL,9,
@@ -443,28 +430,23 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
             Lord(FishType.CRAB,"Le Geôlier",false, R.drawable.le_geolier,6,3,FishType.CRAB,7,
                 object: InfluenceAllOthers{
                     override fun activateOnOther(iterListTarget: Iterator<Player>, playerAttacking: Player) {
-                        fun attackNextPlayer() {
-                            //tant qu'il y a des personnages
-                            if (iterListTarget.hasNext()) {
-                                val playerAttacked = iterListTarget.next()
 
-                                //we create a frag to doscard ally and at the end we launch a second frag for another player
-                                createFragToDiscardAlly(playerAttacking.nom,playerAttacked,::attackNextPlayer)
-                            }
+                        //tant qu'il y a des personnages
+                        while(iterListTarget.hasNext()) {
+                            val playerAttacked = iterListTarget.next()
+
+                            //we create a frag to doscard ally and at the end we launch a second frag for another player
+                            createFragToDiscardAlly(playerAttacking.nom,playerAttacked)
                         }
-
-                        //we call the first chief frag
-                        attackNextPlayer()
                     }
 
-                    private fun createFragToDiscardAlly(nameOfAttackingPlayer:String,playerAttacked:Player,actionEndFrag:()->Unit)
+                    private fun createFragToDiscardAlly(nameOfAttackingPlayer:String,playerAttacked:Player)
                     {
-                        playerAttacked.playerUnderAttackMilitaryLord ({ _, _ ->
+                        playerAttacked.playerUnderAttackMilitaryLord { _, _ ->
 
                             //on créé le frag pour discard les alliés
                             //on verifie que le joueur a 1 allié sinon le pouvoir est inefficace
-                            if (playerAttacked.listAlly.size>0)
-                            {
+                            if (playerAttacked.listAlly.size>0) {
                                 controller!!.view.createPowerLordFrag(
                                     playerAttacked.listAlly,
                                     "$nameOfAttackingPlayer is using Le geôlier\n${playerAttacked.nom} click to delete 1 Ally",
@@ -474,17 +456,12 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
 
                                         playerAttacked.listAlly.remove(allyToDelete)
 
-
                                         MainActivity.generatorFragment!!.popLast()
-
-                                        //If you want to do something special before ending the frag
-                                        actionEndFrag()
-
                                     }
                                 )
                             }
 
-                        },actionEndFrag)
+                        }
                     }
                 }),
             Lord(FishType.JELLYFISH,"Le Maître de magie",true, R.drawable.le_maitre_de_magie,10,3,FishType.JELLYFISH,6,
@@ -497,7 +474,7 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                                 listAllyUsedToBuy,
                                 "${player.nom} is Using Le maitre de magie\nPlease choose an ally to federate",
                                 R.drawable.le_maitre_de_magie,
-                                ::createViewHolderAllyCheckBox,
+                                ::createViewHolderAlly,
                                 {ally->
                                     //we federate this ally to the player
                                     player.addFederatedAlly(ally)
@@ -605,7 +582,10 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                                         MainActivity.generatorFragment!!.popLast()
 
                                         lordChosen.power.init(player, controller!!.game)
-                                    })
+
+                                        //with this new lord can he buy a location
+                                        player.watchForBuyLocation()
+                                    },pushFragFirst = true)
                                 }
                             )
                         }
@@ -654,9 +634,10 @@ class Lord (var FishType: FishType, var name:String,var hasKey:Boolean, override
                             "${player.nom} is using L'Oracle\nDiscard one council stack",
                             R.drawable.oracle,
                             ::createViewHolderImageOnly,{ fishType->
-                                game.council.removeStack(fishType)
+                                game.sendStackToDiscard(fishType)
                                 MainActivity.generatorFragment!!.popLast()
-                            })
+                            }
+                        )
                     }
                 })
         )

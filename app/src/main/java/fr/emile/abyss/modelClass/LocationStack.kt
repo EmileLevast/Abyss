@@ -35,9 +35,20 @@ class LocationStack {
         //we remove them from the deck
         deckLocation=deckLocation.drop(nbrDraw).toMutableList()
 
-        if(deckLocation.isEmpty())
-        {
+        checkDeckEmpty()
+    }
+
+    private fun checkDeckEmpty() {
+        if (deckLocation.isEmpty()) {
             controller!!.gameFinished()
+        }
+    }
+
+    private fun onAvailableLocationEmpty()
+    {
+        if(listAvailableLocation.isEmpty() && deckLocation.isNotEmpty())
+        {
+            listAvailableLocation.add(deckLocation.removeAt(0))
         }
     }
 
@@ -50,5 +61,9 @@ class LocationStack {
         //and only then we remove in the result list of available location
         //the location bought by the player
         listAvailableLocation.remove(location)
+
+        onAvailableLocationEmpty()
     }
+
+
 }

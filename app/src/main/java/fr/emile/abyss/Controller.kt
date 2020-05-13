@@ -126,7 +126,7 @@ class Controller(activity:MainActivity) {
 
     fun launchCouncil()
     {
-        view.createCouncil(game.council,game.whatToDoWithCouncil())
+        view.createCouncil(game.council)
     }
 
     /**Court**/
