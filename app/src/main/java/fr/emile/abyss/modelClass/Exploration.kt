@@ -49,7 +49,15 @@ class Exploration (listPlayer:Container<Player>){
             listDiscard.clear()
         }
 
-        listProposedCard.add(deckAllie.removeAt(0))
+        //si après avoir remelangé c'est toujours vide
+        if(deckAllie.isEmpty())
+        {
+            //alors on a plus de carte allié, c'est fini
+            controller!!.gameFinished()
+        }else
+        {
+            listProposedCard.add(deckAllie.removeAt(0))
+        }
         listPlayer.reset()
     }
 
