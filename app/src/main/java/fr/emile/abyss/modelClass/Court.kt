@@ -6,7 +6,7 @@ import fr.emile.abyss.modelClass.gameItems.BuyLordPrice
 import fr.emile.abyss.modelClass.gameItems.Lord
 
 //nombre des seigneurs disponible a la court
-const val NUMBER_VISIBLE_LORD=30
+const val NUMBER_VISIBLE_LORD=6
 //court des seigneurs avec tous les seigneurs dispos
 class Court {
 
